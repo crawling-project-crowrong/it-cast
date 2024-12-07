@@ -28,7 +28,7 @@ public class GPTService {
     private String template;
 
     @Transactional
-    public Map<String, Object> prompt(final GPTSummaryRequest gptSummaryRequest) {
+    public Map<String, Object> summaryContent(final GPTSummaryRequest gptSummaryRequest) {
         try {
             addTemplate(gptSummaryRequest);
 
