@@ -15,6 +15,11 @@ public class Message {
     @JsonProperty("content")
     private String content;
 
+    public Message(final String role, final String content) {
+        this.role = role;
+        this.content = content;
+    }
+
     public void addTemplate(final String content) {
         this.content += content;
     }
