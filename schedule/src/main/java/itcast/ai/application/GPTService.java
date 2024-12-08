@@ -3,6 +3,7 @@ package itcast.ai.application;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import itcast.ai.client.GPTClient;
 import itcast.ai.dto.request.GPTSummaryRequest;
 import itcast.domain.blog.Blog;
 import itcast.domain.blog.enums.BlogStatus;
@@ -14,13 +15,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
 public class GPTService {
 
-    private final WebClient webClient;
+    private final GPTClient gptClient;
     private final ObjectMapper objectMapper;
     private final BlogRepository blogRepository;
 
@@ -28,19 +28,15 @@ public class GPTService {
     private String template;
 
     @Transactional
-    public Map<String, Object> summaryContent(final GPTSummaryRequest gptSummaryRequest) {
-        try {
+    public void updateBlogBySummaryContent(final GPTSummaryRequest gptSummaryRequest) throws JsonProcessingException {
             addTemplate(gptSummaryRequest);
 
             final String requestBody = objectMapper.writeValueAsString(gptSummaryRequest);
 
-            final String responseBody = webClient.post()
-                    .bodyValue(requestBody)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+            final String responseBody = gptClient.sendRequest(requestBody);
 
-            final Map<String, Object> result = objectMapper.readValue(responseBody, new TypeReference<>() {});
+            final Map<String, Object> result = objectMapper.readValue(responseBody, new TypeReference<>() {
+            });
 
             final String content = extractContent(result);
 
@@ -53,12 +49,6 @@ public class GPTService {
                     parseRating(content),
                     BlogStatus.SUMMARY
             );
-
-            return result;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("JSON 처리 중 오류 발생: " + e.getMessage(), e);
-            // TODO GlobalException 생기면 추가 해야함
-        }
     }
 
     private void addTemplate(final GPTSummaryRequest gptSummaryRequest) {
