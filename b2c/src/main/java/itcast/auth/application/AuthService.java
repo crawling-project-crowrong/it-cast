@@ -2,32 +2,39 @@ package itcast.auth.application;
 
 import java.net.URI;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itcast.auth.dto.response.KakaoUserInfo;
+import itcast.config.WebClientConfig;
+import itcast.security.JwtUtil;
+import itcast.user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Slf4j(topic = "KAKAO Login")
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final RestTemplate restTemplate;
+	private final WebClientConfig webClientConfig;
+	private final UserRepository userRepository;
+	private final JwtUtil jwtUtil;
 
-	public String kakaoLogin(String code) throws JsonProcessingException {
+
+	public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
 		String accessToken = getToken(code);
 		KakaoUserInfo kakaoUserInfo = getKakaoUserInfo(accessToken);
-		// admin 인지 확인하고 처음 로그인시 kakaoemail 저장하는 기능 추가해야함.
-		return null;
+		// user와 admin에 kakaoemail이 있는지 확인후, 있으면 createtoken, 없으면 kakaoemail을 db에 저장후 createtoken
+		String jwtToken = jwtUtil.createToken(kakaoUserInfo.kakaoEmail());
+		addJwtToCookie(jwtToken, response);
 	}
 
 	private String getToken(String code) throws JsonProcessingException {
@@ -48,17 +55,16 @@ public class AuthService {
 		body.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
 		body.add("code", code);
 
-		RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
-			.post(uri)
-			.headers(headers)
-			.body(body);
+		WebClient webClient = webClientConfig.webClient();
+		String responseBody = webClient.post()
+			.uri(uri)
+			.headers(httpHeaders -> httpHeaders.addAll(headers))
+			.bodyValue(body)
+			.retrieve()
+			.bodyToMono(String.class)
+			.block();
 
-		ResponseEntity<String> response = restTemplate.exchange(
-			requestEntity,
-			String.class
-		);
-
-		JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
+		JsonNode jsonNode = new ObjectMapper().readTree(responseBody);
 		return jsonNode.get("access_token").asText();
 	}
 
@@ -75,20 +81,24 @@ public class AuthService {
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-		RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
-			.post(uri)
-			.headers(headers)
-			.body(new LinkedMultiValueMap<>());
-
-		ResponseEntity<String> response = restTemplate.exchange(
-			requestEntity,
-			String.class
-		);
+		String responseBody = webClient.post()
+			.uri(uri)
+			.headers(httpHeaders -> httpHeaders.addAll(headers))
+			.retrieve()
+			.bodyToMono(String.class)
+			.block();
 
 		JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
 		String email = jsonNode.get("kakao_account")
 			.get("email").asText();
 		log.info("카카오 사용자 이메일: " + email);
 		return new KakaoUserInfo(email);
+	}
+
+	private void addJwtToCookie(String jwtToken, HttpServletResponse response) {
+		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwtToken);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		response.addCookie(cookie);
 	}
 }

@@ -1,4 +1,4 @@
 package itcast.auth.dto.response;
 
-public record KakaoUserInfo(String email) {
+public record KakaoUserInfo(String kakaoEmail) {
 }
