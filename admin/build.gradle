@@ -1,51 +1,28 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.0'
-    id 'io.spring.dependency-management' version '1.1.6'
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-
-tasks.bootJar {
-    enabled = false
-}
-
-tasks.jar {
-    enabled = true
-}
+group 'com.example'
+version '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
-subprojects {
-    apply plugin: 'java-library'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+tasks.bootJar {
+    enabled = true
+}
 
-    dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+tasks.jar {
+    enabled = false
+}
 
-        runtimeOnly 'com.h2database:h2'
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation project(':common')
+}
 
-        runtimeOnly 'com.mysql:mysql-connector-j'
-    }
-
-    sourceCompatibility = '17'
-
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
-
-    tasks.named('test') {
-        useJUnitPlatform()
-    }
+test {
+    useJUnitPlatform()
 }
