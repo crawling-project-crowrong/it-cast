@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public enum Interest {
     FRONTEND,
-    BACKEND;
+    BACKEND,
+    NEWS
 
     public static Interest from(final String category) {
         return Arrays.stream((values()))
