@@ -29,8 +29,6 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String kakaoEmail;
 
-    private String email;
-
     @Column(nullable = false)
     private String nickname;
 
@@ -45,4 +43,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SendingType sendingType;
+
+    private String email;
 }
