@@ -13,13 +13,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class Blog extends BaseEntity {
 
     @Id
@@ -47,7 +47,7 @@ public class Blog extends BaseEntity {
     private LocalDateTime publishedAt;
 
     @Column(nullable = false)
-    private Long rating;
+    private int rating;
 
     @Column(nullable = false)
     private String link;
@@ -59,4 +59,6 @@ public class Blog extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime sendAt;
+
+    public Blog() {}
 }
