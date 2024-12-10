@@ -18,16 +18,15 @@ import static itcast.blog.BlogCrawler.getHtmlDocument;
 @Slf4j
 public class YozmCrawlingService {
 
-    private final static String BASE_URL = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=";
-    private final static String SORTED_URL = "&sort=new&q=";
-    final int maxPages = 5;
+    private static final String BASE_URL = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=";
+    private static final String SORTED_URL = "&sort=new&q=";
+    private static final int MAX_PAGES = 5;
 
     public List<Blog> crawlBlogs() {
         List<Blog> blogs = new ArrayList<>();
 
         try {
-
-            for (int page = 1; page <= maxPages; page++) {
+            for (int page = 1; page <= MAX_PAGES; page++) {
                 String pageUrl = BASE_URL + page + SORTED_URL;
                 log.info("크롤링할 페이지 URL: {}", pageUrl);
 
@@ -52,7 +51,6 @@ public class YozmCrawlingService {
                             .thumbnail(thumbnail)
                             .status(BlogStatus.ORIGINAL)
                             .build();
-
                     blogs.add(blog);
                 }
             }
