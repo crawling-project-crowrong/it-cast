@@ -34,7 +34,6 @@ public class Blog extends BaseEntity {
     private String title;
 
     @Lob
-    @Column(nullable = false)
     private String content;
 
     @Lob
@@ -62,7 +61,7 @@ public class Blog extends BaseEntity {
     @Builder
     public Blog(
             final Long id,
-            final String platform,
+            final Platform platform,
             final String title,
             final String originalContent,
             final LocalDateTime publishedAt,
