@@ -4,7 +4,7 @@ import itcast.domain.blog.Blog;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BlogsMapper {
+public class BlogMapper {
     public static Blog toEntity(AdminBlogRequest adminBlogRequest) {
         return Blog.builder()
                 .platform(adminBlogRequest.getPlatform())
