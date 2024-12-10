@@ -10,14 +10,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import itcast.domain.BaseEntity;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class News extends BaseEntity {
 
     @Id
@@ -40,7 +42,7 @@ public class News extends BaseEntity {
     private LocalDateTime publishedAt;
 
     @Column(nullable = false)
-    private Long rating;
+    private int rating;
 
     @Column(nullable = false)
     private String link;
@@ -51,4 +53,6 @@ public class News extends BaseEntity {
     private NewsStatus status;
 
     private LocalDateTime sendAt;
+
+    public News() {}
 }
