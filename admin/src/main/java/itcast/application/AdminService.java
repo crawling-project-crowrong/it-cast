@@ -2,6 +2,7 @@ package itcast.application;
 
 import itcast.domain.blog.Blog;
 import itcast.domain.news.News;
+import itcast.domain.news.enums.NewsStatus;
 import itcast.dto.request.AdminBlogRequest;
 import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.request.BlogMapper;
@@ -13,6 +14,9 @@ import itcast.repository.BlogRepository;
 import itcast.repository.NewsRepository;
 import itcast.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +28,8 @@ public class AdminService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminNewsResponse createNews(Long userid, AdminNewsRequest adminNewsRequest) {
-        if(!identifyAdmin(userid)) {
+    public AdminNewsResponse createNews(Long userId, AdminNewsRequest adminNewsRequest) {
+        if(!identifyAdmin(userId)) {
             throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
         }
 
@@ -35,8 +39,8 @@ public class AdminService {
         return new AdminNewsResponse(savedNews);
     }
 
-    public AdminBlogResponse createBlog(Long userid, AdminBlogRequest adminBlogRequest) {
-        if(!identifyAdmin(userid)) {
+    public AdminBlogResponse createBlog(Long userId, AdminBlogRequest adminBlogRequest) {
+        if(!identifyAdmin(userId)) {
             throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
         }
 
@@ -49,5 +53,14 @@ public class AdminService {
     private boolean identifyAdmin(Long id){
         String email = userRepository.findById(id).get().getKakaoEmail();
         return adminRepository.existsByEmail(email);
+    }
+
+    public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, int page, int size) {
+        if(!identifyAdmin(userId)) {
+            throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        return newsRepository.findAllByStatusOrderBySendAtDesc(status, pageable);
     }
 }
