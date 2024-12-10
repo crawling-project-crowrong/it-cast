@@ -1,5 +1,6 @@
 package itcast.ai.application;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -73,5 +74,23 @@ class GPTServiceTest {
         verify(blog, times(1)).applySummaryUpdate(eq("test summary"), eq(Interest.BACKEND), eq(8L),
                 eq(BlogStatus.SUMMARY));
         verify(gptClient, times(1)).sendRequest(gptSummaryRequest);
+    }
+
+    @Test
+    @DisplayName("블로그가 유효하지 않으면 요약에 실패한다.")
+    void summaryContent_test_not_found_blog() {
+        // given
+        final Long blogId = 1L;
+        final String originalContent = "test originalContent";
+
+        final Message message = new Message("user", originalContent);
+
+        final GPTSummaryRequest gptSummaryRequest = new GPTSummaryRequest("gpt-4o-mini", message, 0.7f);
+
+        when(blogRepository.findById(blogId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> gptService.updateBlogBySummaryContent(gptSummaryRequest))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
