@@ -23,7 +23,7 @@ public class GPTService {
         final GPTSummaryResponse response = gptClient.sendRequest(gptSummaryRequest);
 
         final Blog blog = blogRepository.findById(1L)
-                .orElseThrow(() -> new IllegalArgumentException("오류 발생"));
+                .orElseThrow(() -> new IllegalArgumentException("블로그가 유효하지 않습니다."));
 
         blog.applySummaryUpdate(
                 response.getSummary(),
