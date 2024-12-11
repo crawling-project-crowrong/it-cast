@@ -1,6 +1,5 @@
 package itcast.ai;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Message {
 
-    @JsonProperty("role")
-    private String role = "user";
+    private String role;
 
     private String content;
 
