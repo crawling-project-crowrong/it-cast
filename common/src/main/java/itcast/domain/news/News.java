@@ -11,15 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import itcast.domain.BaseEntity;
 
 @Getter
 @Entity
-@Builder
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class News extends BaseEntity {
 
     @Id
@@ -53,6 +50,4 @@ public class News extends BaseEntity {
     private NewsStatus status;
 
     private LocalDateTime sendAt;
-
-    public News() {}
 }
