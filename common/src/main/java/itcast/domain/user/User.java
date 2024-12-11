@@ -30,19 +30,15 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String kakaoEmail;
 
-    @Column(nullable = false)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ArticleType articleType;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Interest interest;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private SendingType sendingType;
 
     private String email;
