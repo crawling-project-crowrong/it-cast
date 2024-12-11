@@ -12,7 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+
 import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,20 +62,20 @@ public class Blog extends BaseEntity {
 
     @Builder
     public Blog(
-            final Long id,
-            final Platform platform,
-            final String title,
-            final String originalContent,
-            final LocalDateTime publishedAt,
-            final String link,
-            final BlogStatus status
+            Platform platform,
+            String title,
+            String originalContent,
+//            LocalDateTime publishedAt,
+            String link,
+            String thumbnail,
+            BlogStatus status
     ) {
-        this.id = id;
         this.platform = platform;
         this.title = title;
         this.originalContent = originalContent;
-        this.publishedAt = publishedAt;
+//        this.publishedAt = publishedAt;
         this.link = link;
+        this.thumbnail = thumbnail;
         this.status = status;
     }
 
@@ -86,6 +88,6 @@ public class Blog extends BaseEntity {
         this.content = content;
         this.interest = interest;
         this.rating = rating;
-        this.status = status;
+
     }
 }
