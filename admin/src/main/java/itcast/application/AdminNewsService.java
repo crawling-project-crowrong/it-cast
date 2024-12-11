@@ -2,7 +2,6 @@ package itcast.application;
 
 import itcast.domain.news.News;
 import itcast.dto.request.AdminNewsRequest;
-import itcast.dto.request.NewsMapper;
 import itcast.dto.response.AdminNewsResponse;
 import itcast.repository.AdminRepository;
 import itcast.repository.NewsRepository;
