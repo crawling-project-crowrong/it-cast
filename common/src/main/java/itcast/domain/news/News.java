@@ -30,8 +30,6 @@ public class News extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
-    private String content;
-  
     @Lob
     private String content;
 
