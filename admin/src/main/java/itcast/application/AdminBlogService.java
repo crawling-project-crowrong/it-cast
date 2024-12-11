@@ -17,14 +17,12 @@ public class AdminBlogService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminBlogResponse createBlog(Long userid, AdminBlogRequest adminBlogRequest) {
+    public AdminBlogResponse createBlog(Long userid, Blog blog) {
         if(!identifyAdmin(userid)) {
             throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
         }
 
-        Blog blog = BlogMapper.toEntity(adminBlogRequest);
         Blog savedBlogs = blogRepository.save(blog);
-
         return new AdminBlogResponse(savedBlogs);
     }
 
