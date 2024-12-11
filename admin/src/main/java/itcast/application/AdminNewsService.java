@@ -1,12 +1,16 @@
 package itcast.application;
 
 import itcast.domain.news.News;
+import itcast.domain.news.enums.NewsStatus;
 import itcast.domain.user.User;
 import itcast.dto.response.AdminNewsResponse;
 import itcast.repository.AdminRepository;
 import itcast.repository.NewsRepository;
 import itcast.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +26,12 @@ public class AdminNewsService {
         News savedNews = newsRepository.save(news);
 
         return new AdminNewsResponse(savedNews);
+    }
+
+    public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, int page, int size) {
+        isAdmin(userId);
+        Pageable pageable = PageRequest.of(page, size);
+        return newsRepository.findAllByStatusOrderBySendAtDesc(status, pageable);
     }
 
     private void isAdmin(Long id){
