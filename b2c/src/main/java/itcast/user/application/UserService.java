@@ -1,6 +1,7 @@
 package itcast.user.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import itcast.domain.user.User;
 import itcast.domain.user.enums.ArticleType;
@@ -21,6 +22,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
+	@Transactional
 	public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
 		User existingUser = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
@@ -44,6 +46,7 @@ public class UserService {
 		return ProfileCreateResponse.fromEntity(savedUser);
 	}
 
+	@Transactional
 	public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
 		User existingUser = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
