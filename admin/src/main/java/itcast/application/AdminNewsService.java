@@ -17,12 +17,11 @@ public class AdminNewsService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminNewsResponse createNews(Long userid, AdminNewsRequest adminNewsRequest) {
-        if(!identifyAdmin(userid)) {
+    public AdminNewsResponse createNews(Long userId, News news) {
+        if(!identifyAdmin(userId)) {
             throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
         }
 
-        News news = NewsMapper.toEntity(adminNewsRequest);
         News savedNews = newsRepository.save(news);
 
         return new AdminNewsResponse(savedNews);
