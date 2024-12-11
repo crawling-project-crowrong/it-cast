@@ -1,6 +1,7 @@
 package itcast.application;
 
 import itcast.domain.blog.Blog;
+import itcast.domain.user.User;
 import itcast.dto.request.AdminBlogRequest;
 import itcast.dto.response.AdminBlogResponse;
 import itcast.repository.AdminRepository;
@@ -17,17 +18,18 @@ public class AdminBlogService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminBlogResponse createBlog(Long userid, Blog blog) {
-        if(!identifyAdmin(userid)) {
-            throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
-        }
-
+    public AdminBlogResponse createBlog(Long userId, Blog blog) {
+        isAdmin(userId);
         Blog savedBlogs = blogRepository.save(blog);
         return new AdminBlogResponse(savedBlogs);
     }
 
-    private boolean identifyAdmin(Long id){
-        String email = userRepository.findById(id).get().getKakaoEmail();
-        return adminRepository.existsByEmail(email);
+    private void isAdmin(Long id){
+        User user = userRepository.findById(id).orElseThrow(()->
+                new NullPointerException("해당 id가 존재하지 않습니다."));
+        String email = user.getKakaoEmail();
+        if(!adminRepository.existsByEmail(email)){
+            throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
+        }
     }
 }
