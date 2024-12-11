@@ -3,6 +3,7 @@ package itcast.domain.news;
 import itcast.domain.news.enums.NewsStatus;
 import itcast.domain.user.enums.Interest;
 import itcast.domain.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +11,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,9 +30,12 @@ public class News extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    private String content;
+  
+    @Lob
     private String content;
 
+    @Lob
     @Column(nullable = false)
     private String originalContent;
 
