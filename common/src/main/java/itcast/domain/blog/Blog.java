@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -59,4 +60,21 @@ public class Blog extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime sendAt;
+
+    @Builder
+    public Blog(Platform platform,
+                String title,
+                String originalContent,
+//                LocalDateTime publishedAt,
+                String link,
+                String thumbnail,
+                BlogStatus status) {
+        this.platform = platform;
+        this.title = title;
+        this.originalContent = originalContent;
+//        this.publishedAt = publishedAt;
+        this.link = link;
+        this.thumbnail = thumbnail;
+        this.status = status;
+    }
 }
