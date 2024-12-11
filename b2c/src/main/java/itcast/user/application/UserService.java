@@ -11,6 +11,7 @@ import itcast.user.exception.EmailAlreadyExistsException;
 import itcast.user.exception.NicknameAlreadyExistsException;
 import itcast.user.exception.UserNotFoundException;
 import itcast.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,6 +20,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
+	@Transactional
 	public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
 		User existingUser = userRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
