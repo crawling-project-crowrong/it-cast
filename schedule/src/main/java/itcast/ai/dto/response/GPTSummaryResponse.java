@@ -16,36 +16,23 @@ public record GPTSummaryResponse(
     }
 
     public String getCategory() {
-        final String content = choices.get(0).message.content();
-        return parseCategory(content);
+        return extractField(1).replace(",", "");
     }
 
     public String getSummary() {
-        final String content = choices.get(0).message.content();
-        return parseSummary(content);
+        return extractField(2).replace(",", "");
     }
 
     public Long getRating() {
+        return Long.parseLong(extractField(3));
+    }
+
+    private String extractField(final int index) {
         final String content = choices.get(0).message.content();
-        return parseRating(content);
+        return parseContent(content, index);
     }
 
-    private static String parseSummary(final String content) {
-        final String summary = parseContent(content, 2);
-        return summary.replace(",", "");
-    }
-
-    private static String parseCategory(final String content) {
-        final String category = parseContent(content, 1);
-        return category.replace(",", "");
-    }
-
-    private static Long parseRating(final String content) {
-        final String ratingString = parseContent(content, 3);
-        return Long.parseLong(ratingString);
-    }
-
-    public static String parseContent(final String content, final int index) {
+    private static String parseContent(final String content, final int index) {
         final String[] parts = content.split("\n");
         return parts[index].split(":")[1].trim().replaceAll("\"", "");
     }
