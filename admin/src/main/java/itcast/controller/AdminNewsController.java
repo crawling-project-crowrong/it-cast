@@ -1,6 +1,6 @@
 package itcast.controller;
 
-import itcast.application.AdminService;
+import itcast.application.AdminNewsService;
 import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.response.AdminNewsResponse;
 import itcast.dto.response.ResponseTemplate;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/")
-public class AdminController {
+@RequestMapping("/api")
+public class AdminNewsController {
 
-    private final AdminService adminService;
+    private final AdminNewsService adminService;
 
     @PostMapping("/news")
     public ResponseTemplate<AdminNewsResponse> createNews(@RequestParam Long userId, @RequestBody AdminNewsRequest adminNewsRequest) {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminNewsService {
 
     private final NewsRepository newsRepository;
     private final UserRepository userRepository;
