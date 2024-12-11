@@ -3,7 +3,7 @@ package itcast.controller;
 import itcast.application.AdminNewsService;
 import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.response.AdminNewsResponse;
-import itcast.dto.response.ResponseTemplate;
+import itcast.ResponseTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
