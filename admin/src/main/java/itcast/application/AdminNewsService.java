@@ -13,6 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Service
 @RequiredArgsConstructor
 public class AdminNewsService {
@@ -28,10 +31,10 @@ public class AdminNewsService {
         return new AdminNewsResponse(savedNews);
     }
 
-    public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, int page, int size) {
+    public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, LocalDate sendAt, int page, int size) {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
-        return newsRepository.findNewsBYCondition(status, pageable);
+        return newsRepository.findNewsBYCondition(status, sendAt, pageable);
     }
 
     private void isAdmin(Long id){

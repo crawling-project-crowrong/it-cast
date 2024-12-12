@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/news")
@@ -29,9 +32,10 @@ public class AdminNewsController {
     public ResponseTemplate<PageResponse<AdminNewsResponse>> retrieveNews(
             @RequestParam Long userId,
             @RequestParam(required = false) NewsStatus status,
+            @RequestParam(required = false) LocalDate sendAt,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<AdminNewsResponse> newsPage = adminService.retrieveNews(userId, status, page, size);
+        Page<AdminNewsResponse> newsPage = adminService.retrieveNews(userId, status, sendAt, page, size);
         PageResponse<AdminNewsResponse> newPageResponse = new PageResponse<>(
                 newsPage.getContent(),
                 newsPage.getNumber(),
