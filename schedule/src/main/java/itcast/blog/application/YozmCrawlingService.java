@@ -5,14 +5,16 @@ import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.blog.enums.Platform;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
-import static itcast.blog.BlogCrawler.getHtmlDocument;
+import static itcast.blog.controller.BlogJsoupCrawler.getHtmlDocument;
 
 @Service
 @Slf4j
@@ -20,43 +22,43 @@ public class YozmCrawlingService {
 
     private static final String BASE_URL = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=";
     private static final String SORTED_URL = "&sort=new&q=";
-    private static final int MAX_PAGES = 5;
+    private static final int MAX_PAGES = 6;
 
     public List<Blog> crawlBlogs() {
-        List<Blog> blogs = new ArrayList<>();
+        List<Blog> blogs = IntStream.range(1, MAX_PAGES)
+                .mapToObj(page -> BASE_URL + page + SORTED_URL)
+                .map(this::getHtmlDocumentOrNull).filter(Objects::nonNull)
+                .map(doc -> doc.select("a.item-title.link-text.link-underline.text900"))
+                .flatMap(Elements::stream)
+                .map(link -> link.attr("abs:href"))
+                .map(href -> {
+                    Document document = getHtmlDocumentOrNull(href);
+                    String title = Objects.requireNonNull(document).title();
+                    String thumbnail = document.selectFirst("meta[property=og:image]").attr("content");
+                    String content = document.select("div.next-news-contents").text();
+                    String publishedDate = document.select("div.content-meta-elem").eq(5).text();
 
-        try {
-            for (int page = 1; page <= MAX_PAGES; page++) {
-                String pageUrl = BASE_URL + page + SORTED_URL;
-                log.info("크롤링할 페이지 URL: {}", pageUrl);
-
-                Document doc = getHtmlDocument(pageUrl);
-                Elements links = doc.select("a.item-title.link-text.link-underline.text900");
-
-                for (Element link : links) {
-                    String href = link.attr("abs:href");
-                    Document detailDoc = getHtmlDocument(href);
-
-                    String title = detailDoc.title();
-                    String thumbnail = detailDoc.selectFirst("meta[property=og:image]").attr("content");
-                    String content = detailDoc.select("div.next-news-contents").text();
-                    String publishedDate = detailDoc.select("div.content-meta-elem").eq(5).text();
-
-                    Blog blog = Blog.builder()
+                    log.info("title: {}", title);
+                    return Blog.builder()
                             .platform(Platform.YOZM)
                             .title(title)
                             .originalContent(content)
-//                            .publishedAt(publishedDate)
+                            .publishedAt(LocalDateTime.parse("2024-12-12T10:00"))
                             .link(href)
                             .thumbnail(thumbnail)
                             .status(BlogStatus.ORIGINAL)
                             .build();
-                    blogs.add(blog);
-                }
-            }
-        } catch (Exception e) {
-            log.error("크롤링 중 에러", e);
-        }
+                })
+                .toList();
         return blogs;
+    }
+
+    private Document getHtmlDocumentOrNull(String url) {
+        try {
+            return getHtmlDocument(url);
+        } catch (IOException e) {
+            log.error("Document Parse Error", e);
+            return null;
+        }
     }
 }
