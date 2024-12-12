@@ -47,26 +47,20 @@ class UserServiceTest {
 			.kakaoEmail("kakaoemail@example.com")
 			.build();
 
-		User updatedUser = User.builder()
-			.id(userId)
-			.kakaoEmail("kakaoemail@example.com")
-			.nickname("nickname")
-			.articleType(ArticleType.NEWS)
-			.interest(Interest.NEWS)
-			.sendingType(SendingType.EMAIL)
-			.email("test@example.com")
-			.build();
-
 		when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
 		when(userRepository.existsByNickname(request.nickname())).thenReturn(false);
 		when(userRepository.existsByEmail(request.email())).thenReturn(false);
-		when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+		when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
 		// When
 		ProfileCreateResponse response = userService.createProfile(request, userId);
 
+		// Then
 		assertEquals(userId, response.id());
 		assertEquals("nickname", response.nickname());
+		assertEquals(ArticleType.NEWS, response.articleType());
+		assertEquals(Interest.NEWS, response.interest());
+		assertEquals(SendingType.EMAIL, response.sendingType());
 		assertEquals("test@example.com", response.email());
 
 		verify(userRepository).findById(userId);
