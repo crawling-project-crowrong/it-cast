@@ -1,4 +1,4 @@
-package itcast.blog;
+package itcast.blog.controller;
 
 import itcast.blog.application.YozmCrawlingService;
 import itcast.blog.repository.BlogRepository;
@@ -26,6 +26,6 @@ public class BlogScheduler {
         blogRepository.saveAll(blogs);
 
         log.info("블로그 크롤링 및 저장 완료!");
-        // 얼마나 걸렸는지 AOP -> 좋을 거같음!
+        // 얼마나 걸렸는지 AOP
     }
 }

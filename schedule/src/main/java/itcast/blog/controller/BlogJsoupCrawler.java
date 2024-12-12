@@ -1,11 +1,11 @@
-package itcast.blog;
+package itcast.blog.controller;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
-public class BlogCrawler {
+public class BlogJsoupCrawler {
 
     public static Document getHtmlDocument(String pageUrl) throws IOException {
         return Jsoup.connect(pageUrl).get();
