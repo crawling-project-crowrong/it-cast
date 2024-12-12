@@ -15,13 +15,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class News extends BaseEntity {
