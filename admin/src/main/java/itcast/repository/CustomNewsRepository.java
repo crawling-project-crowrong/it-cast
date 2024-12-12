@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public interface CustomNewsRepository {
     Page<AdminNewsResponse> findNewsBYCondition(NewsStatus status, LocalDate sendAt, Pageable pageable);
