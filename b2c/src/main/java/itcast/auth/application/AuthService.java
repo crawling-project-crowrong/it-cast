@@ -82,7 +82,6 @@ public class AuthService {
 			.retrieve()
 			.bodyToMono(KakaoAuthResponse.class)
 			.block();
-		//{"access_token":"abcd"} 토큰이 널값일때도 생각해줘야함.
 		return Objects.requireNonNull(kakaoAuthResponse).getAccessToken(); //accesstoken이 1개가 아닐때생각, response에 선언해주기
 	}
 
