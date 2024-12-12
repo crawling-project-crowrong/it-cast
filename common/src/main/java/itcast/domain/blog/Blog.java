@@ -40,7 +40,7 @@ public class Blog extends BaseEntity {
     private String content;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String originalContent;
 
     @Enumerated(EnumType.STRING)
@@ -66,7 +66,7 @@ public class Blog extends BaseEntity {
             Platform platform,
             String title,
             String originalContent,
-//            LocalDateTime publishedAt,
+            LocalDateTime publishedAt,
             String link,
             String thumbnail,
             BlogStatus status
@@ -74,7 +74,7 @@ public class Blog extends BaseEntity {
         this.platform = platform;
         this.title = title;
         this.originalContent = originalContent;
-//        this.publishedAt = publishedAt;
+        this.publishedAt = publishedAt;
         this.link = link;
         this.thumbnail = thumbnail;
         this.status = status;
