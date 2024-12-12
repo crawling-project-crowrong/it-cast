@@ -27,14 +27,15 @@ subprojects {
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
         runtimeOnly 'com.h2database:h2'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-
-        runtimeOnly 'com.mysql:mysql-connector-j'
+        // MYSQL
+        implementation 'mysql:mysql-connector-java:8.0.28'
     }
 
     sourceCompatibility = '17'
@@ -45,7 +46,7 @@ subprojects {
         }
     }
 
-    tasks.named('test') {
+    test {
         useJUnitPlatform()
     }
 }

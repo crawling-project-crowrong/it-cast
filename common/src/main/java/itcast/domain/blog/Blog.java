@@ -14,8 +14,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -33,7 +35,6 @@ public class Blog extends BaseEntity {
     private String title;
 
     @Lob
-    @Column(nullable = false)
     private String content;
 
     @Lob
@@ -46,7 +47,6 @@ public class Blog extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    @Column(nullable = false)
     private int rating;
 
     @Column(nullable = false)
@@ -57,10 +57,8 @@ public class Blog extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BlogStatus status;
 
-    @Column(nullable = false)
     private LocalDateTime sendAt;
 
-    @Builder
     public Blog(Platform platform, String title, String content, String originalContent, Interest interest,
                 LocalDateTime publishedAt, int rating, String link, String thumbnail, BlogStatus status, LocalDateTime sendAt) {
         this.platform = platform;
@@ -74,5 +72,34 @@ public class Blog extends BaseEntity {
         this.thumbnail = thumbnail;
         this.status = status;
         this.sendAt = sendAt;
+
+    public Blog(
+            final Long id,
+            final Platform platform,
+            final String title,
+            final String originalContent,
+            final LocalDateTime publishedAt,
+            final String link,
+            final BlogStatus status
+    ) {
+        this.id = id;
+        this.platform = platform;
+        this.title = title;
+        this.originalContent = originalContent;
+        this.publishedAt = publishedAt;
+        this.link = link;
+        this.status = status;
+    }
+
+    public void applySummaryUpdate(
+            final String content,
+            final Interest interest,
+            final Long rating,
+            final BlogStatus status
+    ) {
+        this.content = content;
+        this.interest = interest;
+        this.rating = rating;
+        this.status = status;
     }
 }

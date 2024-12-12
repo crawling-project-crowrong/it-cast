@@ -9,9 +9,20 @@ repositories {
     mavenCentral()
 }
 
+tasks.bootJar {
+    enabled = true
+}
+
+tasks.jar {
+    enabled = false
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation project(':common')
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.3'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.jsoup:jsoup:1.18.3'
 }
 
 test {
