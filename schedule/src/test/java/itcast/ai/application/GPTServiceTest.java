@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import itcast.ai.Message;
+import itcast.ai.dto.request.Message;
 import itcast.ai.client.GPTClient;
 import itcast.ai.dto.request.GPTSummaryRequest;
 import itcast.ai.dto.response.GPTSummaryResponse;
@@ -16,7 +16,7 @@ import itcast.domain.blog.Blog;
 import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.user.enums.Interest;
 import itcast.exception.ItCastApplicationException;
-import itcast.news.repository.BlogRepository;
+import itcast.blog.repository.BlogRepository;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
