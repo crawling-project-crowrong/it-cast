@@ -28,7 +28,7 @@ public class AdminNewsController {
     @GetMapping
     public ResponseTemplate<PageResponse<AdminNewsResponse>> retrieveNews(
             @RequestParam Long userId,
-            @RequestParam NewsStatus status,
+            @RequestParam(required = false) NewsStatus status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<AdminNewsResponse> newsPage = adminService.retrieveNews(userId, status, page, size);

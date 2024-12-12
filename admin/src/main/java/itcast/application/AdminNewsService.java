@@ -31,7 +31,7 @@ public class AdminNewsService {
     public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, int page, int size) {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
-        return newsRepository.findAllByStatusOrderBySendAtDesc(status, pageable);
+        return newsRepository.findNewsBYCondition(status, pageable);
     }
 
     private void isAdmin(Long id){
