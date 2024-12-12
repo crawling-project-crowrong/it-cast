@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-import static itcast.blog.controller.BlogJsoupCrawler.getHtmlDocument;
+import static itcast.blog.controller.YozmJsoupCrawler.getHtmlDocument;
 
 @Service
 @Slf4j
