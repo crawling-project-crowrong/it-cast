@@ -22,10 +22,9 @@ public class YozmCrawlingService {
 
     private static final String BASE_URL = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=";
     private static final String SORTED_URL = "&sort=new&q=";
-    private static final int MAX_PAGES = 6;
 
-    public List<Blog> crawlBlogs() {
-        List<Blog> blogs = IntStream.range(1, MAX_PAGES)
+    public List<Blog> crawlBlogs(int maxPage) {
+        List<Blog> blogs = IntStream.range(1, maxPage)
                 .mapToObj(page -> BASE_URL + page + SORTED_URL)
                 .map(this::getHtmlDocumentOrNull).filter(Objects::nonNull)
                 .map(doc -> doc.select("a.item-title.link-text.link-underline.text900"))
