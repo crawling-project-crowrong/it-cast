@@ -45,13 +45,13 @@ public class User extends BaseEntity {
 
     @Builder
     public User(
-        Long id,
-        String kakaoEmail,
-        String nickname,
-        ArticleType articleType,
-        Interest interest,
-        SendingType sendingType,
-        String email
+            Long id,
+            String kakaoEmail,
+            String nickname,
+            ArticleType articleType,
+            Interest interest,
+            SendingType sendingType,
+            String email
     ) {
         this.id = id;
         this.kakaoEmail = kakaoEmail;
