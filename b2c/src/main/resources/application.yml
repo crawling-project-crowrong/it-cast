@@ -13,3 +13,12 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus
+
+server:
+  port: 8080
