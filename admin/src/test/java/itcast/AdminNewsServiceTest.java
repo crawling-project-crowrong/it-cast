@@ -145,6 +145,11 @@ public class AdminNewsServiceTest {
         Long newsId = 1L;
         LocalDateTime fixedTime = LocalDateTime.of(2024, 12, 1, 12, 0);
 
+        User user = User.builder()
+                .id(userId)
+                .kakaoEmail("admin@kakao.com")
+                .build();
+
         News news = News.builder()
                 .id(1L)
                 .title("제목")
