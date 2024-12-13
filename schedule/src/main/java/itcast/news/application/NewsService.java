@@ -26,19 +26,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NewsService {
 
-    @Value("${spring.crawler.naver-it-url}")
-    private String url;
     private static final int LINK_SIZE = 10;
     private static final int HOUR = 12;
-    private static final int YESTERDAY = 1;
+    private static final int YESTERDAY = 2;
     private static final int ALARM_HOUR = 7;
     private static final int ALARM_DAY = 2;
+
+    @Value("${spring.crawler.naver-it-url}")
+    private String url;
 
     private final NewsRepository newsRepository;
     private final GPTService gptService;
 
     public void newsCrawling() throws IOException {
-        List<String> links = findLinks();
+        List<String> links = findLinks(url);
         links = isValidLinks(links);
 
         links.forEach(link -> {
@@ -72,7 +73,7 @@ public class NewsService {
         });
     }
 
-    public List<String> findLinks() throws IOException {
+    public List<String> findLinks(String url) throws IOException {
         Document document = Jsoup.connect(url).get();
         Elements articles = document.select(".sa_thumb_inner");
 
