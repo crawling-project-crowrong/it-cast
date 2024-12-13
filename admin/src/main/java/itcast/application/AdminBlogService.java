@@ -2,7 +2,6 @@ package itcast.application;
 
 import itcast.domain.blog.Blog;
 import itcast.domain.user.User;
-import itcast.dto.request.AdminBlogRequest;
 import itcast.dto.response.AdminBlogResponse;
 import itcast.repository.AdminRepository;
 import itcast.repository.BlogRepository;
