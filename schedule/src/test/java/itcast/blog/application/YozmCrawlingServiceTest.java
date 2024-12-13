@@ -32,8 +32,8 @@ class YozmCrawlingServiceTest {
     @DisplayName("각 페이지별로 블로그 가져오기")
     void crawlingSuccess() throws IOException {
         //given
-//        final String url = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=1&q=";
-//        final String href = "https://yozm.wishket.com/magazine/detail/2888/";
+        String url = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=1&sort=new&q=";
+        String href = "https://yozm.wishket.com/magazine/detail/2888/";
 
         File inputFile = new File("src/test/java/itcast/blog/application/html/yozmExampleFile.html");
         Document document = Jsoup.parse(inputFile, "UTF-8");
@@ -43,8 +43,8 @@ class YozmCrawlingServiceTest {
         Document document2 = Jsoup.parse(detailFile, "UTF-8");
         System.out.println(document2);
 
-        when(yozmJsoupCrawler.getHtmlDocument(anyString())).thenReturn(document);
-        when(yozmJsoupCrawler.getHtmlDocument(anyString())).thenReturn(document2);
+        when(yozmJsoupCrawler.getHtmlDocument(url)).thenReturn(document);
+        when(yozmJsoupCrawler.getHtmlDocument(href)).thenReturn(document2);
 
         //when
         List<Blog> blogs = yozmCrawlingService.crawlBlogs(2);
@@ -55,7 +55,7 @@ class YozmCrawlingServiceTest {
 
         Blog blog = blogs.get(0);
         assertThat(blog.getLink()).isEqualTo("https://yozm.wishket.com/magazine/detail/2888/");
-        assertThat(blog.getTitle()).isEqualTo("더 이상 외면할 수 없는 양자컴퓨터");
+        assertThat(blog.getTitle()).isEqualTo("더 이상 외면할 수 없는 양자컴퓨터 | 요즘IT");
         assertThat(blog.getThumbnail()).isEqualTo("https://yozm.wishket.com/media/news/2888/3.png");
     }
 }
