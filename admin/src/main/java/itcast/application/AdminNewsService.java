@@ -4,6 +4,8 @@ import itcast.domain.news.News;
 import itcast.domain.user.User;
 import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.response.AdminNewsResponse;
+import itcast.exception.IdNotFoundException;
+import itcast.exception.NotAdminException;
 import itcast.repository.AdminRepository;
 import itcast.repository.NewsRepository;
 import itcast.repository.UserRepository;
@@ -30,7 +32,7 @@ public class AdminNewsService {
     public AdminNewsResponse updateNews(Long userId, Long newsId, AdminNewsRequest adminNewsRequest) {
         isAdmin(userId);
         News news = newsRepository.findById(newsId).orElseThrow(()->
-                new IllegalArgumentException("해당 뉴스가 존재하지 않습니다"));
+                new IdNotFoundException("해당 뉴스가 존재하지 않습니다"));
 
         news.update(adminNewsRequest.title(),
                 adminNewsRequest.content(),
@@ -49,10 +51,10 @@ public class AdminNewsService {
 
     private void isAdmin(Long id){
         User user = userRepository.findById(id).orElseThrow(()->
-                new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                new IdNotFoundException("해당 유저가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
         if(!adminRepository.existsByEmail(email)){
-            throw new IllegalArgumentException("접근할 수 없는 유저입니다.");
+            throw new NotAdminException("접근할 수 없는 유저입니다.");
         }
     }
 }
