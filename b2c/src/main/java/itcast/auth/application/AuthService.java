@@ -89,7 +89,7 @@ public class AuthService {
     }
 
     private String createCookieHeader(Cookie cookie) {
-        return cookie.getName() + "=" + cookie.getValue() + "; HttpOnly; Path=" + cookie.getPath() + "; Max-Age="
+        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age="
                 + cookie.getMaxAge();
     }
 }
