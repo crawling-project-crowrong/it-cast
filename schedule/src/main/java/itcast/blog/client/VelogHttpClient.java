@@ -25,7 +25,7 @@ public class VelogHttpClient {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String fetchTrendingPosts(String query, String variables) {
+    public String fetchTrendingPostsOfJson(String query, String variables) {
         try {
             Map<String, Object> payload = new HashMap<>();
             payload.put("query", query);
