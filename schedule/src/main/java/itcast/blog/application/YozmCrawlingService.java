@@ -1,6 +1,6 @@
 package itcast.blog.application;
 
-import itcast.blog.controller.YozmJsoupCrawler;
+import itcast.blog.client.YozmJsoupCrawler;
 import itcast.blog.repository.BlogRepository;
 import itcast.domain.blog.Blog;
 import itcast.domain.blog.enums.BlogStatus;
