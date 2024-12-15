@@ -1,4 +1,4 @@
-package itcast.blog.controller;
+package itcast.blog.client;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
