@@ -1,7 +1,9 @@
 package itcast.application;
 
 import itcast.domain.blog.Blog;
+import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.user.User;
+import itcast.domain.user.enums.Interest;
 import itcast.dto.response.AdminBlogResponse;
 import itcast.exception.IdNotFoundException;
 import itcast.exception.NotAdminException;
@@ -9,9 +11,11 @@ import itcast.repository.AdminRepository;
 import itcast.repository.BlogRepository;
 import itcast.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.naming.AuthenticationException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +27,15 @@ public class AdminBlogService {
 
     public AdminBlogResponse createBlog(Long userId, Blog blog) {
         isAdmin(userId);
+        System.out.println("서비스에서 받은 Blog: " + blog.getSendAt());
         Blog savedBlogs = blogRepository.save(blog);
         return new AdminBlogResponse(savedBlogs);
+    }
+
+    public Page<AdminBlogResponse> retrieveBlog(Long userId, BlogStatus blogStatus, Interest interest, LocalDate sendAt, int page, int size) {
+        isAdmin(userId);
+        Pageable pageable = PageRequest.of(page, size);
+        return blogRepository.findBlogByCondition(blogStatus, interest, sendAt, pageable);
     }
 
     private void isAdmin(Long id){
