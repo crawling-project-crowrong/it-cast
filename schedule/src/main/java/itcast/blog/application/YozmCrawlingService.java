@@ -1,6 +1,6 @@
 package itcast.blog.application;
 
-import itcast.blog.client.YozmJsoupCrawler;
+import itcast.blog.client.JsoupCrawler;
 import itcast.blog.repository.BlogRepository;
 import itcast.domain.blog.Blog;
 import itcast.domain.blog.enums.BlogStatus;
@@ -26,7 +26,8 @@ public class YozmCrawlingService {
     private final static int MAX_PAGE = 6;
     private static final String BASE_URL = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=";
     private static final String SORTED_URL = "&sort=new&q=";
-    private final YozmJsoupCrawler yozmJsoupCrawler;
+
+    private final JsoupCrawler jsoupCrawler;
     private final BlogRepository blogRepository;
 
     public List<Blog> crawlBlogs(int maxPage) {
@@ -70,7 +71,7 @@ public class YozmCrawlingService {
 
     private Document getHtmlDocumentOrNull(String url) {
         try {
-            return yozmJsoupCrawler.getHtmlDocument(url);
+            return jsoupCrawler.getHtmlDocument(url);
         } catch (IOException e) {
             log.error("Document Parse Error", e);
             return null;
