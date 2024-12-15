@@ -16,8 +16,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,5 +78,69 @@ public class AdminBlogServiceTest {
         assertEquals(blog.getTitle(), response.title());
         assertEquals(blog.getSendAt(), response.sendAt());
         verify(blogRepository).save(blog);
+    }
+
+    @Test
+    @DisplayName("블로그 조회 성공")
+    public void SuccessBlogRetrieve() {
+        // Given
+        Long userId = 1L;
+        LocalDate sendAt = LocalDate.of(2024, 12, 1);
+        BlogStatus status = BlogStatus.SUMMARY;
+        Interest interest = Interest.BACKEND;
+        int page = 0;
+        int size = 10;
+
+        User user = User.builder()
+                .id(userId)
+                .kakaoEmail("admin@kakao.com")
+                .build();
+
+        List<AdminBlogResponse> responses = List.of(
+                new AdminBlogResponse(
+                        1L,
+                        Platform.VELOG,
+                        "블로그1",
+                        "요약내용1",
+                        "원본내용1",
+                        Interest.BACKEND,
+                        LocalDateTime.now(),
+                        5,
+                        "http://link1.com",
+                        "http:thumb1.com",
+                        BlogStatus.SUMMARY,
+                        LocalDateTime.of(2024, 12, 1, 13, 0)),
+                new AdminBlogResponse(
+                        2L,
+                        Platform.VELOG,
+                        "블로그2",
+                        "요약내용2",
+                        "원본내용2",
+                        Interest.BACKEND,
+                        LocalDateTime.now(),
+                        5,
+                        "http://link2.com",
+                        "http:thumb2.com",
+                        BlogStatus.SUMMARY,
+                        LocalDateTime.of(2024, 12, 1, 13, 0))
+        );
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AdminBlogResponse> blogPage = new PageImpl<>(responses, pageable, responses.size());
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
+        given(blogRepository.findBlogByCondition(status, interest, sendAt, pageable)).willReturn(blogPage);
+
+        //when
+        Page<AdminBlogResponse> responsePage = adminBlogService.retrieveBlog(userId, status, interest, sendAt, page, size);
+
+        //then
+        assertEquals(2, responsePage.getContent().size());
+        assertEquals("블로그1", responsePage.getContent().get(0).title());
+        assertEquals("블로그2", responsePage.getContent().get(1).title());
+        assertEquals(page, responsePage.getNumber());
+        assertEquals(size, responsePage.getSize());
+        verify(blogRepository).findBlogByCondition(status, interest, sendAt,  pageable);
     }
 }
