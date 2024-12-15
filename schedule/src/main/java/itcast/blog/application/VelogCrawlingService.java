@@ -7,9 +7,11 @@ import itcast.domain.blog.Blog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class VelogCrawlingService {
@@ -22,15 +24,11 @@ public class VelogCrawlingService {
         String query = """
                 query trendingPosts($input: TrendingPostsInput!) {
                     trendingPosts(input: $input) {
-                        id
                         title
-                        thumbnail
-                        likes
                         user {
                             username
                         }
                         url_slug
-                        updated_at
                     }
                 }
                 """;
@@ -45,20 +43,20 @@ public class VelogCrawlingService {
                 }
                 """;
 
-        String jsonResponse = velogHttpClient.fetchTrendingPosts(query, variables);
-        List<Blog> posts = velogdataParser.parseTrendingPosts(jsonResponse);
+        String jsonResponse = velogHttpClient.fetchTrendingPostsOfJson(query, variables);
+        List<String> blogUrls = velogdataParser.getBlogUrls(jsonResponse);
+        List<Blog> blogs = velogdataParser.parseTrendingPosts(blogUrls);
 
-        posts.forEach(post -> log.info(post.toString()));
-        return posts;
+        return blogs;
     }
 
-    @Scheduled(cron = "${crawler.yozm.cron}")
+    @Scheduled(cron = "${crawler.velog.cron}")
     public void velogCrawling() {
-        log.info("블로그 크롤링 시작 ...");
+        log.info("Velog Crawling Start ...");
 
         List<Blog> blogs = crawlBlogs();
         blogRepository.saveAll(blogs);
 
-        log.info("블로그 크롤링 및 저장 완료!");
+        log.info("Velog Crawling & Save!");
     }
 }

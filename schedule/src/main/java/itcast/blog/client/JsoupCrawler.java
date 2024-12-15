@@ -1,15 +1,25 @@
 package itcast.blog.client;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-
-@Component
+@Configuration
+@Slf4j
 public class JsoupCrawler {
 
     public Document getHtmlDocument(String pageUrl) throws IOException {
         return Jsoup.connect(pageUrl).get();
+    }
+
+    public Document getHtmlDocumentOrNull(String url) {
+        try {
+            return getHtmlDocument(url);
+        } catch (IOException e) {
+            log.error("Document Parse Error", e);
+            return null;
+        }
     }
 }

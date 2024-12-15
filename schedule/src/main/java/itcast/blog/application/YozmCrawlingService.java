@@ -12,7 +12,6 @@ import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +32,12 @@ public class YozmCrawlingService {
     public List<Blog> crawlBlogs(int maxPage) {
         List<Blog> blogs = IntStream.range(1, maxPage)
                 .mapToObj(page -> BASE_URL + page + SORTED_URL)
-                .map(this::getHtmlDocumentOrNull).filter(Objects::nonNull)
+                .map(jsoupCrawler::getHtmlDocumentOrNull).filter(Objects::nonNull)
                 .map(doc -> doc.select("a.item-title.link-text.link-underline.text900"))
                 .flatMap(Elements::stream)
                 .map(link -> link.attr("abs:href"))
                 .map(href -> {
-                    Document document = getHtmlDocumentOrNull(href);
+                    Document document = jsoupCrawler.getHtmlDocumentOrNull(href);
                     String title = Objects.requireNonNull(document).title();
                     String thumbnail = document.selectFirst("meta[property=og:image]").attr("content");
                     String content = document.select("div.next-news-contents").text();
@@ -61,20 +60,11 @@ public class YozmCrawlingService {
 
     @Scheduled(cron = "${crawler.yozm.cron}")
     public void yozmCrawling() {
-        log.info("블로그 크롤링 시작 ...");
+        log.info("Yozm Crawling Start ...");
 
         List<Blog> blogs = crawlBlogs(MAX_PAGE);
         blogRepository.saveAll(blogs);
 
-        log.info("블로그 크롤링 및 저장 완료!");
-    }
-
-    private Document getHtmlDocumentOrNull(String url) {
-        try {
-            return jsoupCrawler.getHtmlDocument(url);
-        } catch (IOException e) {
-            log.error("Document Parse Error", e);
-            return null;
-        }
+        log.info("Yozm Crawling & Save!");
     }
 }
