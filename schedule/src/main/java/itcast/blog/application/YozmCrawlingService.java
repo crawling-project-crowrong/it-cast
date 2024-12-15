@@ -30,6 +30,8 @@ public class YozmCrawlingService {
     private final BlogRepository blogRepository;
 
     public List<Blog> crawlBlogs(final int maxPage) {
+        final String DEFAULT_PUBLISHED_AT = "2024-12-12T12:12:12";    // 출판일 해결 시 삭제
+
         final List<Blog> blogs = IntStream.range(1, maxPage)
                 .mapToObj(page -> BASE_URL + page + SORTED_URL)
                 .map(jsoupCrawler::getHtmlDocumentOrNull).filter(Objects::nonNull)
@@ -44,15 +46,7 @@ public class YozmCrawlingService {
                     String publishedDate = document.select("div.content-meta-elem").eq(5).text();
 
                     log.info("title: {}", title);
-                    return Blog.builder()
-                            .platform(Platform.YOZM)
-                            .title(title)
-                            .originalContent(content)
-                            .publishedAt(LocalDateTime.parse("2024-12-12T10:00"))
-                            .link(href)
-                            .thumbnail(thumbnail)
-                            .status(BlogStatus.ORIGINAL)
-                            .build();
+                    return Blog.createYozmBlog(title, content, DEFAULT_PUBLISHED_AT, href, thumbnail);
                 })
                 .toList();
         return blogs;

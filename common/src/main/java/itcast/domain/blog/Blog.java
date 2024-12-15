@@ -60,25 +60,6 @@ public class Blog extends BaseEntity {
     private LocalDateTime sendAt;
 
     @Builder
-    public Blog(
-            Platform platform,
-            String title,
-            String originalContent,
-            LocalDateTime publishedAt,
-            String link,
-            String thumbnail,
-            BlogStatus status
-    ) {
-        this.platform = platform;
-        this.title = title;
-        this.originalContent = originalContent;
-        this.publishedAt = publishedAt;
-        this.link = link;
-        this.thumbnail = thumbnail;
-        this.status = status;
-    }
-
-    @Builder
     public Blog(Platform platform, String title, String content, String originalContent, Interest interest,
                 LocalDateTime publishedAt, int rating, String link, String thumbnail, BlogStatus status, LocalDateTime sendAt) {
         this.platform = platform;
@@ -103,6 +84,24 @@ public class Blog extends BaseEntity {
     ){
         return Blog.builder()
                 .platform(Platform.VELOG)
+                .title(title)
+                .originalContent(originalContent)
+                .publishedAt(LocalDateTime.parse(publishedAt))
+                .link(link)
+                .thumbnail(thumbnail)
+                .status(BlogStatus.ORIGINAL)
+                .build();
+    }
+
+    public static Blog createYozmBlog(
+            final String title,
+            final String originalContent,
+            final String publishedAt,
+            final String link,
+            final String thumbnail
+    ) {
+        return Blog.builder()
+                .platform(Platform.YOZM)
                 .title(title)
                 .originalContent(originalContent)
                 .publishedAt(LocalDateTime.parse(publishedAt))
