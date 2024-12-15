@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -36,6 +37,16 @@ public class AdminNewsService {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
         return newsRepository.findNewsBYCondition(status, sendAt, pageable);
+    }
+
+    @Transactional
+    public AdminNewsResponse deleteNews(Long userId, Long newsId) {
+        isAdmin(userId);
+        News news = newsRepository.findById(newsId).orElseThrow(()->
+                new IdNotFoundException("해당 뉴스가 존재하지 않습니다"));
+        newsRepository.delete(news);
+
+        return new AdminNewsResponse(news);
     }
 
     private void isAdmin(Long id){

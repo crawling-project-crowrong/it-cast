@@ -43,4 +43,11 @@ public class AdminNewsController {
         );
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 조회 성공", newPageResponse);
     }
+
+    @DeleteMapping
+    public ResponseTemplate<AdminNewsResponse> deleteNews(@RequestParam Long userId, @RequestParam Long newsId) {
+        AdminNewsResponse response = adminService.deleteNews(userId, newsId);
+
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 삭제 성공", response);
+    }
 }
