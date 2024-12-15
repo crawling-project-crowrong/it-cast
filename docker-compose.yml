@@ -24,13 +24,31 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     container_name: prometheus
 
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/loki-config.yml
+    command: -config.file=/etc/loki/loki-config.yml
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./b2c/logs:/b2c/log
+      - /var/log:/var/log  # 로컬 로그 파일
+      - ./promtail-config.yml:/etc/promtail/promtail-config.yml
+    command: -config.file=/etc/promtail/promtail-config.yml
+
   grafana:
     image: "grafana/grafana:latest"
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_USER=admin # 사용자 이름 설정
-      - GF_SECURITY_ADMIN_PASSWORD=admin # 사용자 비밀번호 설정
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     container_name: grafana
 
 volumes:
