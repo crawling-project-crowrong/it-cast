@@ -7,6 +7,7 @@ import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.blog.enums.Platform;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;

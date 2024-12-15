@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authCheckInterceptor)
-                .excludePathPatterns("/auth/kakao/callback"); // 인증이 필요 없는 경로
+                .excludePathPatterns("/auth/kakao/callback");
     }
 
     @Override

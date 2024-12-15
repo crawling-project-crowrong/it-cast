@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j(topic = "사용자 인증")
 @Component
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
-    //@LoginMember이 붙은 파라미터에만 작동
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(LoginMember.class);
@@ -23,8 +23,8 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         // HttpServletRequest에서 userId를 추출
-        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        Long userId = (Long) request.getAttribute("userId");
+        HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
+        Long userId = (Long)request.getAttribute("userId");
 
         if (userId != null) {
             return userId;

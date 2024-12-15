@@ -3,6 +3,7 @@ package itcast.news.application;
 import itcast.news.dto.request.CreateNewsRequest;
 import itcast.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -38,7 +39,7 @@ public class NewsService {
                 return;
             }
             String link = article.select("a").attr("href");
-                links.add(link);
+            links.add(link);
         });
         List<String> isValidLinks = newsRepository.findAllLinks();
 
@@ -48,8 +49,8 @@ public class NewsService {
                 .distinct()
                 .collect(Collectors.toList());
 
-        if(validLinks.isEmpty()) {
-           throw new RuntimeException("No links found");
+        if (validLinks.isEmpty()) {
+            throw new RuntimeException("No links found");
         }
 
         validLinks.forEach(link -> {

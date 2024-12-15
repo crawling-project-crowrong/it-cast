@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import itcast.auth.client.KakaoClient;
 import itcast.auth.dto.response.KakaoUserInfo;
 import itcast.auth.jwt.JwtUtil;
@@ -19,73 +21,75 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j(topic = "KAKAO Login")
 public class AuthService {
 
-	private final KakaoClient kakaoClient;
-	private final UserRepository userRepository;
-	private final JwtUtil jwtUtil;
+    private final KakaoClient kakaoClient;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
-	public HttpHeaders kakaoLogin(String code) throws JsonProcessingException {
-		log.info("카카오 인증 코드 수신: {}", code);
+    public HttpHeaders kakaoLogin(String code) throws JsonProcessingException {
+        log.info("카카오 인증 코드 수신: {}", code);
 
-		String accessToken = getToken(code);
-		log.info("카카오로부터 액세스 토큰 수신: {}", accessToken);
+        String accessToken = getToken(code);
+        log.info("카카오로부터 액세스 토큰 수신: {}", accessToken);
 
-		KakaoUserInfo kakaoUserInfo = getKakaoUserInfo(accessToken);
-		log.info("카카오 사용자 정보 조회 성공: {}", kakaoUserInfo);
+        KakaoUserInfo kakaoUserInfo = getKakaoUserInfo(accessToken);
+        log.info("카카오 사용자 정보 조회 성공: {}", kakaoUserInfo);
 
-		Optional<User> existingUser = userRepository.findByKakaoEmail(kakaoUserInfo.kakaoEmail());
-		if (existingUser.isPresent()) {
-			log.info("기존 사용자 발견: ID = {}, Email = {}",
-					existingUser.get().getId(), existingUser.get().getKakaoEmail());
-		} else {
-			log.info("기존 사용자가 없습니다. 이메일: {}. 새로운 사용자 생성 중...", kakaoUserInfo.kakaoEmail());
-		}
+        Optional<User> existingUser = userRepository.findByKakaoEmail(kakaoUserInfo.kakaoEmail());
+        if (existingUser.isPresent()) {
+            log.info("기존 사용자 발견: ID = {}, Email = {}",
+                    existingUser.get().getId(), existingUser.get().getKakaoEmail());
+        } else {
+            log.info("기존 사용자가 없습니다. 이메일: {}. 새로운 사용자 생성 중...", kakaoUserInfo.kakaoEmail());
+        }
 
-		User user = existingUser.orElseGet(() -> {
-			User newUser = User.builder()
-					.kakaoEmail(kakaoUserInfo.kakaoEmail())
-					.build();
-			User savedUser = userRepository.save(newUser);
-			log.info("새 사용자 저장 완료: ID = {}", savedUser.getId());
-			return savedUser;
-		});
+        User user = existingUser.orElseGet(() -> {
+            User newUser = User.builder()
+                    .kakaoEmail(kakaoUserInfo.kakaoEmail())
+                    .build();
+            User savedUser = userRepository.save(newUser);
+            log.info("새 사용자 저장 완료: ID = {}", savedUser.getId());
+            return savedUser;
+        });
 
-		log.info("최종 인증된 사용자 정보: ID = {}, Email = {}", user.getId(), user.getKakaoEmail());
+        log.info("최종 인증된 사용자 정보: ID = {}, Email = {}", user.getId(), user.getKakaoEmail());
 
-		String jwtToken = jwtUtil.createToken(user.getId(), kakaoUserInfo.kakaoEmail());
-		log.info("JWT 토큰 생성 완료: {}", jwtToken);
+        String jwtToken = jwtUtil.createToken(user.getId(), kakaoUserInfo.kakaoEmail());
+        log.info("JWT 토큰 생성 완료: {}", jwtToken);
 
-		Cookie jwtCookie = createJwtCookie(jwtToken);
-		log.info("JWT 쿠키 생성 완료: 이름 = {}, 값 = {}", jwtCookie.getName(), jwtCookie.getValue());
+        Cookie jwtCookie = createJwtCookie(jwtToken);
+        log.info("JWT 쿠키 생성 완료: 이름 = {}, 값 = {}", jwtCookie.getName(), jwtCookie.getValue());
 
-		HttpHeaders headers = createCookieHeaders(jwtCookie);
-		log.info("HTTP 헤더 생성 완료(Set-Cookie 포함): {}", headers.getFirst("Set-Cookie"));
+        HttpHeaders headers = createCookieHeaders(jwtCookie);
+        log.info("HTTP 헤더 생성 완료(Set-Cookie 포함): {}", headers.getFirst("Set-Cookie"));
 
-		return headers;
-	}
+        return headers;
+    }
 
-	private String getToken(String code) throws JsonProcessingException {
-		return kakaoClient.getAccessToken(code);
-	}
+    private String getToken(String code) throws JsonProcessingException {
+        return kakaoClient.getAccessToken(code);
+    }
 
-	private KakaoUserInfo getKakaoUserInfo(String accessToken) throws JsonProcessingException {
-		return kakaoClient.getKakaoUserInfo(accessToken);
-	}
+    private KakaoUserInfo getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+        return kakaoClient.getKakaoUserInfo(accessToken);
+    }
 
-	private Cookie createJwtCookie(String jwtToken) {
-		Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwtToken);
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
-		return cookie;
-	}
+    private Cookie createJwtCookie(String jwtToken) {
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwtToken);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
+        return cookie;
+    }
 
-	public HttpHeaders createCookieHeaders(Cookie cookie) {
-		HttpHeaders headers = new HttpHeaders();
-		String cookieHeader = createCookieHeader(cookie);
-		headers.add("Set-Cookie", cookieHeader);
-		return headers;
-	}
+    public HttpHeaders createCookieHeaders(Cookie cookie) {
+        HttpHeaders headers = new HttpHeaders();
+        String cookieHeader = createCookieHeader(cookie);
+        headers.add("Set-Cookie", cookieHeader);
+        return headers;
+    }
 
-	private String createCookieHeader(Cookie cookie) {
-		return cookie.getName() + "=" + cookie.getValue() + "; HttpOnly; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge();
-	}
+    private String createCookieHeader(Cookie cookie) {
+        return cookie.getName() + "=" + cookie.getValue() + "; HttpOnly; Path=" + cookie.getPath() + "; Max-Age="
+                + cookie.getMaxAge();
+    }
 }

@@ -3,8 +3,10 @@ package itcast.ai.client;
 import itcast.ai.Message;
 import itcast.ai.dto.request.GPTSummaryRequest;
 import itcast.ai.dto.response.GPTSummaryResponse;
+
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

@@ -9,6 +9,7 @@ import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.user.enums.Interest;
 import itcast.exception.ItCastApplicationException;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,11 @@ public class GPTService {
         final Blog blog = blogRepository.findById(1L)
                 .orElseThrow(() -> new ItCastApplicationException(BLOG_NOT_FOUND));
 
-//        blog.applySummaryUpdate(
-//                response.getSummary(),
-//                Interest.from(response.getCategory()),
-//                response.getRating(),
-//                BlogStatus.SUMMARY
-//        );
+        //        blog.applySummaryUpdate(
+        //                response.getSummary(),
+        //                Interest.from(response.getCategory()),
+        //                response.getRating(),
+        //                BlogStatus.SUMMARY
+        //        );
     }
 }

@@ -37,15 +37,12 @@ public class JwtUtil {
         }
     }
 
-    // JWT 토큰에서 userId 추출 메서드
     public Long getUserIdFromToken(String token) {
         try {
             Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey) // 서명 키 설정
-                    .parseClaimsJws(token) // 토큰 파싱
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
                     .getBody();
-
-            // Subject가 userId로 저장되었으므로, 이를 Long 타입으로 반환
             return Long.parseLong(claims.getSubject());
         } catch (Exception e) {
             log.error("토큰에서 userId 추출 실패: ", e);
