@@ -11,8 +11,6 @@ import itcast.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
-
 @Service
 @RequiredArgsConstructor
 public class AdminBlogService {
