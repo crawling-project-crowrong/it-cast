@@ -27,9 +27,18 @@ public class AdminBlogService {
         return new AdminBlogResponse(savedBlogs);
     }
 
+    public AdminBlogResponse deleteBlog(Long userId, Long blogId) {
+        isAdmin(userId);
+        Blog blog = blogRepository.findById(blogId).orElseThrow(()->
+                new IdNotFoundException("해당 블로그가 존재하지 않습니다"));
+        blogRepository.delete(blog);
+
+        return new AdminBlogResponse(blog);
+    }
+
     private void isAdmin(Long id){
         User user = userRepository.findById(id).orElseThrow(()->
-                new IdNotFoundException("해당 유저 id가 존재하지 않습니다."));
+                new IdNotFoundException("해당 유저가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
         if(!adminRepository.existsByEmail(email)){
             throw new NotAdminException("접근할 수 없는 유저입니다.");
