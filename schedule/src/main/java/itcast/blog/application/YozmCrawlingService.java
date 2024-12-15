@@ -29,8 +29,8 @@ public class YozmCrawlingService {
     private final JsoupCrawler jsoupCrawler;
     private final BlogRepository blogRepository;
 
-    public List<Blog> crawlBlogs(int maxPage) {
-        List<Blog> blogs = IntStream.range(1, maxPage)
+    public List<Blog> crawlBlogs(final int maxPage) {
+        final List<Blog> blogs = IntStream.range(1, maxPage)
                 .mapToObj(page -> BASE_URL + page + SORTED_URL)
                 .map(jsoupCrawler::getHtmlDocumentOrNull).filter(Objects::nonNull)
                 .map(doc -> doc.select("a.item-title.link-text.link-underline.text900"))
@@ -62,7 +62,7 @@ public class YozmCrawlingService {
     public void yozmCrawling() {
         log.info("Yozm Crawling Start ...");
 
-        List<Blog> blogs = crawlBlogs(MAX_PAGE);
+        final List<Blog> blogs = crawlBlogs(MAX_PAGE);
         blogRepository.saveAll(blogs);
 
         log.info("Yozm Crawling & Save!");

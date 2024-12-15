@@ -15,7 +15,7 @@ public class VelogHttpClient {
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
 
-    public VelogHttpClient(String baseUrl) {
+    public VelogHttpClient(final String baseUrl) {
         this.webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader("accept", "*/*")
@@ -25,13 +25,13 @@ public class VelogHttpClient {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String fetchTrendingPostsOfJson(String query, String variables) {
+    public String fetchTrendingPostsOfJson(final String query, final String variables) {
         try {
-            Map<String, Object> payload = new HashMap<>();
+            final Map<String, Object> payload = new HashMap<>();
             payload.put("query", query);
             payload.put("variables", objectMapper.readValue(variables, Map.class));
 
-            String body = objectMapper.writeValueAsString(payload);
+            final String body = objectMapper.writeValueAsString(payload);
 
             return webClient.post()
                     .bodyValue(body)

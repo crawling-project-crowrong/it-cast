@@ -23,36 +23,36 @@ public class VelogDataParser {
 
     private final JsoupCrawler jsoupCrawler;
 
-    public List<String> getBlogUrls(String jsonResponse) {
-        List<String> blogUrls = new ArrayList<>();
+    public List<String> getBlogUrls(final String jsonResponse) {
+        final List<String> blogUrls = new ArrayList<>();
 
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        JSONArray trendingPosts = jsonObject.getJSONObject("data").getJSONArray("trendingPosts");
+        final JSONObject jsonObject = new JSONObject(jsonResponse);
+        final JSONArray trendingPosts = jsonObject.getJSONObject("data").getJSONArray("trendingPosts");
 
         for (int i = 0; i < trendingPosts.length(); i++) {
-            JSONObject post = trendingPosts.getJSONObject(i);
+            final JSONObject post = trendingPosts.getJSONObject(i);
 
-            String username = post.getJSONObject("user").getString("username");
-            String urlSlug = post.getString("url_slug");
-            String blogUrl = "https://velog.io/@" + username + "/" + urlSlug;
+            final String username = post.getJSONObject("user").getString("username");
+            final String urlSlug = post.getString("url_slug");
+            final String blogUrl = "https://velog.io/@" + username + "/" + urlSlug;
 
             blogUrls.add(blogUrl);
         }
         return blogUrls;
     }
 
-    public List<Blog> parseTrendingPosts(List<String> blogUrl) {
-        List<Blog> blogs = new ArrayList<>();
+    public List<Blog> parseTrendingPosts(final List<String> blogUrl) {
+        final List<Blog> blogs = new ArrayList<>();
         for (String url : blogUrl) {
-            Document document = jsoupCrawler.getHtmlDocumentOrNull(url);
+            final Document document = jsoupCrawler.getHtmlDocumentOrNull(url);
 
-            String title = Objects.requireNonNull(document).title();
-            String thumbnail = document.selectFirst("meta[property=og:image]").attr("content");
-            String content = document.select("div.sc-eGRUor.gdnhbG.atom-one").text();
-            String publishedDate = document.select(".information").eq(3).text();
+            final String title = Objects.requireNonNull(document).title();
+            final String thumbnail = document.selectFirst("meta[property=og:image]").attr("content");
+            final String content = document.select("div.sc-eGRUor.gdnhbG.atom-one").text();
+            final String publishedDate = document.select(".information").eq(3).text();
 
             log.info("title: {}", title);
-            Blog blog = Blog.builder()
+            final Blog blog = Blog.builder()
                     .platform(Platform.VELOG)
                     .title(title)
                     .originalContent(content)

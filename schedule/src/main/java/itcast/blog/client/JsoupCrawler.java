@@ -10,11 +10,11 @@ import java.io.IOException;
 @Slf4j
 public class JsoupCrawler {
 
-    public Document getHtmlDocument(String pageUrl) throws IOException {
+    public Document getHtmlDocument(final String pageUrl) throws IOException {
         return Jsoup.connect(pageUrl).get();
     }
 
-    public Document getHtmlDocumentOrNull(String url) {
+    public Document getHtmlDocumentOrNull(final String url) {
         try {
             return getHtmlDocument(url);
         } catch (IOException e) {
