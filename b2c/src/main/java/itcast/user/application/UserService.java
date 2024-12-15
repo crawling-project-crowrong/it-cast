@@ -20,53 +20,53 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	@Transactional
-	public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
-		User existingUser = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-		if (userRepository.existsByNickname(request.nickname())) {
-			throw new NicknameAlreadyExistsException("이미 사용 중인 닉네임입니다.");
-		}
-		if (userRepository.existsByEmail(request.email())) {
-			throw new EmailAlreadyExistsException("이미 사용 중인 이메일입니다.");
-		}
-		if (ArticleType.NEWS.equals(request.articleType())) {
-			request = new ProfileCreateRequest(
-				request.nickname(),
-				request.articleType(),
-				Interest.NEWS,
-				request.sendingType(),
-				request.email()
-			);
-		}
-		User updatedUser = request.toEntity(existingUser);
-		User savedUser = userRepository.save(updatedUser);
-		return ProfileCreateResponse.fromEntity(savedUser);
-	}
+    @Transactional
+    public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        validateConstraints(request.nickname(), request.email());
 
-	@Transactional
-	public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
-		User existingUser = userRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-		if (userRepository.existsByNickname(request.nickname())) {
-			throw new NicknameAlreadyExistsException("이미 사용 중인 닉네임입니다.");
-		}
-		if (userRepository.existsByEmail(request.email())) {
-			throw new EmailAlreadyExistsException("이미 사용 중인 이메일입니다.");
-		}
-		if (ArticleType.NEWS.equals(request.articleType())) {
-			request = new ProfileUpdateRequest(
-				request.nickname(),
-				request.articleType(),
-				Interest.NEWS,
-				request.sendingType(),
-				request.email()
-			);
-		}
-		User updatedUser = request.toEntity(existingUser);
-		User savedUser = userRepository.save(updatedUser);
-		return ProfileUpdateResponse.fromEntity(savedUser);
-	}
+        if (ArticleType.NEWS.equals(request.articleType())) {
+            request = new ProfileCreateRequest(
+                    request.nickname(),
+                    request.articleType(),
+                    Interest.NEWS,
+                    request.sendingType(),
+                    request.email()
+            );
+        }
+        User updatedUser = request.toEntity(existingUser);
+        User savedUser = userRepository.save(updatedUser);
+        return ProfileCreateResponse.fromEntity(savedUser);
+    }
+
+    @Transactional
+    public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        validateConstraints(request.nickname(), request.email());
+        if (ArticleType.NEWS.equals(request.articleType())) {
+            request = new ProfileUpdateRequest(
+                    request.nickname(),
+                    request.articleType(),
+                    Interest.NEWS,
+                    request.sendingType(),
+                    request.email()
+            );
+        }
+        User updatedUser = request.toEntity(existingUser);
+        User savedUser = userRepository.save(updatedUser);
+        return ProfileUpdateResponse.fromEntity(savedUser);
+    }
+
+    private void validateConstraints(String nickname, String email) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw new NicknameAlreadyExistsException("이미 사용 중인 닉네임입니다.");
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException("이미 사용 중인 이메일입니다.");
+        }
+    }
 }
