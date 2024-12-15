@@ -57,6 +57,7 @@ public class News extends BaseEntity {
 
     @Builder
     public News(
+            Long id,
             String title,
             String content,
             String originalContent,
@@ -68,6 +69,7 @@ public class News extends BaseEntity {
             NewsStatus status,
             LocalDateTime sendAt
     ) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.originalContent = originalContent;

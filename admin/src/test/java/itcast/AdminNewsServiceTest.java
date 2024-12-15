@@ -139,4 +139,39 @@ public class AdminNewsServiceTest {
         assertEquals(size, responsePage.getSize());
         verify(newsRepository).findNewsBYCondition(status, sendAt, pageable);
     }
+
+    @Test
+    @DisplayName("뉴스 삭제 성공")
+    public void successDeleteNews() {
+        // Given
+        Long userId = 1L;
+        Long newsId = 1L;
+
+        User adminUser = User.builder()
+                .id(userId)
+                .kakaoEmail("admin@kakao.com")
+                .build();
+
+        News news = News.builder()
+                .id(newsId)
+                .title("테스트 뉴스")
+                .content("테스트 내용")
+                .build();
+
+        // Admin 여부 확인 로직
+        given(userRepository.findById(userId)).willReturn(Optional.of(adminUser));
+        given(adminRepository.existsByEmail(adminUser.getKakaoEmail())).willReturn(true);
+
+        // 삭제할 뉴스 존재 확인
+        given(newsRepository.findById(newsId)).willReturn(Optional.of(news));
+
+        // When
+        AdminNewsResponse response = adminNewsService.deleteNews(userId, newsId);
+
+        // Then
+        assertEquals(news.getId(), response.id());
+        assertEquals(news.getTitle(), response.title());
+        verify(newsRepository).findById(newsId);
+        verify(newsRepository).delete(news);
+    }
 }
