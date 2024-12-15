@@ -44,10 +44,10 @@ public class VelogHttpClient {
                     .block();
         } catch (WebClientResponseException e) {
             log.error("Error response: {} - {}", e.getRawStatusCode(), e.getResponseBodyAsString());
-            throw new RuntimeException("Failed to fetch trending posts", e);
+            throw new RuntimeException("Failed to fetch posts", e);
         } catch (Exception e) {
-            log.error("Unexpected error occurred", e);
-            throw new RuntimeException("Unexpected error occurred", e);
+            log.error("Unexpected error", e);
+            throw new RuntimeException("Unexpected error", e);
         }
     }
 }
