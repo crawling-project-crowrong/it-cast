@@ -94,6 +94,24 @@ public class Blog extends BaseEntity {
         this.sendAt = sendAt;
     }
 
+    public static Blog createVelogBlog(
+            final String title,
+            final String originalContent,
+            final String publishedAt,
+            final String link,
+            final String thumbnail
+    ){
+        return Blog.builder()
+                .platform(Platform.VELOG)
+                .title(title)
+                .originalContent(originalContent)
+                .publishedAt(LocalDateTime.parse(publishedAt))
+                .link(link)
+                .thumbnail(thumbnail)
+                .status(BlogStatus.ORIGINAL)
+                .build();
+    }
+
 /*    public void applySummaryUpdate(
             final String content,
             final Interest interest,
