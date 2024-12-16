@@ -15,6 +15,6 @@ public class JwtProvider {
     private final SecretKey secretKey;
 
     public JwtProvider() {
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 }
