@@ -3,6 +3,7 @@ package itcast.application;
 import itcast.domain.news.News;
 import itcast.domain.news.enums.NewsStatus;
 import itcast.domain.user.User;
+import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.response.AdminNewsResponse;
 import itcast.exception.IdNotFoundException;
 import itcast.exception.NotAdminException;
@@ -25,8 +26,9 @@ public class AdminNewsService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminNewsResponse createNews(Long userId, News news) {
+    public AdminNewsResponse createNews(Long userId, AdminNewsRequest adminNewsRequest) {
         isAdmin(userId);
+        News news = AdminNewsRequest.toEntity(adminNewsRequest);
         News savedNews = newsRepository.save(news);
         return new AdminNewsResponse(savedNews);
     }

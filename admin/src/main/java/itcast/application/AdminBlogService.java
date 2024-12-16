@@ -4,6 +4,7 @@ import itcast.domain.blog.Blog;
 import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.user.User;
 import itcast.domain.user.enums.Interest;
+import itcast.dto.request.AdminBlogRequest;
 import itcast.dto.response.AdminBlogResponse;
 import itcast.exception.IdNotFoundException;
 import itcast.exception.NotAdminException;
@@ -25,8 +26,9 @@ public class AdminBlogService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminBlogResponse createBlog(Long userId, Blog blog) {
+    public AdminBlogResponse createBlog(Long userId, AdminBlogRequest adminBlogRequest) {
         isAdmin(userId);
+        Blog blog = AdminBlogRequest.toEntity(adminBlogRequest);
         Blog savedBlogs = blogRepository.save(blog);
         return new AdminBlogResponse(savedBlogs);
     }

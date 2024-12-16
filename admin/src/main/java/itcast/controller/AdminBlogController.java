@@ -27,7 +27,7 @@ public class AdminBlogController {
             @RequestParam Long userId,
             @RequestBody AdminBlogRequest adminBlogRequest
     ) {
-        AdminBlogResponse response = adminService.createBlog(userId, AdminBlogRequest.toEntity(adminBlogRequest));
+        AdminBlogResponse response = adminService.createBlog(userId, adminBlogRequest);
         return new ResponseTemplate<>(HttpStatus.CREATED, "관리자 블로그 생성 성공", response);
     }
 

@@ -22,7 +22,7 @@ public class AdminNewsController {
 
     @PostMapping
     public ResponseTemplate<AdminNewsResponse> createNews(@RequestParam Long userId, @RequestBody AdminNewsRequest adminNewsRequest) {
-        AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest.toEntity(adminNewsRequest));
+        AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest);
         return new ResponseTemplate<>(HttpStatus.CREATED,"관리자 뉴스 생성 성공", response);
     }
 
