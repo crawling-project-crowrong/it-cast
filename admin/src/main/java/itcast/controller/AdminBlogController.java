@@ -31,7 +31,6 @@ public class AdminBlogController {
             @RequestBody AdminBlogRequest adminBlogRequest
     ){
         AdminBlogResponse response = adminBlogService.updateBlog(userId, blogId, adminBlogRequest);
-
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 블로그 수정 성공", response);
     }
 }
