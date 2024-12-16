@@ -31,7 +31,10 @@ public class AdminNewsController {
 
     @CheckAuth
     @PostMapping
-    public ResponseTemplate<AdminNewsResponse> createNews(@LoginMember Long userId, @RequestBody AdminNewsRequest adminNewsRequest) {
+    public ResponseTemplate<AdminNewsResponse> createNews(
+            @LoginMember Long userId,
+            @RequestBody AdminNewsRequest adminNewsRequest
+    ) {
         AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest);
         return new ResponseTemplate<>(HttpStatus.CREATED,"관리자 뉴스 생성 성공", response);
     }
@@ -56,11 +59,12 @@ public class AdminNewsController {
 
     @CheckAuth
     @PutMapping("/{newsId}")
-    public ResponseTemplate<AdminNewsResponse> updateNews(@LoginMember Long userId,
-                                                          @PathVariable Long newsId,
-                                                          @RequestBody AdminNewsRequest adminNewsRequest) {
+    public ResponseTemplate<AdminNewsResponse> updateNews(
+            @LoginMember Long userId,
+            @PathVariable Long newsId,
+            @RequestBody AdminNewsRequest adminNewsRequest
+    ) {
         AdminNewsResponse response = adminService.updateNews(userId, newsId, adminNewsRequest);
-
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 수정 성공", response);
     }
 
