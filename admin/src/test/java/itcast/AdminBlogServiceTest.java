@@ -10,7 +10,7 @@ import itcast.dto.request.AdminBlogRequest;
 import itcast.dto.response.AdminBlogResponse;
 import itcast.repository.AdminRepository;
 import itcast.repository.BlogRepository;
-import itcast.repository.UserRepository;
+import itcast.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
