@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/blog")
+@RequestMapping("/api/blogs")
 public class AdminBlogController {
 
     private final AdminBlogService adminBlogService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseTemplate<AdminBlogResponse> createBlog(
             @RequestParam Long userId,
             @RequestBody AdminBlogRequest adminBlogRequest
