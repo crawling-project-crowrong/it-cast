@@ -1,6 +1,7 @@
 package itcast.user.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,5 +41,11 @@ public class UserController {
     ) {
         ProfileUpdateResponse response = userService.updateProfile(request, id);
         return new ResponseTemplate<>(HttpStatus.OK, "회원 정보 수정이 완료되었습니다.", response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseTemplate<Void> deleteProfile(@PathVariable Long id) {
+        userService.deleteProfile(id);
+        return new ResponseTemplate<>(HttpStatus.OK, "회원 정보 삭제가 완료되었습니다.", null);
     }
 }

@@ -24,8 +24,7 @@ public class UserService {
 
     @Transactional
     public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        User existingUser = findUserByIdOrThrow(id);
         validateConstraints(request.nickname(), request.email());
 
         if (ArticleType.NEWS.equals(request.articleType())) {
@@ -44,8 +43,7 @@ public class UserService {
 
     @Transactional
     public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        User existingUser = findUserByIdOrThrow(id);
         validateConstraints(request.nickname(), request.email());
         if (ArticleType.NEWS.equals(request.articleType())) {
             request = new ProfileUpdateRequest(
@@ -61,6 +59,16 @@ public class UserService {
         return ProfileUpdateResponse.fromEntity(savedUser);
     }
 
+    @Transactional
+    public void deleteProfile(Long id) {
+        User user = findUserByIdOrThrow(id);
+        userRepository.delete(user);
+        }
+
+    private User findUserByIdOrThrow(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+    }
     private void validateConstraints(String nickname, String email) {
         if (userRepository.existsByNickname(nickname)) {
             throw new NicknameAlreadyExistsException("이미 사용 중인 닉네임입니다.");
