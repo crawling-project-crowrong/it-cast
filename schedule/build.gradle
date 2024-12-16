@@ -18,10 +18,11 @@ tasks.jar {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.3'
+    implementation 'mysql:mysql-connector-java:8.0.28'
     implementation project(':common')
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.3'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.jsoup:jsoup:1.18.3'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
