@@ -80,9 +80,19 @@ public class Blog extends BaseEntity {
     }
 
     @Builder
-    public Blog(Platform platform, String title, String content, String originalContent, Interest interest,
-                LocalDateTime publishedAt, int rating, String link, String thumbnail, BlogStatus status,
-                LocalDateTime sendAt) {
+    public Blog(
+            Platform platform,
+            String title,
+            String content,
+            String originalContent,
+            Interest interest,
+            LocalDateTime publishedAt,
+            int rating,
+            String link,
+            String thumbnail,
+            BlogStatus status,
+            LocalDateTime sendAt
+    ) {
         this.platform = platform;
         this.title = title;
         this.content = content;
@@ -96,7 +106,7 @@ public class Blog extends BaseEntity {
         this.sendAt = sendAt;
     }
 
-    public void applySummaryUpdate(
+/*    public void applySummaryUpdate(
             final String content,
             final Interest interest,
             final Integer rating,
@@ -106,5 +116,5 @@ public class Blog extends BaseEntity {
         this.interest = interest;
         this.rating = rating;
         this.status = status;
-    }
+    }*/
 }
