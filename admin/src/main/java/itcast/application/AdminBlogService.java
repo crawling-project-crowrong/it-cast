@@ -40,10 +40,10 @@ public class AdminBlogService {
     }
 
     private void isAdmin(Long id){
-        User user = userRepository.findById(id).orElseThrow(()->
-                new IdNotFoundException("해당 유저 id가 존재하지 않습니다."));
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new IdNotFoundException("해당 유저가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
-        if(!adminRepository.existsByEmail(email)){
+        if (!adminRepository.existsByEmail(email)) {
             throw new NotAdminException("접근할 수 없는 유저입니다.");
         }
     }
