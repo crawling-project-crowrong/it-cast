@@ -37,14 +37,14 @@ public class AdminNewsService {
     public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, LocalDate sendAt, int page, int size) {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
-        return newsRepository.findNewsBYCondition(status, sendAt, pageable);
+        return newsRepository.findNewsByCondition(status, sendAt, pageable);
     }
 
     @Transactional
     public AdminNewsResponse updateNews(Long userId, Long newsId, AdminNewsRequest adminNewsRequest) {
         isAdmin(userId);
-        News news = newsRepository.findById(newsId).orElseThrow(()->
-                new IdNotFoundException("해당 뉴스가 존재하지 않습니다"));
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(()-> new IdNotFoundException("해당 뉴스가 존재하지 않습니다"));
 
         news.update(adminNewsRequest.title(),
                 adminNewsRequest.content(),
@@ -62,8 +62,8 @@ public class AdminNewsService {
     }
 
     private void isAdmin(Long id){
-        User user = userRepository.findById(id).orElseThrow(()->
-                new IdNotFoundException("해당 유저가 존재하지 않습니다."));
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new IdNotFoundException("해당 유저가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
         if(!adminRepository.existsByEmail(email)){
             throw new NotAdminException("접근할 수 없는 유저입니다.");
