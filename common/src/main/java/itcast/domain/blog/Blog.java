@@ -47,7 +47,7 @@ public class Blog extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -90,7 +90,8 @@ public class Blog extends BaseEntity {
                 String link,
                 String thumbnail,
                 BlogStatus status,
-                LocalDateTime sendAt) {
+                LocalDateTime sendAt
+    ) {
         this.id = id;
         this.platform = platform;
         this.title = title;
@@ -103,6 +104,68 @@ public class Blog extends BaseEntity {
         this.thumbnail = thumbnail;
         this.status = status;
         this.sendAt = sendAt;
+    }
+
+    public void update(
+            Platform platform,
+            String title,
+            String content,
+            String originalContent,
+            Interest interest,
+            LocalDateTime publishedAt,
+            int rating,
+            String link,
+            String thumbnail,
+            BlogStatus status,
+            LocalDateTime sendAt
+    ) {
+        this.platform = platform;
+        this.title = title;
+        this.content = content;
+        this.originalContent = originalContent;
+        this.interest = interest;
+        this.publishedAt = publishedAt;
+        this.rating = rating;
+        this.link = link;
+        this.thumbnail = thumbnail;
+        this.status = status;
+        this.sendAt = sendAt;
+    }
+
+    public static Blog createVelogBlog(
+            final String title,
+            final String originalContent,
+            final String publishedAt,
+            final String link,
+            final String thumbnail
+    ){
+        return Blog.builder()
+                .platform(Platform.VELOG)
+                .title(title)
+                .originalContent(originalContent)
+                .publishedAt(LocalDateTime.parse(publishedAt))
+                .link(link)
+                .thumbnail(thumbnail)
+                .status(BlogStatus.ORIGINAL)
+                .build();
+    }
+
+    public static Blog createYozmBlog(
+            final String title,
+            final String originalContent,
+            final String publishedAt,
+            final String link,
+            final String thumbnail
+    ) {
+        return Blog.builder()
+                .platform(Platform.YOZM)
+                .title(title)
+                .originalContent(originalContent)
+                .publishedAt(LocalDateTime.parse(publishedAt))
+                .link(link)
+                .thumbnail(thumbnail)
+                .status(BlogStatus.ORIGINAL)
+                .build();
     }
 
 /*    public void applySummaryUpdate(

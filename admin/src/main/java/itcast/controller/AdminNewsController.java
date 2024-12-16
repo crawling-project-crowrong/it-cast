@@ -6,12 +6,18 @@ import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.response.AdminNewsResponse;
 import itcast.ResponseTemplate;
 import itcast.dto.response.PageResponse;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +28,7 @@ public class AdminNewsController {
 
     @PostMapping
     public ResponseTemplate<AdminNewsResponse> createNews(@RequestParam Long userId, @RequestBody AdminNewsRequest adminNewsRequest) {
-        AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest.toEntity(adminNewsRequest));
-
+        AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest);
         return new ResponseTemplate<>(HttpStatus.CREATED,"관리자 뉴스 생성 성공", response);
     }
 
@@ -42,5 +47,20 @@ public class AdminNewsController {
                 newsPage.getTotalPages()
         );
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 조회 성공", newPageResponse);
+    }
+
+    @PutMapping
+    public ResponseTemplate<AdminNewsResponse> updateNews(@RequestParam Long userId,
+                                                          @RequestParam Long newsId,
+                                                          @RequestBody AdminNewsRequest adminNewsRequest) {
+        AdminNewsResponse response = adminService.updateNews(userId, newsId, adminNewsRequest);
+
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 수정 성공", response);
+    }
+
+    @DeleteMapping
+    public ResponseTemplate<AdminNewsResponse> deleteNews(@RequestParam Long userId, @RequestParam Long newsId) {
+        AdminNewsResponse response = adminService.deleteNews(userId, newsId);
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 삭제 성공", response);
     }
 }
