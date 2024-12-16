@@ -2,7 +2,6 @@ package itcast.auth.jwt;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -13,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j(topic = "JwtUtil")
 @Component
 public class JwtUtil {
-    @Value("${spring.jwt.secret.key}")
-    private String secretKey;
+
+    private final JwtProvider jwtProvider;
 
     private final long expirationTime = 1000L * 60 * 60;
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -29,7 +28,7 @@ public class JwtUtil {
                     .claim("email", email)
                     .setIssuedAt(now)
                     .setExpiration(expiryDate)
-                    .signWith(SignatureAlgorithm.HS512, secretKey)
+                    .signWith(SignatureAlgorithm.HS512, jwtProvider.getSecretKey())
                     .compact();
         } catch (Exception e) {
             log.error("JWT 토큰 생성 실패: ", e);
@@ -40,7 +39,7 @@ public class JwtUtil {
     public Long getUserIdFromToken(String token) {
         try {
             Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(jwtProvider.getSecretKey())
                     .parseClaimsJws(token)
                     .getBody();
             return Long.parseLong(claims.getSubject());

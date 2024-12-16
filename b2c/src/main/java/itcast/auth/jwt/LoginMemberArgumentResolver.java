@@ -26,11 +26,10 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
         Long userId = (Long)request.getAttribute("userId");
 
-        if (userId != null) {
-            return userId;
-        } else {
+        if (userId == null) {
             log.error("유효하지 않은 사용자입니다. userId가 null입니다.");
             throw new RuntimeException("유효하지 않은 사용자입니다.");
         }
+        return userId;
     }
 }

@@ -58,7 +58,7 @@ public class KakaoClient {
                     .bodyToMono(AccessTokenResponse.class)
                     .block();
 
-            return Objects.requireNonNull(accessTokenResponse).getAccessToken();
+            return Objects.requireNonNull(accessTokenResponse).accessToken();
         } catch (Exception e) {
             log.error("Access token 처리 중 오류 발생: {}", e.getMessage());
             throw new RuntimeException("Access token 처리 중 오류가 발생했습니다.", e);

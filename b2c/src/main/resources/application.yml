@@ -16,6 +16,3 @@ spring:
   kakao:
     client-id: 6e5a2156772212f2768019859e1de412
     redirect-uri: http://localhost:8080/auth/kakao/callback
-  jwt:
-    secret:
-      key: kXHfUFN3Bbz65GDR6CXYTxvKM+hwq+q2m5uPJ81cl9MqleFb9mQQQ7ZEuNHjWQaocsQPWM3EZ8dJejuJ1+rqNw==
