@@ -2,6 +2,7 @@ package itcast.mail.application;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import itcast.mail.dto.request.EmailSender;
 import itcast.mail.dto.request.SendMailRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,8 @@ public class MailService {
 
     public void send(final SendMailRequest sendMailRequest) {
         try {
-            amazonSimpleEmailService.sendEmail(emailSender.from(sendMailRequest));
+            final SendEmailRequest emailRequest = emailSender.from(sendMailRequest);
+            amazonSimpleEmailService.sendEmail(emailRequest);
         } catch (Exception ex) {
             throw new AmazonClientException(ex.getMessage(), ex);
         }
