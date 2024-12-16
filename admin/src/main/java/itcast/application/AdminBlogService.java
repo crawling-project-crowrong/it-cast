@@ -10,7 +10,7 @@ import itcast.exception.IdNotFoundException;
 import itcast.exception.NotAdminException;
 import itcast.repository.AdminRepository;
 import itcast.repository.BlogRepository;
-import itcast.repository.UserRepository;
+import itcast.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
