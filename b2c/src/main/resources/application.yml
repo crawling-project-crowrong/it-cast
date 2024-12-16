@@ -13,5 +13,18 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus, logfile
+  endpoint:
+    logfile:
+      external-file: ./b2c/logs/b2c.log
+
+server:
+  port: 8080
+
   kakao:
     redirect-uri: http://localhost:8080/auth/kakao/callback

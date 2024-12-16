@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import itcast.ResponseTemplate;
 import itcast.auth.application.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -17,10 +18,9 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/auth/kakao/callback")
-    public ResponseTemplate<String> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+    public ResponseTemplate<String> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         HttpHeaders headers = authService.kakaoLogin(code);
-        ResponseTemplate<String> responseTemplate = new ResponseTemplate<>(HttpStatus.OK, "로그인되었습니다.");
-        responseTemplate.setHeaders(headers);
-        return responseTemplate;
+        return new ResponseTemplate<>(HttpStatus.OK, "로그인되었습니다.");
+        // 쿠키에 담는 로직 반환. 헤더에 담을 필요 옶음
     }
 }
