@@ -12,9 +12,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import java.time.LocalDateTime;
-import lombok.AccessLevel;
 
+import java.time.LocalDateTime;
+
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,7 +48,7 @@ public class Blog extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -79,8 +80,19 @@ public class Blog extends BaseEntity {
     }
 
     @Builder
-    public Blog(Platform platform, String title, String content, String originalContent, Interest interest,
-                LocalDateTime publishedAt, int rating, String link, String thumbnail, BlogStatus status, LocalDateTime sendAt) {
+    public Blog(
+            Platform platform,
+            String title,
+            String content,
+            String originalContent,
+            Interest interest,
+            LocalDateTime publishedAt,
+            int rating,
+            String link,
+            String thumbnail,
+            BlogStatus status,
+            LocalDateTime sendAt
+    ) {
         this.platform = platform;
         this.title = title;
         this.content = content;
@@ -97,7 +109,7 @@ public class Blog extends BaseEntity {
 /*    public void applySummaryUpdate(
             final String content,
             final Interest interest,
-            final int rating,
+            final Integer rating,
             final BlogStatus status
     ) {
         this.content = content;
