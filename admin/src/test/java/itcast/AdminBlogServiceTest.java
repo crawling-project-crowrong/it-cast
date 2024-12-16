@@ -4,8 +4,10 @@ import itcast.application.AdminBlogService;
 import itcast.domain.blog.Blog;
 import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.blog.enums.Platform;
+import itcast.domain.news.News;
 import itcast.domain.user.User;
 import itcast.domain.user.enums.Interest;
+import itcast.dto.request.AdminBlogRequest;
 import itcast.dto.response.AdminBlogResponse;
 import itcast.repository.AdminRepository;
 import itcast.repository.BlogRepository;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -66,18 +69,31 @@ public class AdminBlogServiceTest {
                 .status(BlogStatus.SUMMARY)
                 .sendAt(fixedTime)
                 .build();
+        AdminBlogRequest adminBlogRequest = new AdminBlogRequest(
+                Platform.VELOG,
+                "제목",
+                "수정본",
+                "원본",
+                Interest.BACKEND,
+                fixedTime,
+                5,
+                "http://example.com",
+                "http://thumbnail.com",
+                BlogStatus.SUMMARY,
+                fixedTime
+        );
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(blogRepository.save(blog)).willReturn(blog);
+        given(blogRepository.save(any(Blog.class))).willReturn(blog);
 
         //when
-        AdminBlogResponse response = adminBlogService.createBlog(userId, blog);
+        AdminBlogResponse response = adminBlogService.createBlog(userId, adminBlogRequest);
 
         //then
         assertEquals(blog.getTitle(), response.title());
         assertEquals(blog.getSendAt(), response.sendAt());
-        verify(blogRepository).save(blog);
+        verify(blogRepository).save(any(Blog.class));
     }
 
     @Test

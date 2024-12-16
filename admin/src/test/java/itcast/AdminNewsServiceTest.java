@@ -5,6 +5,7 @@ import itcast.domain.news.News;
 import itcast.domain.news.enums.NewsStatus;
 import itcast.domain.user.User;
 import itcast.domain.user.enums.Interest;
+import itcast.dto.request.AdminNewsRequest;
 import itcast.dto.response.AdminNewsResponse;
 import itcast.repository.AdminRepository;
 import itcast.repository.NewsRepository;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -65,18 +67,30 @@ public class AdminNewsServiceTest {
                 .status(NewsStatus.SUMMARY)
                 .sendAt(fixedTime)
                 .build();
+        AdminNewsRequest adminNewsRequest = new AdminNewsRequest(
+                "제목",
+                "수정본",
+                "원본",
+                Interest.NEWS,
+                fixedTime,
+                5,
+                "http://example.com",
+                "http://thumbnail.com",
+                NewsStatus.SUMMARY,
+                fixedTime
+                );
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsRepository.save(news)).willReturn(news);
+        given(newsRepository.save(any(News.class))).willReturn(news);
 
         // When
-        AdminNewsResponse response = adminNewsService.createNews(userId, news);
+        AdminNewsResponse response = adminNewsService.createNews(userId, adminNewsRequest);
 
         // Then
         assertEquals("제목", response.title());
         assertEquals(NewsStatus.SUMMARY, response.status());
-        verify(newsRepository).save(news);
+        verify(newsRepository).save(any(News.class));
     }
 
     @Test
