@@ -34,7 +34,7 @@ public class News extends BaseEntity {
     private String content;
 
     @Lob
-    @Column(nullable = false,columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String originalContent;
 
     @Enumerated(EnumType.STRING)
@@ -43,7 +43,7 @@ public class News extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -63,7 +63,7 @@ public class News extends BaseEntity {
             String originalContent,
             Interest interest,
             LocalDateTime publishedAt,
-            int rating,
+            Integer rating,
             String link,
             String thumbnail,
             NewsStatus status,
@@ -98,5 +98,45 @@ public class News extends BaseEntity {
         this.status = status;
         this.thumbnail = thumbnail;
         this.publishedAt = publishedAt;
+    }
+
+    public void update(
+            String title,
+            String content,
+            String originalContent,
+            Interest interest,
+            LocalDateTime publishedAt,
+            int rating,
+            String link,
+            String thumbnail,
+            NewsStatus status,
+            LocalDateTime sendAt
+    ) {
+        this.title = title;
+        this.content = content;
+        this.originalContent = originalContent;
+        this.interest = interest;
+        this.publishedAt = publishedAt;
+        this.rating = rating;
+        this.link = link;
+        this.thumbnail = thumbnail;
+        this.status = status;
+        this.sendAt = sendAt;
+    }
+
+    public void newsUpdate(LocalDateTime sendAt) {
+        this.sendAt = sendAt;
+    }
+
+    public void applySummaryUpdate(
+            final String content,
+            final Interest interest,
+            final Integer rating,
+            final NewsStatus status
+    ) {
+        this.content = content;
+        this.interest = interest;
+        this.rating = rating;
+        this.status = status;
     }
 }
