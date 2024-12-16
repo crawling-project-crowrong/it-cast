@@ -8,14 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
 @Slf4j
-@Configuration
+@Component
 @RequiredArgsConstructor
 public class VelogDataParser {
 
