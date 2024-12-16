@@ -58,7 +58,6 @@ public class AdminNewsService {
         );
 
         return new AdminNewsResponse(news);
-        return newsRepository.findNewsByCondition(status, sendAt, pageable);
     }
 
     @Transactional

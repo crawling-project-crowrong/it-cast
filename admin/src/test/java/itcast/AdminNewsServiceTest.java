@@ -189,7 +189,6 @@ public class AdminNewsServiceTest {
         // Then
         assertEquals("제목2", response.title());
         assertEquals(NewsStatus.ORIGINAL, response.status());
-        verify(newsRepository).findNewsByCondition(status, sendAt, pageable);
     }
 
     @Test
