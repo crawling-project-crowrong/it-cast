@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.Lob;
-
 import java.time.LocalDateTime;
 
 import lombok.AccessLevel;
@@ -48,7 +47,7 @@ public class News extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -67,7 +66,7 @@ public class News extends BaseEntity {
             String originalContent,
             Interest interest,
             LocalDateTime publishedAt,
-            int rating,
+            Integer rating,
             String link,
             String thumbnail,
             NewsStatus status,
@@ -101,5 +100,20 @@ public class News extends BaseEntity {
         this.status = status;
         this.thumbnail = thumbnail;
         this.publishedAt = publishedAt;
+    }
+    public void newsUpdate(LocalDateTime sendAt) {
+        this.sendAt = sendAt;
+    }
+
+    public void applySummaryUpdate(
+            final String content,
+            final Interest interest,
+            final Integer rating,
+            final NewsStatus status
+    ) {
+        this.content = content;
+        this.interest = interest;
+        this.rating = rating;
+        this.status = status;
     }
 }
