@@ -3,6 +3,7 @@ package itcast.domain.news;
 import itcast.domain.news.enums.NewsStatus;
 import itcast.domain.user.enums.Interest;
 import itcast.domain.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.Lob;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+
 import lombok.NoArgsConstructor;
 
 @Getter
@@ -45,7 +48,7 @@ public class News extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -64,7 +67,7 @@ public class News extends BaseEntity {
             String originalContent,
             Interest interest,
             LocalDateTime publishedAt,
-            int rating,
+            Integer rating,
             String link,
             String thumbnail,
             NewsStatus status,
@@ -98,5 +101,20 @@ public class News extends BaseEntity {
         this.status = status;
         this.thumbnail = thumbnail;
         this.publishedAt = publishedAt;
+    }
+    public void newsUpdate(LocalDateTime sendAt) {
+        this.sendAt = sendAt;
+    }
+
+    public void applySummaryUpdate(
+            final String content,
+            final Interest interest,
+            final Integer rating,
+            final NewsStatus status
+    ) {
+        this.content = content;
+        this.interest = interest;
+        this.rating = rating;
+        this.status = status;
     }
 }
