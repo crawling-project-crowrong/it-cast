@@ -2,7 +2,6 @@ package itcast.auth.application;
 
 import java.util.Optional;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +24,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    public HttpHeaders kakaoLogin(String code) throws JsonProcessingException {
+    public String kakaoLogin(String code) throws JsonProcessingException {
         log.info("카카오 인증 코드 수신: {}", code);
 
         String accessToken = getToken(code);
@@ -56,13 +55,7 @@ public class AuthService {
         String jwtToken = jwtUtil.createToken(user.getId(), kakaoUserInfo.kakaoEmail());
         log.info("JWT 토큰 생성 완료: {}", jwtToken);
 
-        Cookie jwtCookie = createJwtCookie(jwtToken);
-        log.info("JWT 쿠키 생성 완료: 이름 = {}, 값 = {}", jwtCookie.getName(), jwtCookie.getValue());
-
-        HttpHeaders headers = createCookieHeaders(jwtCookie);
-        log.info("HTTP 헤더 생성 완료(Set-Cookie 포함): {}", headers.getFirst("Set-Cookie"));
-
-        return headers;
+        return jwtToken;
     }
 
     private String getToken(String code) throws JsonProcessingException {
@@ -73,23 +66,11 @@ public class AuthService {
         return kakaoClient.getKakaoUserInfo(accessToken);
     }
 
-    private Cookie createJwtCookie(String jwtToken) {
+    public Cookie createJwtCookie(String jwtToken) {
         Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwtToken);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setMaxAge(3600);
         return cookie;
-    }
-
-    public HttpHeaders createCookieHeaders(Cookie cookie) {
-        HttpHeaders headers = new HttpHeaders();
-        String cookieHeader = createCookieHeader(cookie);
-        headers.add("Set-Cookie", cookieHeader);
-        return headers;
-    }
-
-    private String createCookieHeader(Cookie cookie) {
-        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age="
-                + cookie.getMaxAge();
     }
 }

@@ -2,11 +2,14 @@ package itcast.auth.jwt;
 
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,10 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    private final JwtProvider jwtProvider;
+    private final SecretKey secretKey;
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final long expirationTime = 1000L * 60 * 60;
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    public JwtUtil() {
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    }
 
     public String createToken(Long userId, String email) {
         try {
@@ -30,7 +37,7 @@ public class JwtUtil {
                     .claim("email", email)
                     .setIssuedAt(now)
                     .setExpiration(expiryDate)
-                    .signWith(SignatureAlgorithm.HS512, jwtProvider.getSecretKey())
+                    .signWith(SignatureAlgorithm.HS512, secretKey)
                     .compact();
         } catch (Exception e) {
             log.error("JWT 토큰 생성 실패: ", e);
@@ -41,7 +48,7 @@ public class JwtUtil {
     public Long getUserIdFromToken(String token) {
         try {
             Claims claims = Jwts.parser()
-                    .setSigningKey(jwtProvider.getSecretKey())
+                    .setSigningKey(secretKey)
                     .parseClaimsJws(token)
                     .getBody();
             return Long.parseLong(claims.getSubject());
