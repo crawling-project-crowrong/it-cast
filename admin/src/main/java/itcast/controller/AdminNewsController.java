@@ -24,9 +24,9 @@ public class AdminNewsController {
     public ResponseTemplate<AdminNewsResponse> createNews(@RequestParam Long userId, @RequestBody AdminNewsRequest adminNewsRequest) {
         AdminNewsResponse response = adminService.createNews(userId, AdminNewsRequest.toEntity(adminNewsRequest));
 
-        return new ResponseTemplate<>(HttpStatus.CREATED,"관리자 뉴스 생성 성공", response);
+        return new ResponseTemplate<>(HttpStatus.CREATED, "관리자 뉴스 생성 성공", response);
     }
-  
+
     @GetMapping
     public ResponseTemplate<PageResponse<AdminNewsResponse>> retrieveNews(
             @RequestParam Long userId,

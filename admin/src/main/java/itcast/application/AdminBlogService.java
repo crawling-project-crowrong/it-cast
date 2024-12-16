@@ -11,8 +11,6 @@ import itcast.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
-
 @Service
 @RequiredArgsConstructor
 public class AdminBlogService {
@@ -31,7 +29,7 @@ public class AdminBlogService {
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new IdNotFoundException("해당 유저가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
-        if(!adminRepository.existsByEmail(email)){
+        if (!adminRepository.existsByEmail(email)) {
             throw new NotAdminException("접근할 수 없는 유저입니다.");
         }
     }
