@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Slf4j
 public class VelogHttpClient {
+
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
 

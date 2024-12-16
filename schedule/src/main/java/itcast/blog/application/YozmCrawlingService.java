@@ -3,8 +3,6 @@ package itcast.blog.application;
 import itcast.blog.client.JsoupCrawler;
 import itcast.blog.repository.BlogRepository;
 import itcast.domain.blog.Blog;
-import itcast.domain.blog.enums.BlogStatus;
-import itcast.domain.blog.enums.Platform;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -12,7 +10,6 @@ import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -22,7 +19,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class YozmCrawlingService {
 
-    private final static int MAX_PAGE = 6;
+    private static final int MAX_PAGE = 6;
     private static final String BASE_URL = "https://yozm.wishket.com/magazine/list/develop/?sort=new&page=";
     private static final String SORTED_URL = "&sort=new&q=";
 
