@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 
 @RestController
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 @RequestMapping("/api/blogs")
 public class AdminBlogController {
 
-    private final AdminBlogService adminService;
     private final AdminBlogService adminBlogService;
 
     @PostMapping
@@ -27,7 +25,7 @@ public class AdminBlogController {
             @RequestParam Long userId,
             @RequestBody AdminBlogRequest adminBlogRequest
     ) {
-        AdminBlogResponse response = adminService.createBlog(userId, adminBlogRequest);
+        AdminBlogResponse response = adminBlogService.createBlog(userId, adminBlogRequest);
         return new ResponseTemplate<>(HttpStatus.CREATED, "관리자 블로그 생성 성공", response);
     }
 
@@ -47,5 +45,21 @@ public class AdminBlogController {
                 blogPage.getTotalPages()
         );
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 블로그 조회 성공", blogPageResponse);
+    }
+
+    @PutMapping
+    public ResponseTemplate<AdminBlogResponse> updateBlog(
+            @RequestParam Long userId,
+            @RequestParam Long blogId,
+            @RequestBody AdminBlogRequest adminBlogRequest
+    ){
+        AdminBlogResponse response = adminBlogService.updateBlog(userId, blogId, adminBlogRequest);
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 블로그 수정 성공", response);
+    }
+
+    @DeleteMapping
+    public ResponseTemplate<AdminBlogResponse> deleteBlog(@RequestParam Long userId, @RequestParam Long blogId) {
+        AdminBlogResponse response = adminBlogService.deleteBlog(userId, blogId);
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 블로그 삭제 성공", response);
     }
 }
