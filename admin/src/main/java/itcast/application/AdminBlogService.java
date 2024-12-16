@@ -27,7 +27,6 @@ public class AdminBlogService {
 
     public AdminBlogResponse createBlog(Long userId, Blog blog) {
         isAdmin(userId);
-        System.out.println("서비스에서 받은 Blog: " + blog.getSendAt());
         Blog savedBlogs = blogRepository.save(blog);
         return new AdminBlogResponse(savedBlogs);
     }

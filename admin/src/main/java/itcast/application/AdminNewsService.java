@@ -28,19 +28,18 @@ public class AdminNewsService {
     public AdminNewsResponse createNews(Long userId, News news) {
         isAdmin(userId);
         News savedNews = newsRepository.save(news);
-
         return new AdminNewsResponse(savedNews);
     }
 
     public Page<AdminNewsResponse> retrieveNews(Long userId, NewsStatus status, LocalDate sendAt, int page, int size) {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
-        return newsRepository.findNewsBYCondition(status, sendAt, pageable);
+        return newsRepository.findNewsByCondition(status, sendAt, pageable);
     }
 
     private void isAdmin(Long id){
-        User user = userRepository.findById(id).orElseThrow(()->
-                new IdNotFoundException("해당 id가 존재하지 않습니다."));
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new IdNotFoundException("해당 id가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
         if(!adminRepository.existsByEmail(email)){
             throw new NotAdminException("접근할 수 없는 유저입니다.");

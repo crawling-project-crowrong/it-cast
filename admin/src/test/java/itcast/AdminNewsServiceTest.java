@@ -126,7 +126,7 @@ public class AdminNewsServiceTest {
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsRepository.findNewsBYCondition(status, sendAt, pageable)).willReturn(newsPage);
+        given(newsRepository.findNewsByCondition(status, sendAt, pageable)).willReturn(newsPage);
 
         // When
         Page<AdminNewsResponse> responsePage = adminNewsService.retrieveNews(userId, status, sendAt, page, size);
@@ -137,6 +137,6 @@ public class AdminNewsServiceTest {
         assertEquals("뉴스2", responsePage.getContent().get(1).title());
         assertEquals(page, responsePage.getNumber());
         assertEquals(size, responsePage.getSize());
-        verify(newsRepository).findNewsBYCondition(status, sendAt, pageable);
+        verify(newsRepository).findNewsByCondition(status, sendAt, pageable);
     }
 }
