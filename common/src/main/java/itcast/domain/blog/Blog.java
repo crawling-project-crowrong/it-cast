@@ -12,7 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+
 import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,7 +48,7 @@ public class Blog extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -97,7 +99,7 @@ public class Blog extends BaseEntity {
     public void applySummaryUpdate(
             final String content,
             final Interest interest,
-            final int rating,
+            final Integer rating,
             final BlogStatus status
     ) {
         this.content = content;
