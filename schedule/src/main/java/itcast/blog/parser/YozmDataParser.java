@@ -2,7 +2,9 @@ package itcast.blog.parser;
 
 import itcast.blog.client.JsoupCrawler;
 import itcast.domain.blog.Blog;
+
 import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
