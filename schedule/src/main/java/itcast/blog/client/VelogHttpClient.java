@@ -2,6 +2,7 @@ package itcast.blog.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -11,14 +12,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@Configuration
 public class VelogHttpClient {
 
+    private static final String BASE_URL = "https://v3.velog.io/graphql";
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
 
-    public VelogHttpClient(final String baseUrl) {
+    public VelogHttpClient() {
         this.webClient = WebClient.builder()
-                .baseUrl(baseUrl)
+                .baseUrl(BASE_URL)
                 .defaultHeader("accept", "*/*")
                 .defaultHeader("user-agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36")
                 .defaultHeader("content-type", "application/json")

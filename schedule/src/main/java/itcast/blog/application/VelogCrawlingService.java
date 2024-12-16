@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VelogCrawlingService {
 
-    private final VelogHttpClient velogHttpClient = new VelogHttpClient("https://v3.velog.io/graphql");
+    private final VelogHttpClient velogHttpClient;
     private final VelogDataParser velogdataParser;
     private final BlogRepository blogRepository;
 
