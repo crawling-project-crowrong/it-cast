@@ -10,14 +10,13 @@ import itcast.exception.NotAdminException;
 import itcast.repository.AdminRepository;
 import itcast.repository.NewsRepository;
 import itcast.repository.UserRepository;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +26,9 @@ public class AdminNewsService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
 
-    public AdminNewsResponse createNews(Long userId, News news) {
+    public AdminNewsResponse createNews(Long userId, AdminNewsRequest adminNewsRequest) {
         isAdmin(userId);
+        News news = AdminNewsRequest.toEntity(adminNewsRequest);
         News savedNews = newsRepository.save(news);
         return new AdminNewsResponse(savedNews);
     }
@@ -60,11 +60,20 @@ public class AdminNewsService {
         return new AdminNewsResponse(news);
     }
 
+    @Transactional
+    public AdminNewsResponse deleteNews(Long userId, Long newsId) {
+        isAdmin(userId);
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(()-> new IdNotFoundException("해당 뉴스가 존재하지 않습니다"));
+        newsRepository.delete(news);
+        return new AdminNewsResponse(news);
+    }
+
     private void isAdmin(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new IdNotFoundException("해당 유저가 존재하지 않습니다."));
         String email = user.getKakaoEmail();
-        if(!adminRepository.existsByEmail(email)){
+        if (!adminRepository.existsByEmail(email)) {
             throw new NotAdminException("접근할 수 없는 유저입니다.");
         }
     }

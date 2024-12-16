@@ -34,7 +34,7 @@ public class News extends BaseEntity {
     private String content;
 
     @Lob
-    @Column(nullable = false,columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String originalContent;
 
     @Enumerated(EnumType.STRING)
@@ -43,7 +43,7 @@ public class News extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime publishedAt;
 
-    private int rating;
+    private Integer rating;
 
     @Column(nullable = false)
     private String link;
@@ -63,7 +63,7 @@ public class News extends BaseEntity {
             String originalContent,
             Interest interest,
             LocalDateTime publishedAt,
-            int rating,
+            Integer rating,
             String link,
             String thumbnail,
             NewsStatus status,
@@ -122,5 +122,21 @@ public class News extends BaseEntity {
         this.thumbnail = thumbnail;
         this.status = status;
         this.sendAt = sendAt;
+    }
+
+    public void newsUpdate(LocalDateTime sendAt) {
+        this.sendAt = sendAt;
+    }
+
+    public void applySummaryUpdate(
+            final String content,
+            final Interest interest,
+            final Integer rating,
+            final NewsStatus status
+    ) {
+        this.content = content;
+        this.interest = interest;
+        this.rating = rating;
+        this.status = status;
     }
 }
