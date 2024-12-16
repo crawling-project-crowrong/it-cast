@@ -31,16 +31,6 @@ scheduler:
   crawler:
     naver-it-url: "https://news.naver.com/breakingnews/section/105/283"
 
-crawler:
-  yozm:
-    cron: "0 0 */4 * * *"
-  velog:
-    cron: "0 0 */3 * * *"
-
-  logging:
-    level:
-      root: INFO
-      org.jsoup: DEBUG
 openai:
   blog-prompt: |
     \n\n
