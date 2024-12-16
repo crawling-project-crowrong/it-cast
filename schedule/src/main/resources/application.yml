@@ -45,9 +45,9 @@ openai:
     3. 독창성 및 참신함 (3점) : 내용이 새로운 관점을 제시하거나 기존 정보를 창의적으로 다루었는지 평가.
     **응답 형식**:
     {
-      “category” : [FRONTEND or BACKEND]
-      “summary” : [요약 내용]
-      “rating” : [점수]
+      "category" : [FRONTEND or BACKEND]
+      "summary" : [요약 내용]
+      "rating" : [점수]
     }
   news-prompt: |
     \n\n
@@ -62,9 +62,9 @@ openai:
     3. 독창성 및 참신함 (3점) : 내용이 새로운 관점을 제시하거나 기존 정보를 창의적으로 다루었는지 평가.
     **응답 형식**:
     {
-      “category” : NEWS
-      “summary” : [요약 내용]
-      “rating” : [점수]
+      "category" : NEWS
+      "summary" : [요약 내용]
+      "rating" : [점수]
     }
 
 management:
