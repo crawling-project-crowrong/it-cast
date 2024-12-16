@@ -45,7 +45,7 @@ public class VelogDataParser {
 
                         final String title = Objects.requireNonNull(document).title();
                         final String thumbnail = document.selectFirst("meta[property=og:image]").attr("content");
-                        final String content = document.select("div.sc-eGRUor.gdnhbG.atom-one").text();
+                        final String content = document.select("div[class^=sc-][class$=atom-one]").text();
                         final String publishedAt = document.select(".information").eq(3).text();
 
                         log.info("title: {}", title);
