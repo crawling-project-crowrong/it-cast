@@ -1,19 +1,16 @@
 package itcast;
 
-import itcast.application.AdminNewsService;
-import itcast.domain.news.News;
-import itcast.domain.news.enums.NewsStatus;
+import itcast.application.AdminBlogService;
+import itcast.domain.blog.Blog;
+import itcast.domain.blog.enums.BlogStatus;
+import itcast.domain.blog.enums.Platform;
 import itcast.domain.user.User;
 import itcast.domain.user.enums.Interest;
-import itcast.dto.request.AdminNewsRequest;
-import itcast.dto.response.AdminNewsResponse;
+import itcast.dto.request.AdminBlogRequest;
+import itcast.dto.response.AdminBlogResponse;
 import itcast.repository.AdminRepository;
-import itcast.repository.NewsRepository;
+import itcast.repository.BlogRepository;
 import itcast.repository.UserRepository;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,26 +21,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AdminNewsServiceTest {
-
+public class AdminBlogServiceTest {
     @Mock
-    private NewsRepository newsRepository;
+    private BlogRepository blogRepository;
     @Mock
     private AdminRepository adminRepository;
     @Mock
     private UserRepository userRepository;
     @InjectMocks
-    private AdminNewsService adminNewsService;
+    private AdminBlogService adminBlogService;
 
     @Test
-    @DisplayName("뉴스 생성 성공")
-    public void SuccessNewsCreate() {
+    @DisplayName("블로그 생성 성공")
+    public void SuccessBlogCreate() {
         //given
         Long userId = 1L;
         LocalDateTime fixedTime = LocalDateTime.of(2024, 12, 1, 12, 0);
@@ -53,51 +55,54 @@ public class AdminNewsServiceTest {
                 .kakaoEmail("kakao@kakao.com")
                 .build();
 
-        News news = News.builder()
+        Blog blog = Blog.adminBuilder()
+                .platform(Platform.VELOG)
                 .title("제목")
                 .content("수정본")
                 .originalContent("원본")
-                .interest(Interest.NEWS)
+                .interest(Interest.BACKEND)
                 .publishedAt(fixedTime)
                 .rating(5)
                 .link("http://example.com")
                 .thumbnail("http://thumbnail.com")
-                .status(NewsStatus.SUMMARY)
+                .status(BlogStatus.SUMMARY)
                 .sendAt(fixedTime)
                 .build();
-        AdminNewsRequest adminNewsRequest = new AdminNewsRequest(
+        AdminBlogRequest adminBlogRequest = new AdminBlogRequest(
+                Platform.VELOG,
                 "제목",
                 "수정본",
                 "원본",
-                Interest.NEWS,
+                Interest.BACKEND,
                 fixedTime,
                 5,
                 "http://example.com",
                 "http://thumbnail.com",
-                NewsStatus.SUMMARY,
+                BlogStatus.SUMMARY,
                 fixedTime
-                );
+        );
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsRepository.save(any(News.class))).willReturn(news);
+        given(blogRepository.save(any(Blog.class))).willReturn(blog);
 
-        // When
-        AdminNewsResponse response = adminNewsService.createNews(userId, adminNewsRequest);
+        //when
+        AdminBlogResponse response = adminBlogService.createBlog(userId, adminBlogRequest);
 
-        // Then
-        assertEquals("제목", response.title());
-        assertEquals(NewsStatus.SUMMARY, response.status());
-        verify(newsRepository).save(any(News.class));
+        //then
+        assertEquals(blog.getTitle(), response.title());
+        assertEquals(blog.getSendAt(), response.sendAt());
+        verify(blogRepository).save(any(Blog.class));
     }
 
     @Test
-    @DisplayName("뉴스 조회 성공")
-    public void SuccessNewsRetrieve() {
+    @DisplayName("블로그 조회 성공")
+    public void SuccessBlogRetrieve() {
         // Given
         Long userId = 1L;
         LocalDate sendAt = LocalDate.of(2024, 12, 1);
-        NewsStatus status = NewsStatus.SUMMARY;
+        BlogStatus status = BlogStatus.SUMMARY;
+        Interest interest = Interest.BACKEND;
         int page = 0;
         int size = 10;
 
@@ -106,79 +111,83 @@ public class AdminNewsServiceTest {
                 .kakaoEmail("admin@kakao.com")
                 .build();
 
-        List<AdminNewsResponse> responses = List.of(
-                new AdminNewsResponse(
+        List<AdminBlogResponse> responses = List.of(
+                new AdminBlogResponse(
                         1L,
-                        "뉴스1",
+                        Platform.VELOG,
+                        "블로그1",
                         "요약내용1",
                         "원본내용1",
-                        Interest.NEWS,
+                        Interest.BACKEND,
                         LocalDateTime.now(),
-                        4,
+                        5,
                         "http://link1.com",
                         "http:thumb1.com",
-                        NewsStatus.SUMMARY,
+                        BlogStatus.SUMMARY,
                         LocalDateTime.of(2024, 12, 1, 13, 0)),
-                new AdminNewsResponse(
+                new AdminBlogResponse(
                         2L,
-                        "뉴스2",
+                        Platform.VELOG,
+                        "블로그2",
                         "요약내용2",
                         "원본내용2",
-                        Interest.NEWS,
+                        Interest.BACKEND,
                         LocalDateTime.now(),
-                        3,
+                        5,
                         "http://link2.com",
                         "http:thumb2.com",
-                        NewsStatus.SUMMARY,
+                        BlogStatus.SUMMARY,
                         LocalDateTime.of(2024, 12, 1, 13, 0))
         );
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<AdminNewsResponse> newsPage = new PageImpl<>(responses, pageable, responses.size());
+        Page<AdminBlogResponse> blogPage = new PageImpl<>(responses, pageable, responses.size());
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsRepository.findNewsByCondition(status, sendAt, pageable)).willReturn(newsPage);
+        given(blogRepository.findBlogByCondition(status, interest, sendAt, pageable)).willReturn(blogPage);
 
-        // When
-        Page<AdminNewsResponse> responsePage = adminNewsService.retrieveNews(userId, status, sendAt, page, size);
+        //when
+        Page<AdminBlogResponse> responsePage = adminBlogService.retrieveBlog(userId, status, interest, sendAt, page, size);
 
-        // Then
+        //then
         assertEquals(2, responsePage.getContent().size());
-        assertEquals("뉴스1", responsePage.getContent().get(0).title());
-        assertEquals("뉴스2", responsePage.getContent().get(1).title());
+        assertEquals("블로그1", responsePage.getContent().get(0).title());
+        assertEquals("블로그2", responsePage.getContent().get(1).title());
         assertEquals(page, responsePage.getNumber());
         assertEquals(size, responsePage.getSize());
-        verify(newsRepository).findNewsByCondition(status, sendAt, pageable);
+        verify(blogRepository).findBlogByCondition(status, interest, sendAt,  pageable);
     }
 
     @Test
-    @DisplayName("뉴스 수정 성공")
-    public void SuccessNewsUpdate() {
+    @DisplayName("블로그 수정 성공")
+    public void SuccessBlogUpdate() {
         //given
         Long userId = 1L;
-        Long newsId = 1L;
+        Long blogId = 1L;
         LocalDateTime fixedTime = LocalDateTime.of(2024, 12, 1, 12, 0);
 
         User user = User.builder()
-                .id(userId)
-                .kakaoEmail("admin@kakao.com")
+                .id(1L)
+                .kakaoEmail("kakao@kakao.com")
                 .build();
 
-        News news = News.builder()
+        Blog blog = Blog.adminBuilder()
                 .id(1L)
+                .platform(Platform.VELOG)
                 .title("제목")
                 .content("수정본")
                 .originalContent("원본")
-                .interest(Interest.NEWS)
+                .interest(Interest.BACKEND)
                 .publishedAt(fixedTime)
                 .rating(5)
                 .link("http://example.com")
                 .thumbnail("http://thumbnail.com")
-                .status(NewsStatus.SUMMARY)
+                .status(BlogStatus.SUMMARY)
                 .sendAt(fixedTime)
                 .build();
-        AdminNewsRequest adminNewsRequest = new AdminNewsRequest(
+        AdminBlogRequest adminBlogRequest = new AdminBlogRequest(
+                Platform.VELOG,
                 "제목2",
                 "수정본2",
                 "원본2",
@@ -187,49 +196,50 @@ public class AdminNewsServiceTest {
                 3,
                 "http://example2.com",
                 "http://thumbnail2.com",
-                NewsStatus.ORIGINAL,
+                BlogStatus.ORIGINAL,
                 fixedTime
         );
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsRepository.findById(newsId)).willReturn(Optional.of(news));
+        given(blogRepository.findById(blogId)).willReturn(Optional.of(blog));
 
-        // When
-        AdminNewsResponse response = adminNewsService.updateNews(userId, newsId, adminNewsRequest);
+        // when
+        AdminBlogResponse response = adminBlogService.updateBlog(userId, blogId, adminBlogRequest);
 
         // Then
         assertEquals("제목2", response.title());
-        assertEquals(NewsStatus.ORIGINAL, response.status());
+        assertEquals(BlogStatus.ORIGINAL, response.status());
     }
 
     @Test
-    @DisplayName("뉴스 삭제 성공")
-    public void successDeleteNews() {
-        // Given
+    @DisplayName("블로그 삭제 성공")
+    public void successBlogDelete(){
+        //Given
         Long userId = 1L;
-        Long newsId = 1L;
+        Long blogId = 1L;
+
         User adminUser = User.builder()
                 .id(userId)
                 .kakaoEmail("admin@kakao.com")
                 .build();
-        News news = News.builder()
-                .id(newsId)
-                .title("테스트 뉴스")
+
+        Blog blog = Blog.adminBuilder()
+                .id(1L)
+                .title("테스트 블로그")
                 .content("테스트 내용")
                 .build();
 
         given(userRepository.findById(userId)).willReturn(Optional.of(adminUser));
         given(adminRepository.existsByEmail(adminUser.getKakaoEmail())).willReturn(true);
-        given(newsRepository.findById(newsId)).willReturn(Optional.of(news));
+        given(blogRepository.findById(blogId)).willReturn(Optional.of(blog));
 
         // When
-        AdminNewsResponse response = adminNewsService.deleteNews(userId, newsId);
+        AdminBlogResponse response = adminBlogService.deleteBlog(userId, blogId);
 
         // Then
-        assertEquals(news.getId(), response.id());
-        assertEquals(news.getTitle(), response.title());
-        verify(newsRepository).findById(newsId);
-        verify(newsRepository).delete(news);
+        assertEquals(blog.getId(), response.id());
+        assertEquals(blog.getTitle(), response.title());
+        verify(blogRepository).delete(blog);
     }
 }

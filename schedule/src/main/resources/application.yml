@@ -28,9 +28,6 @@ scheduler:
   timeout:
     connection: 5000
 
-  crawler:
-    naver-it-url: "https://news.naver.com/breakingnews/section/105/283"
-
 openai:
   blog-prompt: |
     \n\n
