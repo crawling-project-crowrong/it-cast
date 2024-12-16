@@ -23,7 +23,6 @@ public class AdminNewsController {
     @PostMapping
     public ResponseTemplate<AdminNewsResponse> createNews(@RequestParam Long userId, @RequestBody AdminNewsRequest adminNewsRequest) {
         AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest.toEntity(adminNewsRequest));
-
         return new ResponseTemplate<>(HttpStatus.CREATED,"관리자 뉴스 생성 성공", response);
     }
 
@@ -47,7 +46,6 @@ public class AdminNewsController {
     @DeleteMapping
     public ResponseTemplate<AdminNewsResponse> deleteNews(@RequestParam Long userId, @RequestParam Long newsId) {
         AdminNewsResponse response = adminService.deleteNews(userId, newsId);
-
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 삭제 성공", response);
     }
 }
