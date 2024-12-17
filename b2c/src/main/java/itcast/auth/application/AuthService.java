@@ -8,9 +8,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import itcast.auth.client.KakaoClient;
 import itcast.auth.dto.response.KakaoUserInfo;
-import itcast.auth.jwt.JwtUtil;
+import itcast.jwt.JwtUtil;
 import itcast.domain.user.User;
-import itcast.user.repository.UserRepository;
+import itcast.jwt.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

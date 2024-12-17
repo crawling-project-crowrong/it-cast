@@ -1,4 +1,4 @@
-package itcast.auth.jwt;
+package itcast.jwt;
 
 import java.util.Date;
 

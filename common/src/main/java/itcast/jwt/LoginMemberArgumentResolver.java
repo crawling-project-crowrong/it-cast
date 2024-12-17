@@ -1,4 +1,4 @@
-package itcast.auth.jwt;
+package itcast.jwt;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,9 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginMember.class);
+        boolean isSupported = parameter.hasParameterAnnotation(LoginMember.class);
+        log.debug("supportsParameter 체크. 지원 여부: {}", isSupported);
+        return isSupported;
     }
 
     @Override

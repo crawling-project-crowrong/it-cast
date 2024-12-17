@@ -1,4 +1,4 @@
-package itcast.auth.jwt;
+package itcast.jwt;
 
 import java.util.Optional;
 
@@ -7,7 +7,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import itcast.domain.user.User;
-import itcast.user.repository.UserRepository;
+import itcast.jwt.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
