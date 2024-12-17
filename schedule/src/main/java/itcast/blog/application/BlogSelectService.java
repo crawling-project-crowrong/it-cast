@@ -46,8 +46,10 @@ public class BlogSelectService {
 
     private List<Blog> retrieveToSelect(Platform platform, Interest interest, int count, LocalDate today) {
         LocalDate recentDate = today.minusDays(7);
+        LocalDateTime recentDateTime = recentDate.atStartOfDay();
+
         Pageable pageable = PageRequest.of(0, count);
-        return blogRepository.findByBlogForSelection(platform, interest, recentDate, BLOG_MIN_RATING, pageable);
+        return blogRepository.findByBlogForSelection(platform, interest, recentDateTime, BLOG_MIN_RATING, pageable);
     }
 
     private void updateSendAt(List<Blog> blogs, LocalDate today) {
