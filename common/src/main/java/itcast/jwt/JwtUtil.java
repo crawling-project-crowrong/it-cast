@@ -1,15 +1,19 @@
 package itcast.jwt;
 
+import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,14 +22,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    private final SecretKey secretKey;
+    @Value("${jwt.secret.key}")
+    private String secretKeyString;
+    private SecretKey secretKey;
+
+    @PostConstruct
+    public void init() {
+        this.secretKey = new SecretKeySpec(Base64.getDecoder().decode(secretKeyString), SignatureAlgorithm.HS512.getJcaName());
+    }
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final long expirationTime = 1000L * 60 * 60;
-
-    public JwtUtil() {
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    }
 
     public String createToken(Long userId, String email) {
         try {
