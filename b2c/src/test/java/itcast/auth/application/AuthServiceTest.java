@@ -59,7 +59,7 @@ public class AuthServiceTest {
         when(jwtUtil.createToken(anyLong(), anyString())).thenReturn("mockJwtToken");
 
         // When
-        String token = authService.kakaoLogin(code);
+        String token = authService.getAccessToken(code);
         ResponseCookie cookie = ResponseCookie.from("Authorization", token)
                 .httpOnly(true)
                 .path("/")
@@ -96,7 +96,7 @@ public class AuthServiceTest {
         when(jwtUtil.createToken(anyLong(), anyString())).thenReturn("mockJwtToken");
 
         // When
-        String token = authService.kakaoLogin(code);
+        String token = authService.getAccessToken(code);
         ResponseCookie cookie = ResponseCookie.from("Authorization", token)
                 .httpOnly(true)
                 .path("/")
