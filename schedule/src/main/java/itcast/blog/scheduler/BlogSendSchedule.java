@@ -1,6 +1,5 @@
 package itcast.blog.scheduler;
 
-import itcast.blog.application.BlogSelectService;
 import itcast.blog.application.BlogSendService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
