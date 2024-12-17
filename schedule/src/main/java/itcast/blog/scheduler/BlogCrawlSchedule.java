@@ -14,7 +14,7 @@ public class BlogCrawlSchedule {
     private final BlogCrawlService blogCrawlService;
 
 
-    @Scheduled(cron = "${scheduler.velog.crawling}")
+    @Scheduled(cron = "${scheduler.blog.crawling}")
     public void velogCrawling() {
         log.info("Velog Crawling Start ...");
 
@@ -23,7 +23,7 @@ public class BlogCrawlSchedule {
         log.info("Velog Crawling & Save!");
     }
 
-    @Scheduled(cron = "${scheduler.yozm.crawling}")
+    @Scheduled(cron = "${scheduler.blog.crawling}")
     public void yozmCrawling() {
         log.info("Yozm Crawling Start ...");
 
