@@ -19,12 +19,12 @@
         <a th:href="${content.originalLink}" th:text="${content.originalLink}"></a>
     </p>
     <p>
-        <b>Original Link:</b>
-        <a th:href="${content.thumbnail()}" th:text="${content.thumbnail()}"></a>
+        <b>Thumbnail:</b><br/>
+        <a th:href="${content.originalLink}" target="_blank">
+            <img th:src="${content.thumbnail}" alt="Thumbnail Image" style="width: 300px; height: auto;"/>
+        </a>
     </p>
-    </form>
     <hr/>
 </div>
-<img th:src="'data:image/png;base64,' + ${logoImage}" alt="Logo"/>
 </body>
 </html>
