@@ -52,7 +52,7 @@ public class EmailSender {
         final Context context = new Context();
         context.setVariable("sender", senderEmail);
         context.setVariable("subject", request.subject());
-        context.setVariable("content", request.content());
+        context.setVariable("contents", request.contents());
 
         try {
             final String base64Image = getBase64EncodedImage("/static/images/logo.png");

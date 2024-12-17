@@ -10,6 +10,6 @@ public record SendMailRequest(
         @NotBlank
         String subject,
         @NotBlank
-        String content
+        List<MailContent> contents
 ) {
 }

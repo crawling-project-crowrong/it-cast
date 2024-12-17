@@ -1,12 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-  <title th:text="${sender}"></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8">
+    <title>Email Notification</title>
 </head>
 <body>
-<br/>
-<p th:text="${content}"></p>
-<img img th:src="'data:image/png;base64,' + ${logoImage}" alt="로고 이미지"/>
+<h2 th:text="'Subject: ' + ${subject}"></h2>
+<hr/>
+<div th:each="content : ${contents}">
+    <p>
+        <b>Title:</b> <span th:text="${content.title}"></span>
+    </p>
+    <p>
+        <b>Summary:</b> <span th:text="${content.summary}"></span>
+    </p>
+    <p>
+        <b>Original Link:</b>
+        <a th:href="${content.originalLink}" th:text="${content.originalLink}"></a>
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        <p>
+          <input multiple type="file" name="file">
+            <b>Original Link:</b>
+            <a th:href="${content.thumbnail()}" th:text="${content.thumbnail()}"></a>
+        </p>
+    </form>
+    <hr/>
+</div>
+<img th:src="'data:image/png;base64,' + ${logoImage}" alt="Logo"/>
 </body>
 </html>
