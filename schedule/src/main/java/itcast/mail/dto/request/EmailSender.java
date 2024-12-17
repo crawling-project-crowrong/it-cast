@@ -5,6 +5,7 @@ import com.amazonaws.services.simpleemail.model.Content;
 import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
+import java.io.IOException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +51,7 @@ public class EmailSender {
         context.setVariable("sender", senderEmail);
         context.setVariable("subject", MAIL_SUBJECT);
         context.setVariable("contents", request.contents());
+        context.setVariable("logoImage", "https://travel-spring.s3.ap-northeast-2.amazonaws.com/logo.png");
 
         return templateEngine.process("email-template", context);
     }

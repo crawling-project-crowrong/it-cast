@@ -6,6 +6,7 @@
 </head>
 <body>
 <h2 th:text="${subject}"></h2>
+<img th:src="${logoImage}" alt="logo" style="width: 300px; height: auto;"/>
 <hr/>
 <div th:each="content : ${contents}">
     <p>
