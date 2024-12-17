@@ -1,8 +1,8 @@
 package itcast.news.application;
 
-import itcast.ai.Message;
 import itcast.ai.application.GPTService;
 import itcast.ai.dto.request.GPTSummaryRequest;
+import itcast.ai.dto.request.Message;
 import itcast.domain.news.News;
 import itcast.news.dto.request.CreateNewsRequest;
 import itcast.news.repository.NewsRepository;
@@ -31,9 +31,7 @@ public class NewsService {
     private static final int YESTERDAY = 2;
     private static final int ALARM_HOUR = 7;
     private static final int ALARM_DAY = 2;
-
-    @Value("${spring.crawler.naver-it-url}")
-    private String url;
+    private static final String url = "https://news.naver.com/breakingnews/section/105/283";
 
     private final NewsRepository newsRepository;
     private final GPTService gptService;
@@ -145,6 +143,4 @@ public class NewsService {
                 .trim();
         return info;
     }
-
-
 }
