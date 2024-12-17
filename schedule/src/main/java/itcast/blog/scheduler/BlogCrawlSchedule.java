@@ -1,7 +1,6 @@
 package itcast.blog.scheduler;
 
-import itcast.blog.application.VelogCrawlingService;
-import itcast.blog.application.YozmCrawlingService;
+import itcast.blog.application.BlogCrawlService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,15 +11,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class BlogCrawlSchedule {
 
-    private final VelogCrawlingService velogCrawlingService;
-    private final YozmCrawlingService yozmCrawlingService;
+    private final BlogCrawlService blogCrawlService;
 
 
     @Scheduled(cron = "${scheduler.velog.crawling}")
     public void velogCrawling() {
         log.info("Velog Crawling Start ...");
 
-        velogCrawlingService.crawlBlogs();
+        blogCrawlService.crawlVelog();
 
         log.info("Velog Crawling & Save!");
     }
@@ -29,7 +27,7 @@ public class BlogCrawlSchedule {
     public void yozmCrawling() {
         log.info("Yozm Crawling Start ...");
 
-        yozmCrawlingService.crawlBlogs();
+        blogCrawlService.crawlYozm();
 
         log.info("Yozm Crawling & Save!");
     }
