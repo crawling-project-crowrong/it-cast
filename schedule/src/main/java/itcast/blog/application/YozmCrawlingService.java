@@ -6,11 +6,11 @@ import itcast.ai.dto.request.Message;
 import itcast.blog.parser.YozmDataParser;
 import itcast.blog.repository.BlogRepository;
 import itcast.domain.blog.Blog;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -40,12 +40,5 @@ public class YozmCrawlingService {
                     gptService.updateBlogBySummaryContent(request, savedId.getId());
                 }
         );
-    }
-
-    @Scheduled(cron = "${scheduler.yozm.crawling}")
-    public void yozmCrawling() {
-        log.info("Yozm Crawling Start ...");
-        crawlBlogs();
-        log.info("Yozm Crawling & Save!");
     }
 }
