@@ -22,6 +22,8 @@ import org.thymeleaf.context.Context;
 @RequiredArgsConstructor
 public class EmailSender {
 
+    private static final String MAIL_SUBJECT = "[IT-Cast 뉴스레터] 오늘의 인기 블로그를 확인해보세요~🔖";
+
     @Value("${aws.ses.sender-email}")
     private String senderEmail;
 
@@ -32,7 +34,7 @@ public class EmailSender {
                 .withToAddresses(request.receivers());
 
         final Message message = new Message()
-                .withSubject(createContent(String.format("%s - %s", senderEmail, request.subject())))
+                .withSubject(createContent(String.format("%s - %s", senderEmail, MAIL_SUBJECT)))
                 .withBody(new Body()
                         .withHtml(createContent(createHtmlBody(request))));
 
@@ -51,7 +53,7 @@ public class EmailSender {
     private String createHtmlBody(final SendMailRequest request) {
         final Context context = new Context();
         context.setVariable("sender", senderEmail);
-        context.setVariable("subject", request.subject());
+        context.setVariable("subject", MAIL_SUBJECT);
         context.setVariable("contents", request.contents());
 
         try {

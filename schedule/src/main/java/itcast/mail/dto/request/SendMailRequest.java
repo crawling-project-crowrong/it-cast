@@ -8,8 +8,6 @@ public record SendMailRequest(
         @Email
         List<String> receivers,
         @NotBlank
-        String subject,
-        @NotBlank
         List<MailContent> contents
 ) {
 }
