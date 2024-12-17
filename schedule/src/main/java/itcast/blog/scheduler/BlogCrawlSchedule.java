@@ -13,7 +13,6 @@ public class BlogCrawlSchedule {
 
     private final BlogCrawlService blogCrawlService;
 
-
     @Scheduled(cron = "${scheduler.blog.crawling}")
     public void velogCrawling() {
         log.info("Velog Crawling Start ...");
