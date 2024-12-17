@@ -29,9 +29,9 @@ public class BlogSendSchedule {
         log.info("Blog Send Finished !!");
     }
 
-    @Scheduled
+/*    @Scheduled
     public void sendKakaoTalk(){
         log.info("Blog Send Start ...");
         log.info("Blog Send Finished !!");
-    }
+    }*/
 }

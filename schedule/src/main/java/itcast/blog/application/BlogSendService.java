@@ -1,10 +1,10 @@
 package itcast.blog.application;
 
 import itcast.blog.repository.BlogRepository;
-import itcast.blog.repository.UserRepository;
 import itcast.domain.blog.Blog;
 import itcast.domain.user.User;
 import itcast.domain.user.enums.Interest;
+import itcast.jwt.repository.UserRepository;
 import itcast.mail.application.MailService;
 import itcast.mail.dto.request.MailContent;
 import itcast.mail.dto.request.SendMailRequest;
