@@ -23,8 +23,6 @@ import java.util.List;
 @Transactional
 public class BlogSendService {
 
-    private static final int SEND_TIME = 8;
-
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
     private final MailService mailService;

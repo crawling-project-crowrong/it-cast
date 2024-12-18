@@ -25,7 +25,6 @@ public class BlogSelectService {
     private static final int BLOG_MIN_RATING = 7;
     private static final int VELOG_COUNT = 2;
     private static final int YOZM_COUNT = 1;
-    private static final int SEND_TIME = 8;
 
     private final BlogRepository blogRepository;
 
@@ -54,10 +53,9 @@ public class BlogSelectService {
     }
 
     private void updateSendAt(List<Blog> blogs, LocalDate today) {
-        LocalDate twoDaysLater = today.plusDays(2);
-        LocalDateTime sendAt = twoDaysLater.atTime(SEND_TIME, 0);
+        LocalDate sendDate = today.plusDays(2);
         blogs.forEach(blog -> {
-            blog.updateSendAt(sendAt);
+            blog.updateSendAt(sendDate);
             blogRepository.save(blog);
         });
     }

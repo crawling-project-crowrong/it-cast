@@ -29,7 +29,6 @@ public class NewsService {
     private static final int LINK_SIZE = 10;
     private static final int HOUR = 12;
     private static final int YESTERDAY = 2;
-    private static final int ALARM_HOUR = 7;
     private static final int ALARM_DAY = 2;
     private static final String url = "https://news.naver.com/breakingnews/section/105/283";
 
@@ -106,7 +105,7 @@ public class NewsService {
         LocalDate yesterday = LocalDate.now().minusDays(YESTERDAY);
         List<News> createdAlarm = newsRepository.findAllByCreatedAt(yesterday);
 
-        LocalDateTime sendAt = LocalDateTime.now().plusDays(ALARM_DAY).plusHours(ALARM_HOUR);
+        LocalDate sendAt = LocalDate.now().plusDays(ALARM_DAY);
         createdAlarm.forEach(alarm -> {
             alarm.newsUpdate(sendAt);
         });
