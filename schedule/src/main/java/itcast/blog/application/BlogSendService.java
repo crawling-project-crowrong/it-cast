@@ -23,12 +23,14 @@ import java.util.List;
 @Transactional
 public class BlogSendService {
 
+    private static final int SEND_TIME = 8;
+
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
     private final MailService mailService;
 
     public void sendBlogForEmail(LocalDate today) {
-        LocalDateTime sendAt = today.atTime(9, 0);
+        LocalDateTime sendAt = today.atTime(SEND_TIME, 0);
 
         sendBlogsByInterest(sendAt, Interest.FRONTEND);
         sendBlogsByInterest(sendAt, Interest.BACKEND);
