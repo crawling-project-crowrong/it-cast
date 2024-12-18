@@ -1,7 +1,7 @@
 package itcast.domain.blogHistory;
 
 import itcast.domain.BaseEntity;
-import itcast.domain.news.News;
+import itcast.domain.blog.Blog;
 import itcast.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,6 +28,6 @@ public class BlogHistory extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "news_id")
-    private News news;
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
 }
