@@ -131,42 +131,6 @@ public class Blog extends BaseEntity {
         this.sendAt = sendAt;
     }
 
-    public static Blog createVelogBlog(
-            final String title,
-            final String originalContent,
-            final LocalDateTime publishedAt,
-            final String link,
-            final String thumbnail
-    ) {
-        return Blog.builder()
-                .platform(Platform.VELOG)
-                .title(title)
-                .originalContent(originalContent)
-                .publishedAt(publishedAt)
-                .link(link)
-                .thumbnail(thumbnail)
-                .status(BlogStatus.ORIGINAL)
-                .build();
-    }
-
-    public static Blog createYozmBlog(
-            final String title,
-            final String originalContent,
-            final LocalDateTime publishedAt,
-            final String link,
-            final String thumbnail
-    ) {
-        return Blog.builder()
-                .platform(Platform.YOZM)
-                .title(title)
-                .originalContent(originalContent)
-                .publishedAt(publishedAt)
-                .link(link)
-                .thumbnail(thumbnail)
-                .status(BlogStatus.ORIGINAL)
-                .build();
-    }
-
     public void updateSendAt(LocalDateTime sendDateLater) {
         this.sendAt = sendDateLater;
     }

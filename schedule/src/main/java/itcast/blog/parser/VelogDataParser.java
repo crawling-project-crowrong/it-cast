@@ -5,6 +5,8 @@ import itcast.domain.blog.Blog;
 
 import java.time.LocalDateTime;
 
+import itcast.domain.blog.enums.BlogStatus;
+import itcast.domain.blog.enums.Platform;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -37,7 +39,6 @@ public class VelogDataParser {
 
     public List<Blog> parseTrendingPosts(final List<String> blogUrl) {
         final LocalDateTime DEFAULT_PUBLISHED_AT = LocalDateTime.of(2024, 12, 12, 12, 12, 12);
-
         return blogUrl.stream()
                 .map(url -> {
                     try {
@@ -50,7 +51,15 @@ public class VelogDataParser {
 
                         log.info("title: {}", title);
 
-                        return Blog.createVelogBlog(title, content, DEFAULT_PUBLISHED_AT, url, thumbnail);
+                        return Blog.builder()
+                                .platform(Platform.VELOG)
+                                .title(title)
+                                .originalContent(content)
+                                .publishedAt(DEFAULT_PUBLISHED_AT)
+                                .link(url)
+                                .thumbnail(thumbnail)
+                                .status(BlogStatus.ORIGINAL)
+                                .build();
                     } catch (Exception e) {
                         log.error("Error", e);
                         return null;

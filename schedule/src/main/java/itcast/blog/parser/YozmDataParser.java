@@ -5,6 +5,8 @@ import itcast.domain.blog.Blog;
 
 import java.time.LocalDateTime;
 
+import itcast.domain.blog.enums.BlogStatus;
+import itcast.domain.blog.enums.Platform;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -47,7 +49,16 @@ public class YozmDataParser {
                     String publishedDate = document.select("div.content-meta-elem").eq(5).text();
 
                     log.info("title: {}", title);
-                    return Blog.createYozmBlog(title, content, DEFAULT_PUBLISHED_AT, url, thumbnail);
+
+                    return Blog.builder()
+                            .platform(Platform.YOZM)
+                            .title(title)
+                            .originalContent(content)
+                            .publishedAt(DEFAULT_PUBLISHED_AT)
+                            .link(url)
+                            .thumbnail(thumbnail)
+                            .status(BlogStatus.ORIGINAL)
+                            .build();
                 })
                 .filter(Objects::nonNull)
                 .toList();
