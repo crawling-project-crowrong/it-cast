@@ -85,7 +85,7 @@ public class NewsService {
         return links;
     }
 
-    List<String> isValidLinks(List<String> links) {
+    public List<String> isValidLinks(List<String> links) {
         List<String> isValidLinks = newsRepository.findAllLinks();
         return links
                 .stream()
@@ -95,38 +95,21 @@ public class NewsService {
     }
 
     @Transactional
-    public void newsAlarm() {
-        LocalDate yesterday = LocalDate.now().minusDays(YESTERDAY);
-        List<News> createdAlarm = newsRepository.findAllByCreatedAt(yesterday);
-
-        LocalDate sendAt = LocalDate.now().plusDays(ALARM_DAY);
-
-        createdAlarm.forEach(alarm -> {
-            if (alarm == null) {
-                throw new ItCastApplicationException(INVALID_NEWS_CONTENT);
-            }
-            alarm.newsUpdate(sendAt);
-        });
-    }
-
-    @Transactional
     public void deleteOldData() {
         newsRepository.deleteOldNews();
     }
 
     public LocalDateTime convertDateTime(String info) {
+        System.out.println(info);
         if (info == null || info.trim().isEmpty()) {
             throw new ItCastApplicationException(INVALID_NEWS_CONTENT);
         }
-        String[] parts = info.split(" ");
-        if (parts.length != 4) {
-            throw new ItCastApplicationException(INVALID_NEWS_DATE);
-        }
-        String date = parts[1];
-        String ampm = parts[2];
-        String time = parts[3];
+        String[] parts = info.replaceAll("입력", "").split(" ");
 
-        date = date.replaceAll("입력", "");
+        String date = parts[0];
+        String ampm = parts[1];
+        String time = parts[2];
+
         String[] timeParts = time.split(":");
         int hour = Integer.parseInt(timeParts[0]);
 
@@ -138,7 +121,7 @@ public class NewsService {
         }
 
         String timeDate = date + " " + String.format("%02d", hour) + ":" + timeParts[1];
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm");
         return LocalDateTime.parse(timeDate, formatter);
     }
 
