@@ -95,7 +95,6 @@ public class NewsService {
     }
 
     public LocalDateTime convertDateTime(String info) {
-        System.out.println(info);
         if (info == null || info.trim().isEmpty()) {
             throw new ItCastApplicationException(INVALID_NEWS_CONTENT);
         }
