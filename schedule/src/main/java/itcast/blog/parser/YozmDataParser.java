@@ -69,27 +69,27 @@ public class YozmDataParser {
     private LocalDate changePublishedDateType(String publishedDate) {
         LocalDateTime now = LocalDateTime.now();
         LocalDate today = now.toLocalDate();
+        try {
 
-        if (publishedDate.contains("시간 전")) {
-            int hoursAgo = Integer.parseInt(publishedDate.replaceAll("[^0-9]", ""));
-            return now.minusHours(hoursAgo).toLocalDate();
-        }
+            if (publishedDate.contains("시간 전")) {
+                int hoursAgo = Integer.parseInt(publishedDate.replaceAll("[^0-9]", ""));
+                return now.minusHours(hoursAgo).toLocalDate();
+            }
 
-        if (publishedDate.contains("일 전")) {
-            int daysAgo = Integer.parseInt(publishedDate.replaceAll("[^0-9]", ""));
-            return today.minusDays(daysAgo);
-        }
+            if (publishedDate.contains("일 전")) {
+                int daysAgo = Integer.parseInt(publishedDate.replaceAll("[^0-9]", ""));
+                return today.minusDays(daysAgo);
+            }
 
-        if (publishedDate.contains(".")) {
-            try {
+            if (publishedDate.contains(".")) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
                 return LocalDate.parse(publishedDate, formatter);
-            } catch (Exception e) {
-                log.error("Error Parsing PublishedDate: {}, exception", publishedDate, e);
-                return today;
-            }
-        }
 
+            }
+        } catch (Exception e) {
+            log.error("Error Parsing PublishedDate: {}, exception", publishedDate, e);
+            return today;
+        }
         log.error("Invalid publishedDate format: {}", publishedDate);
         return today;
     }
