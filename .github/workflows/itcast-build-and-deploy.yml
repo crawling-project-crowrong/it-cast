@@ -2,9 +2,8 @@ name: ItcastBuildAndDeploy
 
 on:
   workflow_run:
-    workflows: [ItcastBuildAndTest]
-    types:
-      - completed
+    workflows: ["ItcastBuildAndTest"]
+    types: [completed]
 
 jobs:
   deploy:
