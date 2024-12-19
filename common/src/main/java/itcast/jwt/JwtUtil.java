@@ -22,8 +22,9 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        this.secretKey = new SecretKeySpec(Base64.getDecoder().decode(secretKeyString), SignatureAlgorithm.HS512.getJcaName());
+        this.secretKey = new SecretKeySpec(secretKeyString.getBytes(), SignatureAlgorithm.HS512.getJcaName());
     }
+
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private final long expirationTime = 1000L * 60 * 60;

@@ -13,6 +13,7 @@ import itcast.user.dto.response.ProfileCreateResponse;
 import itcast.user.dto.response.ProfileUpdateResponse;
 import itcast.user.exception.EmailAlreadyExistsException;
 import itcast.user.exception.NicknameAlreadyExistsException;
+import itcast.user.exception.PhoneNumberAlreadyExistsException;
 import itcast.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,7 @@ public class UserService {
     @Transactional
     public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
         User existingUser = findUserByIdOrThrow(id);
-        validateConstraints(request.nickname(), request.email());
+        validateConstraints(request.nickname(), request.email(), request.phoneNumber());
 
         if (ArticleType.NEWS.equals(request.articleType())) {
             request = new ProfileCreateRequest(
@@ -33,7 +34,8 @@ public class UserService {
                     request.articleType(),
                     Interest.NEWS,
                     request.sendingType(),
-                    request.email()
+                    request.email(),
+                    request.phoneNumber()
             );
         }
         User updatedUser = request.toEntity(existingUser);
@@ -44,14 +46,15 @@ public class UserService {
     @Transactional
     public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
         User existingUser = findUserByIdOrThrow(id);
-        validateConstraints(request.nickname(), request.email());
+        validateConstraints(request.nickname(), request.email(), request.phoneNumber());
         if (ArticleType.NEWS.equals(request.articleType())) {
             request = new ProfileUpdateRequest(
                     request.nickname(),
                     request.articleType(),
                     Interest.NEWS,
                     request.sendingType(),
-                    request.email()
+                    request.email(),
+                    request.phoneNumber()
             );
         }
         User updatedUser = request.toEntity(existingUser);
@@ -69,12 +72,15 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
-    private void validateConstraints(String nickname, String email) {
+    private void validateConstraints(String nickname, String email, String phoneNumber) {
         if (userRepository.existsByNickname(nickname)) {
             throw new NicknameAlreadyExistsException("이미 사용 중인 닉네임입니다.");
         }
         if (userRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistsException("이미 사용 중인 이메일입니다.");
+        }
+        if (userRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new PhoneNumberAlreadyExistsException("이미 등록된 전화번호입니다.");
         }
     }
 }

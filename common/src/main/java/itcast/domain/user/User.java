@@ -34,6 +34,9 @@ public class User extends BaseEntity {
 
     private String nickname;
 
+    @Column(unique = true)
+    private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
     private ArticleType articleType;
 
@@ -49,6 +52,7 @@ public class User extends BaseEntity {
             String kakaoEmail,
             String email,
             String nickname,
+            String phoneNumber,
             ArticleType articleType,
             Interest interest,
             SendingType sendingType
@@ -57,6 +61,7 @@ public class User extends BaseEntity {
         this.kakaoEmail = kakaoEmail;
         this.email = email;
         this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
         this.articleType = articleType;
         this.interest = interest;
         this.sendingType = sendingType;
