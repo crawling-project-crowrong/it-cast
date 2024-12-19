@@ -19,6 +19,8 @@ import net.nurigo.sdk.message.model.StorageType;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
 import itcast.ResponseTemplate;
+import itcast.exception.ErrorCodes;
+import itcast.exception.ItCastApplicationException;
 import itcast.message.dto.request.MessageContent;
 import itcast.message.dto.request.RecieverPhoneNumber;
 import itcast.message.dto.request.SendMessageRequest;
@@ -81,13 +83,11 @@ public class MessageService {
 
             this.messageService.send(messageList, false, true);
             return new ResponseTemplate<>(HttpStatus.OK, "메세지가 발송되었습니다.");
-        } catch (IOException e) {
-            return new ResponseTemplate<>(HttpStatus.BAD_REQUEST, "이미지 파일 로드 실패: " + e.getMessage());
         } catch (NurigoMessageNotReceivedException exception) {
             List<FailedMessage> failedMessages = exception.getFailedMessageList();
             return new ResponseTemplate<>(HttpStatus.BAD_REQUEST, "메시지 발송 실패", failedMessages);
         } catch (Exception exception) {
-            return new ResponseTemplate<>(HttpStatus.BAD_REQUEST, "메시지 발송 실패");
+            throw new ItCastApplicationException(ErrorCodes.MESSAGE_SENDING_FAILED);
         }
     }
 }
