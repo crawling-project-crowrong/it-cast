@@ -1,10 +1,13 @@
 package itcast.message.application;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +15,7 @@ import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.model.FailedMessage;
 import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.model.MessageType;
+import net.nurigo.sdk.message.model.StorageType;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
 import itcast.ResponseTemplate;
@@ -50,27 +53,36 @@ public class MessageService {
 
         StringBuilder textBuilder = new StringBuilder();
         for (MessageContent content : contentList) {
-            String title = "■ " + content.title();
+            String title = "■ Today's Message";
+            String contentTitle = ": " + content.title();
             String summary = "▶ <요약 내용> " + content.summary();
             String originalLink = "▶ <본문 보기> " + content.originalLink();
+
             textBuilder.append(title).append("\n")
+                    .append(contentTitle).append("\n")
                     .append(summary).append("\n")
                     .append(originalLink).append("\n\n");
         }
-
-        Message message = new Message();
-        message.setFrom("01033124811");
-        List<String> phoneNumberList = phoneNumbers.stream()
-                .map(RecieverPhoneNumber::phoneNumber)
-                .collect(Collectors.toList());
-        message.setTo(String.join(",", phoneNumberList));
-        message.setText(textBuilder.toString());
-        message.setSubject("[IT-Cast 뉴스레터]");
-        messageList.add(message);
-
         try {
+            ClassPathResource resource = new ClassPathResource("static/images/image.jpg");
+            File file = resource.getFile();
+            String imageId = messageService.uploadFile(file, StorageType.MMS, null);
+
+            Message message = new Message();
+            message.setFrom("01033124811");
+            List<String> phoneNumberList = phoneNumbers.stream()
+                    .map(RecieverPhoneNumber::phoneNumber)
+                    .collect(Collectors.toList());
+            message.setTo(String.join(",", phoneNumberList));
+            message.setText(textBuilder.toString());
+            message.setSubject("[IT-Cast 뉴스레터]");
+            message.setImageId(imageId);
+            messageList.add(message);
+
             this.messageService.send(messageList, false, true);
             return new ResponseTemplate<>(HttpStatus.OK, "메세지가 발송되었습니다.");
+        } catch (IOException e) {
+            return new ResponseTemplate<>(HttpStatus.BAD_REQUEST, "이미지 파일 로드 실패: " + e.getMessage());
         } catch (NurigoMessageNotReceivedException exception) {
             List<FailedMessage> failedMessages = exception.getFailedMessageList();
             return new ResponseTemplate<>(HttpStatus.BAD_REQUEST, "메시지 발송 실패", failedMessages);
