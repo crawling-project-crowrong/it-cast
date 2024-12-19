@@ -53,23 +53,6 @@ public class NewsServiceTest {
     }
 
     @Test
-    @DisplayName("알람 보내는 메소드 테스트")
-    void testUpdateNews() {
-        // given
-        LocalDate yesterday = LocalDate.now().minusDays(2);
-        News mockNews = mock(News.class);
-
-       when(newsRepository.findAllByCreatedAt(yesterday))
-                .thenReturn(Collections.singletonList(mockNews));
-
-        // When
-        newsService.newsAlarm();
-
-        // Then
-        verify(mockNews).newsUpdate(any(LocalDate.class));
-    }
-
-    @Test
     @DisplayName("중복 된 메소드 체크 테스트")
     void isValidLinksTest() {
         // give

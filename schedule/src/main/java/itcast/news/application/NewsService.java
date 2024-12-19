@@ -15,7 +15,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,9 +28,6 @@ public class NewsService {
 
     private static final int LINK_SIZE = 10;
     private static final int HOUR = 12;
-    private static final int YESTERDAY = 2;
-    private static final int ALARM_HOUR = 7;
-    private static final int ALARM_DAY = 2;
     private static final String URL = "https://news.naver.com/breakingnews/section/105/283";
 
     private final NewsRepository newsRepository;
