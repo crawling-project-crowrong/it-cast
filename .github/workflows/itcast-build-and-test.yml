@@ -1,6 +1,11 @@
 name: ItcastBuildAndTest
 
 on:
+  push:
+    branches:
+      - main
+      - issue/**
+
   pull_request:
     branches:
       - main
