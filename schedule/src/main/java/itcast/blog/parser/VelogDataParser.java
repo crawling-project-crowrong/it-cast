@@ -2,9 +2,6 @@ package itcast.blog.parser;
 
 import itcast.blog.client.JsoupCrawler;
 import itcast.domain.blog.Blog;
-
-import java.time.LocalDateTime;
-
 import itcast.domain.blog.enums.BlogStatus;
 import itcast.domain.blog.enums.Platform;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +11,7 @@ import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -38,7 +36,7 @@ public class VelogDataParser {
     }
 
     public List<Blog> parseTrendingPosts(final List<String> blogUrl) {
-        final LocalDateTime DEFAULT_PUBLISHED_AT = LocalDateTime.of(2024, 12, 12, 12, 12, 12);
+        final LocalDate DEFAULT_PUBLISHED_AT = LocalDate.of(2024, 12, 12);
         return blogUrl.stream()
                 .map(url -> {
                     try {
