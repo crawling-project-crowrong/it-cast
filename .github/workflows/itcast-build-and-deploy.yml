@@ -1,10 +1,13 @@
 name: ItcastBuildAndDeploy
 
 on:
-  workflow_run:
-    workflows: ["ItcastBuildAndTest"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+      - issue/**
+#    workflows: ["ItcastBuildAndTest"]
+#    types:
+#      - completed
 
 jobs:
   deploy:
