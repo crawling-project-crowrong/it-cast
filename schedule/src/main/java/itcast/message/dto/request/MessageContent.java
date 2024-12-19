@@ -9,4 +9,5 @@ public record MessageContent(
         String summary,
         @NotBlank
         String originalLink
-){ }
+){
+}

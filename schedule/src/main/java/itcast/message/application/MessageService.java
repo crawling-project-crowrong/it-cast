@@ -1,7 +1,6 @@
 package itcast.message.application;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,8 +49,8 @@ public class MessageService {
 
     public ResponseTemplate<List<FailedMessage>> sendMessages(SendMessageRequest request) {
         ArrayList<Message> messageList = new ArrayList<>();
-        List<MessageContent> contentList = request.getContentList();
-        List<RecieverPhoneNumber> phoneNumbers = request.getPhoneNumbers();
+        List<MessageContent> contentList = request.contentList();
+        List<RecieverPhoneNumber> phoneNumbers = request.phoneNumbers();
 
         StringBuilder textBuilder = new StringBuilder();
         for (MessageContent content : contentList) {

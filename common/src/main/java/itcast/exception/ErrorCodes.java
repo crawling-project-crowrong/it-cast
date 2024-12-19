@@ -12,7 +12,7 @@ public enum ErrorCodes {
     EMAIL_ALREADY_EXISTS("이미 사용 중인 이메일입니다.", 3003L, HttpStatus.CONFLICT),
     PHONE_NUMBER_ALREADY_EXISTS("이미 등록된 전화번호입니다.", 3004L, HttpStatus.CONFLICT),
     //jwt
-    JWT_ERROR("JWT 토큰 생성에 실패했습니다.", 4001L, HttpStatus.INTERNAL_SERVER_ERROR),
+    JWT_TOKEN_CREATE_ERROR("JWT 토큰 생성에 실패했습니다.", 4001L, HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_TOKEN("유효하지 않거나 만료된 토큰입니다.", 4002L, HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS("로그인이 필요한 기능입니다.", 4003L, HttpStatus.UNAUTHORIZED),
     //message

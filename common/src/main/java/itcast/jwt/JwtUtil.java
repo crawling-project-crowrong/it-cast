@@ -42,7 +42,7 @@ public class JwtUtil {
                     .signWith(SignatureAlgorithm.HS512, secretKey)
                     .compact();
         } catch (Exception e) {
-            throw new ItCastApplicationException(ErrorCodes.JWT_ERROR);
+            throw new ItCastApplicationException(ErrorCodes.JWT_TOKEN_CREATE_ERROR);
         }
     }
 
