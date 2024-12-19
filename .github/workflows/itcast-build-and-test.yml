@@ -16,10 +16,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build with gradle
-        run: |
-          chmod +x ./gradlew
-          ./gradlew --debug build
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -50,6 +46,11 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build -Duser.language=ko -Duser.country=KR
+
+      - name: Build with Gradle
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --debug build  
 
       - name: Tear down Docker Compose
         if: always()
