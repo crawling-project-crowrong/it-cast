@@ -55,14 +55,12 @@ jobs:
 
       # DI
       - name: Ensure application-prod.yml exists
-        run: |
-          mkdir -p ./src/main/resources/
-          touch ./src/main/resources/application-prod.yml
+        run: touch ./application-prod.yml
 
       - name: Set Yaml
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./src/main/resources/application-prod.yml
+          files: ./application-prod.yml
         env:
           spring.datasource.url: ${{secrets.KJH_MYSQL_URL}}
           spring.datasource.username: ${{ secrets.KJH_DB_USERNAME }}
