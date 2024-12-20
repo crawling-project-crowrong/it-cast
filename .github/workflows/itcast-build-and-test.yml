@@ -54,6 +54,11 @@ jobs:
         run: docker-compose down
 
       # DI
+      - name: Ensure application-prod.yml exists
+        run: |
+          mkdir -p ./src/main/resources/
+          touch ./src/main/resources/application-prod.yml
+
       - name: Set Yaml
         uses: microsoft/variable-substitution@v1
         with:
