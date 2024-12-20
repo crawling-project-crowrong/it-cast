@@ -52,9 +52,3 @@ jobs:
       - name: Tear down Docker Compose
         if: always()
         run: docker-compose down
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-results
-          path: build/libs/*.jar

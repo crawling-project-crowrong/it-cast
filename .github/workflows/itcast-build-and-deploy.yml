@@ -2,10 +2,9 @@ name: ItcastBuildAndDeploy
 
 on:
   workflow_run:
-    workflows:
-      - ItcastBuildAndTest
+    workflows: ["ItcastBuildAndTest"]
     types:
-      - completed
+      - success
 
 jobs:
   deploy:
@@ -19,14 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: build-results
-
-      - name: Debug workflow_run event
-        run: echo "${{ toJson(github.event) }}"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
