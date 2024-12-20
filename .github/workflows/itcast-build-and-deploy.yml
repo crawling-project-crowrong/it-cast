@@ -16,6 +16,11 @@ jobs:
       packages: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.KJH_TOKEN }}
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -77,7 +82,7 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_KJH_SECRET_ACCESS_KEY}}
 
       - name: Upload to S3
-        run: aws s3 cp ./$GITHUB_SHA.zip s3://${{ secrets.AWS_S3_BUCKET }}/$GITHUB_SHA.zip
+        run: aws s3 cp ./$GITHUB_SHA.zip s3://${{ secrets.AWS_KJH_S3_BUCKET }}/$GITHUB_SHA.zip
 
       - name: EC2 Deploy
         run: aws deploy create-deployment
