@@ -3,7 +3,7 @@ name: ItcastBuildAndDeploys # workflow 이름
 # CI workflow 완료 시 트리거
 on:
   workflow_run:
-    workflows: [ "ItcastBuildAndTests" ]
+    workflows: ["ItcastBuildAndTests"]
     types:
       - completed
 
@@ -12,7 +12,7 @@ jobs:
 
     # 조건 : CI가 통과해야하고 트리거는 push여야 한다.
     if: >
-      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.conclusion == 'success' ||
       github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
     permissions:
