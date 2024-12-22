@@ -10,10 +10,9 @@ on:
 jobs:
   deploy:
 
-    # 조건 : CI가 통과해야하고 트리거는 push여야 한다.
+    # 조건 : CI가 통과해야한다.
     if: >
-      github.event.workflow_run.conclusion == 'success' ||
-      github.event.workflow_run.event == 'push'
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
