@@ -6,6 +6,8 @@ on:
     workflows: ["ItcastBuildAndTests"]
     types:
       - completed
+    branches:
+      - issue/**
 
 jobs:
   deploy:
