@@ -1,9 +1,9 @@
-name: ItcastBuildAndDeploy # workflow 이름
+name: ItcastBuildAndDeploys # workflow 이름
 
 # CI workflow 완료 시 트리거
 on:
   workflow_run:
-    workflows: [ "ItcastBuildAndTest" ]
+    workflows: [ "ItcastBuildAndTests" ]
     types:
       - completed
 

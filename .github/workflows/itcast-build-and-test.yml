@@ -1,4 +1,4 @@
-name: ItcastBuildAndTest # 워크플로우 이름
+name: ItcastBuildAndTests # 워크플로우 이름
 
 on:
   push:
