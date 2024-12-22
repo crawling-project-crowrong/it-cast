@@ -1,0 +1,56 @@
+name: ItcastBuildAndTest # 워크플로우 이름
+
+on:
+  push:
+    branches:
+      - main # main 브랜치 push 트리거
+  pull_request:
+    branches:
+      - main
+      - issue/** # main, issue/** 대상으로의 PR 생성 트리거
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 코드 체크아웃
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Java 언어 설치
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+        # Docker Compose 설치
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Docker Compose 실행
+      - name: Set up Docker Compose
+        run: |
+          docker-compose up -d
+          docker-compose ps
+
+      # 데이터베이스 작동까지 대기 5초단위로 재시도, 작동 후 10초 대기
+      - name: Wait for services to be ready
+        run: |
+          until docker-compose exec -T mysql mysqladmin ping -h"127.0.0.1" --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+          done
+          sleep 10
+
+      # 프로젝트 빌드
+      - name: Build with Gradle
+        run: ./gradlew clean build -Duser.language=ko -Duser.country=KR
+
+      # DockerCompose down (컨테이너 및 이미지 정리)
+      - name: Tear down Docker Compose
+        if: always() # CI 성공, 실패 여부와 관계없이 동작
+        run: docker-compose down
