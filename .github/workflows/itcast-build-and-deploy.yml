@@ -44,37 +44,37 @@ jobs:
         with:
           files: admin/src/main/resources/application-prod.yml
         env:
-          MYSQL_URL: ${{ secrets.MYSQL_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Set B2C Yaml
         uses: microsoft/variable-substitution@v1
         with:
           files: b2c/src/main/resources/application-prod.yml
         env:
-          MYSQL_URL: ${{ secrets.MYSQL_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
-          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          spring.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
+          jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Set Schedule Yaml
         uses: microsoft/variable-substitution@v1
         with:
           files: schedule/src/main/resources/application-prod.yml
         env:
-          MYSQL_URL: ${{ secrets.MYSQL_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          AWS_SES_ACCESS_KEY: ${{ secrets.AWS_SES_ACCESS_KEY }}
-          AWS_SES_SECRET_KEY: ${{ secrets.AWS_SES_SECRET_KEY }}
-          AWS_SES_SENDER_EMAIL: ${{ secrets.AWS_SES_SENDER_EMAIL }}
-          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-          SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
-          SMS_API_SECRET: ${{ secrets.SMS_API_SECRET }}
-          OPENAI_SECRET_KEY: ${{ secrets.OPENAI_SECRET_KEY }}
+          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          aws.ses.access-key: ${{ secrets.AWS_SES_ACCESS_KEY }}
+          aws.ses.secret-key: ${{ secrets.AWS_SES_SECRET_KEY }}
+          aws.ses.sender-email: ${{ secrets.AWS_SES_SENDER_EMAIL }}
+          jwt-secret-key: ${{ secrets.JWT_SECRET_KEY }}
+          sms.api.key: ${{ secrets.SMS_API_KEY }}
+          sms.spi.secret: ${{ secrets.SMS_API_SECRET }}
+          openai.secret-key: ${{ secrets.OPENAI_SECRET_KEY }}
 
       - name: Install Docker Compose
         run: |
