@@ -2,9 +2,11 @@ name: BuildAndDeploys
 
 on:
   workflow_run:
-    workflows: ["BuildAndTest"]
+    workflows:
+      - BuildAndTest
     types:
       - completed
+
 jobs:
   deploy:
     if: >
