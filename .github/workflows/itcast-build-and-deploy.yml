@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["BuildAndTest"]
     types:
-      - requested
+      - completed
 
 jobs:
   deploy:
@@ -13,6 +13,7 @@ jobs:
       contents: read
       packages: write
       deployments: write
+    if: github.event.workflow_run.conclusion == 'success'
 
     steps:
 
