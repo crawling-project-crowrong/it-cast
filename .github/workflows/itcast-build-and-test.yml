@@ -52,6 +52,6 @@ jobs:
         if: always()
         run: docker-compose down
 
-deploy:
-  needs: build
-  uses: ./.github/workflows/itcast-build-and-deploy.yml
+  deploy:
+    needs: build
+    uses: ./.github/workflows/itcast-build-and-deploy.yml
