@@ -53,6 +53,16 @@ public class AdminBlogController {
     }
 
     @CheckAuth
+    @GetMapping("/{blogId}")
+    public ResponseTemplate<AdminBlogResponse> retrieveBlog(
+            @LoginMember Long userId,
+            @PathVariable Long blogId
+    ) {
+        AdminBlogResponse response = adminBlogService.retrieveBlog(userId, blogId);
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 블로그 단건 조회 성공", response);
+    }
+
+    @CheckAuth
     @PutMapping("/{blogId}")
     public ResponseTemplate<AdminBlogResponse> updateBlog(
             @LoginMember Long userId,
