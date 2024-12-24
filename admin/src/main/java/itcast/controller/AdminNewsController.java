@@ -47,15 +47,16 @@ public class AdminNewsController {
             @RequestParam(required = false) NewsStatus status,
             @RequestParam(required = false) LocalDate sendAt,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<AdminNewsResponse> newsPage = adminService.retrieveNews(userId, status, sendAt, page, size);
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<AdminNewsResponse> newsPage = adminService.retrieveNewsList(userId, status, sendAt, page, size);
         PageResponse<AdminNewsResponse> newPageResponse = new PageResponse<>(
                 newsPage.getContent(),
                 newsPage.getNumber(),
                 newsPage.getSize(),
                 newsPage.getTotalPages()
         );
-        return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 조회 성공", newPageResponse);
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 리스트 조회 성공", newPageResponse);
     }
 
     @CheckAuth
@@ -71,7 +72,10 @@ public class AdminNewsController {
 
     @CheckAuth
     @DeleteMapping("/{newsId}")
-    public ResponseTemplate<AdminNewsResponse> deleteNews(@LoginMember Long userId, @PathVariable Long newsId) {
+    public ResponseTemplate<AdminNewsResponse> deleteNews(
+            @LoginMember Long userId,
+            @PathVariable Long newsId
+    ) {
         AdminNewsResponse response = adminService.deleteNews(userId, newsId);
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 삭제 성공", response);
     }

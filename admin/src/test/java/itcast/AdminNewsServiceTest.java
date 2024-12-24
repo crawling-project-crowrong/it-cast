@@ -142,7 +142,7 @@ public class AdminNewsServiceTest {
         given(newsRepository.findNewsByCondition(status, sendAt, pageable)).willReturn(newsPage);
 
         // When
-        Page<AdminNewsResponse> responsePage = adminNewsService.retrieveNews(userId, status, sendAt, page, size);
+        Page<AdminNewsResponse> responsePage = adminNewsService.retrieveNewsList(userId, status, sendAt, page, size);
 
         // Then
         assertEquals(2, responsePage.getContent().size());
