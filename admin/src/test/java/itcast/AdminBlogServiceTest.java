@@ -95,8 +95,8 @@ public class AdminBlogServiceTest {
     }
 
     @Test
-    @DisplayName("블로그 조회 성공")
-    public void SuccessBlogRetrieve() {
+    @DisplayName("블로그 다건 조회 성공")
+    public void SuccessBlogListRetrieve() {
         // Given
         Long userId = 1L;
         LocalDate sendAt = LocalDate.of(2024, 12, 1);
@@ -156,6 +156,46 @@ public class AdminBlogServiceTest {
         assertEquals(page, responsePage.getNumber());
         assertEquals(size, responsePage.getSize());
         verify(blogRepository).findBlogByCondition(status, interest, sendAt,  pageable);
+    }
+
+    @Test
+    @DisplayName("블로그 단건 조회 성공")
+    public void SuccessBlogRetrieve() {
+        //given
+        Long userId = 1L;
+        Long blogId = 1L;
+        LocalDate fixedTime = LocalDate.of(2024, 12, 1);
+
+        User user = User.builder()
+                .id(1L)
+                .kakaoEmail("kakao@kakao.com")
+                .build();
+        Blog blog = Blog.adminBuilder()
+                .id(1L)
+                .platform(Platform.VELOG)
+                .title("제목")
+                .content("수정본")
+                .originalContent("원본")
+                .interest(Interest.BACKEND)
+                .publishedAt(fixedTime)
+                .rating(5)
+                .link("http://example.com")
+                .thumbnail("http://thumbnail.com")
+                .status(BlogStatus.SUMMARY)
+                .sendAt(fixedTime)
+                .build();
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
+        given(blogRepository.findById(blogId)).willReturn(Optional.of(blog));
+
+        //when
+        AdminBlogResponse response = adminBlogService.retrieveBlog(userId, blogId);
+
+        //Then
+        assertEquals(blog.getTitle(), response.title());
+        assertEquals(blog.getSendAt(), response.sendAt());
+        verify(blogRepository).findById(blogId);
     }
 
     @Test
