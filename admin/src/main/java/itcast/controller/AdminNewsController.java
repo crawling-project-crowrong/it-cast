@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/news")
 public class AdminNewsController {
 
-    private final AdminNewsService adminService;
+    private final AdminNewsService adminNewsService;
 
     @CheckAuth
     @PostMapping
@@ -36,7 +36,7 @@ public class AdminNewsController {
             @LoginMember Long userId,
             @RequestBody AdminNewsRequest adminNewsRequest
     ) {
-        AdminNewsResponse response = adminService.createNews(userId, adminNewsRequest);
+        AdminNewsResponse response = adminNewsService.createNews(userId, adminNewsRequest);
         return new ResponseTemplate<>(HttpStatus.CREATED,"관리자 뉴스 생성 성공", response);
     }
 
@@ -49,7 +49,7 @@ public class AdminNewsController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Page<AdminNewsResponse> newsPage = adminService.retrieveNewsList(userId, status, sendAt, page, size);
+        Page<AdminNewsResponse> newsPage = adminNewsService.retrieveNewsList(userId, status, sendAt, page, size);
         PageResponse<AdminNewsResponse> newPageResponse = new PageResponse<>(
                 newsPage.getContent(),
                 newsPage.getNumber(),
@@ -65,7 +65,7 @@ public class AdminNewsController {
             @LoginMember Long userId,
             @PathVariable Long newsId
     ) {
-        AdminNewsResponse response = adminService.retrieveNews(userId, newsId);
+        AdminNewsResponse response = adminNewsService.retrieveNews(userId, newsId);
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 단건 조회 성공", response);
     }
 
@@ -76,7 +76,7 @@ public class AdminNewsController {
             @PathVariable Long newsId,
             @RequestBody AdminNewsRequest adminNewsRequest
     ) {
-        AdminNewsResponse response = adminService.updateNews(userId, newsId, adminNewsRequest);
+        AdminNewsResponse response = adminNewsService.updateNews(userId, newsId, adminNewsRequest);
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 수정 성공", response);
     }
 
@@ -86,7 +86,7 @@ public class AdminNewsController {
             @LoginMember Long userId,
             @PathVariable Long newsId
     ) {
-        AdminNewsResponse response = adminService.deleteNews(userId, newsId);
+        AdminNewsResponse response = adminNewsService.deleteNews(userId, newsId);
         return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 삭제 성공", response);
     }
 }
