@@ -45,11 +45,12 @@ public class AdminNewsController {
     public ResponseTemplate<PageResponse<AdminNewsResponse>> retrieveNews(
             @LoginMember Long userId,
             @RequestParam(required = false) NewsStatus status,
-            @RequestParam(required = false) LocalDate sendAt,
+            @RequestParam(required = false) LocalDate startAt,
+            @RequestParam(required = false) LocalDate endAt,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Page<AdminNewsResponse> newsPage = adminNewsService.retrieveNewsList(userId, status, sendAt, page, size);
+        Page<AdminNewsResponse> newsPage = adminNewsService.retrieveNewsList(userId, status, startAt, endAt, page, size);
         PageResponse<AdminNewsResponse> newPageResponse = new PageResponse<>(
                 newsPage.getContent(),
                 newsPage.getNumber(),

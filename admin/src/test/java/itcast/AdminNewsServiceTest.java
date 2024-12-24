@@ -97,7 +97,8 @@ public class AdminNewsServiceTest {
     public void SuccessNewsListRetrieve() {
         // Given
         Long userId = 1L;
-        LocalDate sendAt = LocalDate.of(2024, 12, 1);
+        LocalDate startAt = LocalDate.of(2024, 12, 1);
+        LocalDate endAt = LocalDate.of(2024, 12, 10);
         NewsStatus status = NewsStatus.SUMMARY;
         int page = 0;
         int size = 10;
@@ -131,7 +132,7 @@ public class AdminNewsServiceTest {
                         "http://link2.com",
                         "http:thumb2.com",
                         NewsStatus.SUMMARY,
-                        LocalDate.of(2024, 12, 1))
+                        LocalDate.of(2024, 12, 10))
         );
 
         Pageable pageable = PageRequest.of(page, size);
@@ -139,10 +140,10 @@ public class AdminNewsServiceTest {
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsRepository.findNewsByCondition(status, sendAt, pageable)).willReturn(newsPage);
+        given(newsRepository.findNewsByCondition(status, startAt, endAt, pageable)).willReturn(newsPage);
 
         // When
-        Page<AdminNewsResponse> responsePage = adminNewsService.retrieveNewsList(userId, status, sendAt, page, size);
+        Page<AdminNewsResponse> responsePage = adminNewsService.retrieveNewsList(userId, status, startAt, endAt, page, size);
 
         // Then
         assertEquals(2, responsePage.getContent().size());
@@ -150,8 +151,7 @@ public class AdminNewsServiceTest {
         assertEquals("뉴스2", responsePage.getContent().get(1).title());
         assertEquals(page, responsePage.getNumber());
         assertEquals(size, responsePage.getSize());
-        verify(newsRepository).findNewsByCondition(status, sendAt, pageable);
-        verify(newsRepository).save(any(News.class));
+        verify(newsRepository).findNewsByCondition(status, startAt, endAt, pageable);
     }
 
     @Test
