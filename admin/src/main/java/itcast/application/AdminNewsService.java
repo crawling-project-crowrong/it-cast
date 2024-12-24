@@ -43,6 +43,13 @@ public class AdminNewsService {
         return newsRepository.findNewsByCondition(status, sendAt, pageable);
     }
 
+    public AdminNewsResponse retrieveNews(Long userId, Long newsId) {
+        isAdmin(userId);
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(() -> new ItCastApplicationException(NEWS_NOT_FOUND));
+        return new AdminNewsResponse(news);
+    }
+
     @Transactional
     public AdminNewsResponse updateNews(Long userId, Long newsId, AdminNewsRequest adminNewsRequest) {
         isAdmin(userId);

@@ -60,6 +60,16 @@ public class AdminNewsController {
     }
 
     @CheckAuth
+    @GetMapping("/{newsId}")
+    public ResponseTemplate<AdminNewsResponse> retrieveNews(
+            @LoginMember Long userId,
+            @PathVariable Long newsId
+    ) {
+        AdminNewsResponse response = adminService.retrieveNews(userId, newsId);
+        return new ResponseTemplate<>(HttpStatus.OK, "관리자 뉴스 단건 조회 성공", response);
+    }
+
+    @CheckAuth
     @PutMapping("/{newsId}")
     public ResponseTemplate<AdminNewsResponse> updateNews(
             @LoginMember Long userId,
