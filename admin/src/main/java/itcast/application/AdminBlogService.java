@@ -37,13 +37,14 @@ public class AdminBlogService {
     public Page<AdminBlogResponse> retrieveBlogList(Long userId,
                                                     BlogStatus blogStatus,
                                                     Interest interest,
-                                                    LocalDate sendAt,
+                                                    LocalDate startAt,
+                                                    LocalDate endAt,
                                                     int page,
                                                     int size
     ) {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
-        return blogRepository.findBlogByCondition(blogStatus, interest, sendAt, pageable);
+        return blogRepository.findBlogByCondition(blogStatus, interest, startAt, endAt, pageable);
     }
 
     public AdminBlogResponse retrieveBlog(Long userId, Long blogId) {

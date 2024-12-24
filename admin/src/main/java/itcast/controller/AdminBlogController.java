@@ -38,11 +38,12 @@ public class AdminBlogController {
             @LoginMember Long userId,
             @RequestParam(required = false) BlogStatus blogStatus,
             @RequestParam(required = false) Interest interest,
-            @RequestParam(required = false) LocalDate sendAt,
+            @RequestParam(required = false) LocalDate startAt,
+            @RequestParam(required = false) LocalDate endAt,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Page<AdminBlogResponse> blogPage = adminBlogService.retrieveBlogList(userId, blogStatus, interest, sendAt, page, size);
+        Page<AdminBlogResponse> blogPage = adminBlogService.retrieveBlogList(userId, blogStatus, interest, startAt, endAt, page, size);
         PageResponse<AdminBlogResponse> blogPageResponse = new PageResponse<>(
                 blogPage.getContent(),
                 blogPage.getNumber(),

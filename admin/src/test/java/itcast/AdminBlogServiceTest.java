@@ -99,7 +99,8 @@ public class AdminBlogServiceTest {
     public void SuccessBlogListRetrieve() {
         // Given
         Long userId = 1L;
-        LocalDate sendAt = LocalDate.of(2024, 12, 1);
+        LocalDate startAt = LocalDate.of(2024, 12, 1);
+        LocalDate endAt = LocalDate.of(2024, 12, 2);
         BlogStatus status = BlogStatus.SUMMARY;
         Interest interest = Interest.BACKEND;
         int page = 0;
@@ -144,10 +145,10 @@ public class AdminBlogServiceTest {
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
         given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(blogRepository.findBlogByCondition(status, interest, sendAt, pageable)).willReturn(blogPage);
+        given(blogRepository.findBlogByCondition(status, interest, startAt, endAt, pageable)).willReturn(blogPage);
 
         //when
-        Page<AdminBlogResponse> responsePage = adminBlogService.retrieveBlogList(userId, status, interest, sendAt, page, size);
+        Page<AdminBlogResponse> responsePage = adminBlogService.retrieveBlogList(userId, status, interest, startAt, endAt, page, size);
 
         //then
         assertEquals(2, responsePage.getContent().size());
@@ -155,7 +156,7 @@ public class AdminBlogServiceTest {
         assertEquals("블로그2", responsePage.getContent().get(1).title());
         assertEquals(page, responsePage.getNumber());
         assertEquals(size, responsePage.getSize());
-        verify(blogRepository).findBlogByCondition(status, interest, sendAt,  pageable);
+        verify(blogRepository).findBlogByCondition(status, interest, startAt, endAt, pageable);
     }
 
     @Test
