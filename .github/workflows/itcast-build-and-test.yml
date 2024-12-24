@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-      - issue/**
   pull_request:
     branches:
       - main
+      - dev
       - issue/**
 
 jobs:
@@ -51,7 +51,3 @@ jobs:
       - name: Tear down Docker Compose
         if: always()
         run: docker-compose down
-
-  deploy:
-    needs: build
-    uses: ./.github/workflows/itcast-build-and-deploy.yml
