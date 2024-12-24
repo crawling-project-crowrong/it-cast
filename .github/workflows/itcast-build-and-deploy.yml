@@ -1,18 +1,15 @@
 name: ItcastBuildAndDeploys
 
 on:
-  push:
-    branches:
-      - main
-      - issue/**
-  pull_request:
-    branches:
-      - main
-      - issue/**
+  workflow_run:
+    workflows: ["ItcastBuildAndTests"]
+    types:
+      - completed
 
 jobs:
   deploy:
 
+    if: github.event_name == 'push' && github.run_conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
