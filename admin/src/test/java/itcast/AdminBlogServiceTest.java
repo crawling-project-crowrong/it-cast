@@ -147,7 +147,7 @@ public class AdminBlogServiceTest {
         given(blogRepository.findBlogByCondition(status, interest, sendAt, pageable)).willReturn(blogPage);
 
         //when
-        Page<AdminBlogResponse> responsePage = adminBlogService.retrieveBlog(userId, status, interest, sendAt, page, size);
+        Page<AdminBlogResponse> responsePage = adminBlogService.retrieveBlogList(userId, status, interest, sendAt, page, size);
 
         //then
         assertEquals(2, responsePage.getContent().size());

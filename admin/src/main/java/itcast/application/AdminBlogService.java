@@ -34,7 +34,7 @@ public class AdminBlogService {
         return new AdminBlogResponse(savedBlogs);
     }
 
-    public Page<AdminBlogResponse> retrieveBlog(Long userId, BlogStatus blogStatus, Interest interest, LocalDate sendAt,
+    public Page<AdminBlogResponse> retrieveBlogList(Long userId, BlogStatus blogStatus, Interest interest, LocalDate sendAt,
                                                 int page, int size) {
         isAdmin(userId);
         Pageable pageable = PageRequest.of(page, size);
