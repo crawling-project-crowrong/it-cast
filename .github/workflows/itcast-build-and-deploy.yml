@@ -1,8 +1,8 @@
-name: ItcastBuildAndDeploys
+name: BuildAndDeploys
 
 on:
   workflow_run:
-    workflows: ["ItcastBuildAndTests"]
+    workflows: ["BuildAndTest"]
     types:
       - completed
 

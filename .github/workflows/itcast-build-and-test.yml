@@ -1,4 +1,4 @@
-name: ItcastBuildAndTests
+name: BuildAndTest
 
 on:
   push:
