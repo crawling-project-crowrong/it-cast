@@ -11,7 +11,7 @@ MODULES=(
   ["schedule"]="schedule"
 )
 
-echo ">>> 배포 시작" >> $LOG_PATH
+echo "$(date) >>> 배포 시작" >> $LOG_PATH
 
 for MODULE in "${!MODULES[@]}"
 do
@@ -38,6 +38,7 @@ do
   PID=$(ps -ef | grep $MODULE_NAME | grep java | awk '{print $2}')
   if [ -n "$PID" ]; then
     kill -15 $PID
+    sleep 2  # 프로세스 종료 대기
     echo ">>> $MODULE_NAME 기존 프로세스 종료 완료 (PID: $PID)" >> $LOG_PATH
   else
     echo ">>> $MODULE_NAME 실행 중인 프로세스 없음" >> $LOG_PATH
