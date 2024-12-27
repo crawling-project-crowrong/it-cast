@@ -98,12 +98,21 @@ jobs:
         if: always()
         run: docker-compose down
 
+      - name: Debug Gradle Build
+        run: |
+          echo "Checking build output..."
+          ls -al admin/build/libs/
+          ls -al b2c/build/libs/
+          ls -al schedule/build/libs/
+
       - name: Make Zip file
-        run: zip -r $GITHUB_SHA.zip \
-          admin/build/libs/*.jar \
-          schedule/build/libs/*.jar \
-          b2c/build/libs/*.jar \
-          appspec.yml scripts/deploy.sh
+        run: |
+          zip -r $GITHUB_SHA.zip \
+            admin/build/libs/admin-0.0.1-SNAPSHOT.jar \
+            b2c/build/libs/b2c-0.0.1-SNAPSHOT.jar \
+            schedule/build/libs/schedule-0.0.1-SNAPSHOT.jar \
+            scripts/deploy.sh \
+            appspec.yml
         shell: bash
 
       - name: AWS credential setting
