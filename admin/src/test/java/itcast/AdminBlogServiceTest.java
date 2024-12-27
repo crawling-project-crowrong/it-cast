@@ -44,7 +44,7 @@ public class AdminBlogServiceTest {
 
     @Test
     @DisplayName("블로그 생성 성공")
-    public void SuccessBlogCreate() {
+    public void successBlogCreate() {
         //given
         Long userId = 1L;
         LocalDate fixedTime = LocalDate.of(2024, 12, 1);
@@ -96,7 +96,7 @@ public class AdminBlogServiceTest {
 
     @Test
     @DisplayName("블로그 다건 조회 성공")
-    public void SuccessBlogListRetrieve() {
+    public void successBlogListRetrieve() {
         // Given
         Long userId = 1L;
         LocalDate startAt = LocalDate.of(2024, 12, 1);
@@ -161,7 +161,7 @@ public class AdminBlogServiceTest {
 
     @Test
     @DisplayName("블로그 단건 조회 성공")
-    public void SuccessBlogRetrieve() {
+    public void successBlogRetrieve() {
         //given
         Long userId = 1L;
         Long blogId = 1L;
@@ -201,7 +201,7 @@ public class AdminBlogServiceTest {
 
     @Test
     @DisplayName("블로그 수정 성공")
-    public void SuccessBlogUpdate() {
+    public void successBlogUpdate() {
         //given
         Long userId = 1L;
         Long blogId = 1L;
