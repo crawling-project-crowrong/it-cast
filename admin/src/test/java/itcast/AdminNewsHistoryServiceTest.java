@@ -79,7 +79,7 @@ public class AdminNewsHistoryServiceTest {
         //when
         Page<AdminNewsHistoryResponse> responsePage = adminNewsHistoryService.retrieveNewsHistory(adminId, userId, newsId, createdAt, page, size);
 
-        //Tnen
+        //Then
         assertEquals(2, responsePage.getContent().size());
         assertEquals(1L, responsePage.getContent().get(0).id());
         assertEquals(2L, responsePage.getContent().get(1).id());
