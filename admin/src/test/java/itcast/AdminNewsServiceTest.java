@@ -43,7 +43,7 @@ public class AdminNewsServiceTest {
 
     @Test
     @DisplayName("뉴스 생성 성공")
-    public void SuccessNewsCreate() {
+    public void successNewsCreate() {
         //given
         Long userId = 1L;
         LocalDateTime fixedTime = LocalDateTime.of(2024, 12, 1, 12, 0);
@@ -94,7 +94,7 @@ public class AdminNewsServiceTest {
 
     @Test
     @DisplayName("뉴스 다건 조회 성공")
-    public void SuccessNewsListRetrieve() {
+    public void successNewsListRetrieve() {
         // Given
         Long userId = 1L;
         LocalDate startAt = LocalDate.of(2024, 12, 1);
@@ -156,7 +156,7 @@ public class AdminNewsServiceTest {
 
     @Test
     @DisplayName("뉴스 단건 조회 성공")
-    public void SuccessNewsRetrieve() {
+    public void successNewsRetrieve() {
         //given
         Long userId = 1L;
         Long newsId = 1L;
@@ -197,7 +197,7 @@ public class AdminNewsServiceTest {
 
     @Test
     @DisplayName("뉴스 수정 성공")
-    public void SuccessNewsUpdate() {
+    public void successNewsUpdate() {
         //given
         Long userId = 1L;
         Long newsId = 1L;
