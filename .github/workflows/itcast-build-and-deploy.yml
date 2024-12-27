@@ -99,11 +99,12 @@ jobs:
         run: docker-compose down
 
       - name: Make Zip file
-        run: zip -r $GITHUB_SHA.zip \
-          admin/build/libs/*.jar \
-          schedule/build/libs/*.jar \
-          b2c/build/libs/*.jar \
-          appspec.yml scripts/deploy.sh
+        run: |
+          zip -r $GITHUB_SHA.zip \          
+            admin/build/libs/*.jar \
+            schedule/build/libs/*.jar \
+            b2c/build/libs/*.jar \
+            appspec.yml scripts/deploy.sh
         shell: bash
 
       - name: AWS credential setting
