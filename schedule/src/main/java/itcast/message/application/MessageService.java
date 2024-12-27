@@ -55,14 +55,18 @@ public class MessageService {
         StringBuilder textBuilder = new StringBuilder();
         for (MessageContent content : contentList) {
             String title = "■ Today's Message";
-            String contentTitle = ": " + content.title();
-            String summary = "▶ <요약 내용> " + content.summary();
-            String originalLink = "▶ <본문 보기> " + content.originalLink();
+            String contentTitle = content.title();
+            String summaryTitle = "▶ <요약 내용>";
+            String summaryContent = content.summary();
+            String originalLinkTitle = "▶ <본문 보기>";
+            String originalLinkContent = content.originalLink();
 
             textBuilder.append(title).append("\n")
-                    .append(contentTitle).append("\n")
-                    .append(summary).append("\n")
-                    .append(originalLink).append("\n\n");
+                    .append(contentTitle).append("\n\n")
+                    .append(summaryTitle).append("\n")
+                    .append(summaryContent).append("\n\n")
+                    .append(originalLinkTitle).append("\n")
+                    .append(originalLinkContent).append("\n\n");
         }
         try {
             ClassPathResource resource = new ClassPathResource("static/images/image.jpg");
