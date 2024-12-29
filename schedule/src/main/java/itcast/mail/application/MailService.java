@@ -7,17 +7,20 @@ import itcast.mail.dto.request.EmailSender;
 import itcast.mail.dto.request.SendMailRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
+@Slf4j
 public class MailService {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
     private final EmailSender emailSender;
 
+    @Async
     public void send(final SendMailRequest sendMailRequest) {
+        log.info("MailService.send() 실행 스레드: {}", Thread.currentThread().getName());
         try {
             final SendEmailRequest emailRequest = emailSender.from(sendMailRequest);
             amazonSimpleEmailService.sendEmail(emailRequest);
