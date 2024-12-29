@@ -18,9 +18,8 @@ public class MailService {
     private final AmazonSimpleEmailService amazonSimpleEmailService;
     private final EmailSender emailSender;
 
-    @Async
+    @Async("taskExecutor")
     public void send(final SendMailRequest sendMailRequest) {
-        log.info("MailService.send() 실행 스레드: {}", Thread.currentThread().getName());
         try {
             final SendEmailRequest emailRequest = emailSender.from(sendMailRequest);
             amazonSimpleEmailService.sendEmail(emailRequest);
