@@ -1,88 +1,98 @@
 package itcast;
 
-import itcast.application.AdminNewsHistoryService;
+import itcast.domain.news.News;
+import itcast.domain.newsHistory.NewsHistory;
 import itcast.domain.user.User;
 import itcast.dto.response.AdminNewsHistoryResponse;
 import itcast.jwt.repository.UserRepository;
-import itcast.repository.AdminRepository;
 import itcast.repository.NewsHistoryRepository;
+import itcast.repository.NewsRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@Transactional
+@SpringBootTest(classes = AdminApplication.class)
 public class AdminNewsHistoryServiceTest {
 
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private AdminRepository adminRepository;
-    @Mock
-    private NewsHistoryRepository newsHistoryRepository;
-    @InjectMocks
-    private AdminNewsHistoryService adminNewsHistoryService;
+    @Autowired
+    NewsHistoryRepository newsHistoryRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    NewsRepository newsRepository;
+
+    @BeforeEach
+    @DisplayName("10만개 더미데이터 생성")
+    void makeDummyData() {
+        List<User> users = userRepository.findAll();
+        List<News> newsList = newsRepository.findAll();
+        List<NewsHistory> newsHistories = new ArrayList<>();
+
+        for (long i = 0; i < 100000; i++) {
+            User user = users.get((int) (Math.random() * users.size()));
+            News news = newsList.get((int) (Math.random() * newsList.size()));
+
+            NewsHistory newsHistory = NewsHistory.builder()
+                    .user(user)
+                    .news(news)
+                    .build();
+            newsHistories.add(newsHistory);
+
+            if (newsHistories.size() % 1000 == 0) {
+                newsHistoryRepository.saveAll(newsHistories);
+                newsHistories.clear();
+            }
+        }
+
+        if (!newsHistories.isEmpty()) {
+            newsHistoryRepository.saveAll(newsHistories);
+        }
+    }
 
     @Test
     @DisplayName("히스토리 조회 성공")
-    public void SuccessNewHistoryRetrieve(){
-        //given
-        Long adminId = 1L;
-        Long userId = null;
-        Long newsId = null;
-        LocalDate createdAt = LocalDate.of(2024, 12, 26);
+    public void successNewsHistoryRetrieve() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        // Given
+        Long userId = 1L;
+        Long newsId = 2L;
+        LocalDate createdAt = LocalDate.now();
         int page = 0;
         int size = 20;
-
-        User user = User.builder()
-                .id(1L)
-                .kakaoEmail("kakao@kakao.com")
-                .build();
-
-        List<AdminNewsHistoryResponse> responses = List.of(
-                new AdminNewsHistoryResponse(
-                        1L,
-                        1L,
-                        1L,
-                        LocalDateTime.of(2024, 12, 26, 0, 0, 0),
-                        LocalDateTime.now()),
-                new AdminNewsHistoryResponse(
-                        2L,
-                        1L,
-                        2L,
-                        LocalDateTime.of(2024, 12, 26, 23, 59, 59),
-                        LocalDateTime.now())
-        );
-
         Pageable pageable = PageRequest.of(page, size);
-        Page<AdminNewsHistoryResponse> newsHistoryPage = new PageImpl<>(responses, pageable, responses.size());
 
-        given(userRepository.findById(adminId)).willReturn(Optional.of(user));
-        given(adminRepository.existsByEmail(user.getKakaoEmail())).willReturn(true);
-        given(newsHistoryRepository.findNewsHistoriesByCondition(userId, newsId, createdAt, pageable)).willReturn(newsHistoryPage);
+        // When
+        Page<AdminNewsHistoryResponse> newsHistories = newsHistoryRepository.findNewsHistoriesByCondition(userId, newsId, createdAt, pageable);
 
-        //when
-        Page<AdminNewsHistoryResponse> responsePage = adminNewsHistoryService.retrieveNewsHistory(adminId, userId, newsId, createdAt, page, size);
+        // Then
+        assertNotNull(newsHistories);
+        assertFalse(newsHistories.isEmpty());
+        assertEquals(1L, newsHistories.getContent().get(3).newsId());
 
-        //Then
-        assertEquals(2, responsePage.getContent().size());
-        assertEquals(1L, responsePage.getContent().get(0).id());
-        assertEquals(2L, responsePage.getContent().get(1).id());
-        verify(newsHistoryRepository).findNewsHistoriesByCondition(userId, newsId, createdAt, pageable);
+        stopWatch.stop();
+        System.out.println("걸린 시간: " + stopWatch.getTotalTimeMillis() + " ms");
+    }
+
+    @AfterEach
+    @DisplayName("더미데이터 삭제")
+    void deleteDummyData() {
+        newsHistoryRepository.deleteAllDummyData();
     }
 }
