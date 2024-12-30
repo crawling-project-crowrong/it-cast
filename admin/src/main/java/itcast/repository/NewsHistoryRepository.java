@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface NewsHistoryRepository extends JpaRepository<NewsHistory, Long>, CustomNewsHistoryRepository {
     @Modifying
-    @Query(value = "DELETE FROM news_history", nativeQuery = true)
+    @Query(value = "DELETE FROM news_history where is_dummy = true", nativeQuery = true)
     void deleteAllDummyData();
 }

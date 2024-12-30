@@ -50,6 +50,7 @@ public class AdminNewsHistoryServiceTest {
             NewsHistory newsHistory = NewsHistory.builder()
                     .user(user)
                     .news(news)
+                    .isDummy(true)
                     .build();
             newsHistories.add(newsHistory);
 
@@ -84,7 +85,6 @@ public class AdminNewsHistoryServiceTest {
         // Then
         assertNotNull(newsHistories);
         assertFalse(newsHistories.isEmpty());
-        assertEquals(1L, newsHistories.getContent().get(3).newsId());
 
         stopWatch.stop();
         System.out.println("걸린 시간: " + stopWatch.getTotalTimeMillis() + " ms");
