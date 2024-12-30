@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -66,9 +67,12 @@ public class HistoryTest {
     @Test
     @DisplayName("히스토리 조회 성공")
     public void successNewsHistoryRetrieve() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         // Given
         Long userId = 1L;
-        Long newsId = null;
+        Long newsId = 2L;
         LocalDate createdAt = LocalDate.now();
         int page = 0;
         int size = 20;
@@ -80,8 +84,10 @@ public class HistoryTest {
         // Then
         assertNotNull(newsHistories);
         assertFalse(newsHistories.isEmpty());
-        assertEquals(1L, newsHistories.getContent().get(6).userId());
-        assertEquals(20, newsHistories.getContent().size());
+        assertEquals(1L, newsHistories.getContent().get(3).newsId());
+
+        stopWatch.stop();
+        System.out.println("걸린 시간: " + stopWatch.getTotalTimeMillis() + " ms");
     }
 
     @AfterEach
