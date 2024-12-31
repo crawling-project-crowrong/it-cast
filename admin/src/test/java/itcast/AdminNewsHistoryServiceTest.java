@@ -80,7 +80,7 @@ public class AdminNewsHistoryServiceTest {
         Pageable pageable = PageRequest.of(page, size);
 
         // When
-        Page<AdminNewsHistoryResponse> newsHistories = newsHistoryRepository.findNewsHistoriesByCondition(userId, newsId, createdAt, pageable);
+        Page<AdminNewsHistoryResponse> newsHistories = newsHistoryRepository.findNewsHistoryListByCondition(userId, newsId, createdAt, pageable);
 
         // Then
         assertNotNull(newsHistories);

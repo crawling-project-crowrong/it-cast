@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 
 public interface CustomNewsHistoryRepository {
-    Page<AdminNewsHistoryResponse> findNewsHistoriesByCondition(Long userId, Long newsId, LocalDate createdAt, Pageable pageable);
+    Page<AdminNewsHistoryResponse> findNewsHistoryListByCondition(Long userId, Long newsId, LocalDate createdAt, Pageable pageable);
 }

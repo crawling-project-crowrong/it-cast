@@ -28,7 +28,7 @@ public class AdminNewsHistoryService {
     ) {
         isAdmin(adminId);
         Pageable pageable = PageRequest.of(page, size);
-        return newsHistoryRepository.findNewsHistoriesByCondition(userId, newsId, createdAt, pageable);
+        return newsHistoryRepository.findNewsHistoryListByCondition(userId, newsId, createdAt, pageable);
     }
 
     private void isAdmin(Long id) {

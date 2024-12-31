@@ -25,7 +25,7 @@ public class CustomNewsHistoryRepositoryImpl implements CustomNewsHistoryReposit
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<AdminNewsHistoryResponse> findNewsHistoriesByCondition(Long userId, Long newsId, LocalDate createdAt, Pageable pageable) {
+    public Page<AdminNewsHistoryResponse> findNewsHistoryListByCondition(Long userId, Long newsId, LocalDate createdAt, Pageable pageable) {
         QNewsHistory newsHistory = QNewsHistory.newsHistory;
 
         JPQLQuery<AdminNewsHistoryResponse> query = queryFactory
