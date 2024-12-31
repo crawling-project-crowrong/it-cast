@@ -37,7 +37,7 @@ public class CustomNewsHistoryRepositoryImpl implements CustomNewsHistoryReposit
                         newsHistory.modifiedAt
                 ))
                 .from(newsHistory)
-                .where(newsIdEq(newsId), userIdEq(userId), createdAtEq(createdAt))
+                .where(userIdEq(userId), newsIdEq(newsId), createdAtEq(createdAt))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -46,7 +46,7 @@ public class CustomNewsHistoryRepositoryImpl implements CustomNewsHistoryReposit
         JPQLQuery<Long> countQuery = queryFactory
                 .select(newsHistory.count())
                 .from(newsHistory)
-                .where();
+                .where(userIdEq(userId), newsIdEq(newsId), createdAtEq(createdAt));
 
         return new PageImpl<>(content, pageable, countQuery.fetchOne());
     }
@@ -69,10 +69,8 @@ public class CustomNewsHistoryRepositoryImpl implements CustomNewsHistoryReposit
         if(createdAt == null) {
             return null;
         }
-
         LocalDateTime startAt = LocalDateTime.of(createdAt, LocalTime.of(0, 0,0));
         LocalDateTime endAt = LocalDateTime.of(createdAt, LocalTime.of(23, 59, 59));
-
         return newsHistory.createdAt.between(startAt, endAt);
     }
 }
