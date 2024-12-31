@@ -19,5 +19,4 @@ public record AdminNewsHistoryResponse (
                 newsHistory.getModifiedAt()
         );
     }
-
 }

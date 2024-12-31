@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "news_history", indexes = {
-@Index(name = "idx_user_news_created", columnList = "news_id, user_id, created_at")})
+@Index(name = "idx_user_news_created", columnList = "user_id, news_id, created_at")})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewsHistory extends BaseEntity {
 
