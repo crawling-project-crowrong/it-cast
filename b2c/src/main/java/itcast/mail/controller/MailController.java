@@ -31,7 +31,7 @@ public class MailController {
 
     @CheckAuth
     @PostMapping()
-    public ResponseTemplate<String> sendEmailAuthenticationCode(@RequestBody final EmailRequest request) {
+    public ResponseTemplate<Void> sendEmailAuthenticationCode(@RequestBody final EmailRequest request) {
         final String code = UUID.randomUUID().toString().substring(0, 6);
 
         redisTemplate.opsForValue().set("email-verification:" + request.email(), code, 5, TimeUnit.MINUTES);
@@ -39,7 +39,7 @@ public class MailController {
         final SendValidateMailRequest mailRequest = SendValidateMailRequest.of(request.email(), code);
         mailService.sendValidateEmail(mailRequest);
 
-        return new ResponseTemplate<>(HttpStatus.OK, "인증 메일이 발송되었습니다.", code);
+        return new ResponseTemplate<>(HttpStatus.OK, "인증 메일이 발송되었습니다.", null);
     }
 
     @CheckAuth
