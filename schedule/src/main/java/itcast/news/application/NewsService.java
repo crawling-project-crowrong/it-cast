@@ -1,5 +1,7 @@
 package itcast.news.application;
 
+import static itcast.exception.ErrorCodes.CRAWLING_PARSE_ERROR;
+import static itcast.exception.ErrorCodes.GPT_SERVICE_ERROR;
 import static itcast.exception.ErrorCodes.INVALID_NEWS_CONTENT;
 import static itcast.exception.ErrorCodes.NEWS_CRAWLING_ERROR;
 
