@@ -1,5 +1,7 @@
 package itcast.application;
 
+import com.opencsv.CSVWriter;
+import itcast.domain.newsHistory.NewsHistory;
 import itcast.domain.user.User;
 import itcast.dto.response.AdminNewsHistoryResponse;
 import itcast.exception.ErrorCodes;
@@ -13,7 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.StringWriter;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,35 @@ public class AdminNewsHistoryService {
         isAdmin(adminId);
         Pageable pageable = PageRequest.of(page, size);
         return newsHistoryRepository.findNewsHistoryListByCondition(userId, newsId, createdAt, pageable);
+    }
+
+    public String createCsvFile(Long adminId) {
+        isAdmin(adminId);
+        List<NewsHistory> newsHistoryList = newsHistoryRepository.findAll();
+        StringWriter stringWriter = new StringWriter();
+        CSVWriter csvWriter = new CSVWriter(stringWriter);
+
+        String[] header = new String[]{"id", "userId", "newsId", "createdAt", "updatedAt"};
+        csvWriter.writeNext(header);
+
+        for (NewsHistory newsHistory : newsHistoryList) {
+            String[] data = {
+                    String.valueOf(newsHistory.getId()),
+                    String.valueOf(newsHistory.getUser().getId()),
+                    String.valueOf(newsHistory.getNews().getId()),
+                    String.valueOf(newsHistory.getCreatedAt()),
+                    String.valueOf(newsHistory.getModifiedAt())
+            };
+            csvWriter.writeNext(data);
+        }
+
+        try {
+            csvWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stringWriter.toString();
     }
 
     private void isAdmin(Long id) {
