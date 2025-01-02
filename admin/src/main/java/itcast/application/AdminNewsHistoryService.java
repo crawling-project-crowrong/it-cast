@@ -35,22 +35,22 @@ public class AdminNewsHistoryService {
         return newsHistoryRepository.findNewsHistoryListByCondition(userId, newsId, createdAt, pageable);
     }
 
-    public String createCsvFile(Long adminId) {
+    public String createCsvFile(Long adminId, Long userId, Long newsId, LocalDate startAt, LocalDate endAt) {
         isAdmin(adminId);
-        List<NewsHistory> newsHistoryList = newsHistoryRepository.findAll();
+        List<AdminNewsHistoryResponse> newsHistoryList = newsHistoryRepository.downloadNewsHistoryListByCondition(userId, newsId, startAt, endAt);
         StringWriter stringWriter = new StringWriter();
         CSVWriter csvWriter = new CSVWriter(stringWriter);
 
-        String[] header = new String[]{"id", "userId", "newsId", "createdAt", "updatedAt"};
+        String[] header = new String[]{"id", "userId", "newsId", "createdAt", "modifiedAt"};
         csvWriter.writeNext(header);
 
-        for (NewsHistory newsHistory : newsHistoryList) {
+        for (AdminNewsHistoryResponse response : newsHistoryList) {
             String[] data = {
-                    String.valueOf(newsHistory.getId()),
-                    String.valueOf(newsHistory.getUser().getId()),
-                    String.valueOf(newsHistory.getNews().getId()),
-                    String.valueOf(newsHistory.getCreatedAt()),
-                    String.valueOf(newsHistory.getModifiedAt())
+                    String.valueOf(response.id()),
+                    String.valueOf(response.userId()),
+                    String.valueOf(response.newsId()),
+                    String.valueOf(response.createdAt()),
+                    String.valueOf(response.modifiedAt())
             };
             csvWriter.writeNext(data);
         }

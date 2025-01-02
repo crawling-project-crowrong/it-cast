@@ -50,8 +50,14 @@ public class AdminNewsHistoryController {
 
     @CheckAuth
     @GetMapping("/download-csv")
-    public ResponseEntity<byte[]> downloadCsv(@LoginMember Long adminId) {
-        String csvContent = adminNewsHistoryService.createCsvFile(adminId);
+    public ResponseEntity<byte[]> downloadCsv(
+            @LoginMember Long adminId,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long newsId,
+            @RequestParam(required = false) LocalDate startAt,
+            @RequestParam(required = false) LocalDate endAt
+    ) {
+        String csvContent = adminNewsHistoryService.createCsvFile(adminId, userId, newsId, startAt, endAt);
 
         // 파일 이름 설정
         String fileName = "NewsHistory_File("+LocalDate.now()+").csv";
