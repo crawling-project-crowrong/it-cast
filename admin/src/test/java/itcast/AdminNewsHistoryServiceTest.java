@@ -39,7 +39,7 @@ public class AdminNewsHistoryServiceTest {
     AdminNewsHistoryService adminNewsHistoryService;
 
     @Test
-    @DisplayName("히스토리 조회 성공")
+    @DisplayName("뉴스 히스토리 조회 성공")
     public void successNewsHistoryRetrieve() {
         //given
         Long userId = 1L;
@@ -80,6 +80,8 @@ public class AdminNewsHistoryServiceTest {
 
         //when
         Page<AdminNewsHistoryResponse> responsePage = adminNewsHistoryService.retrieveNewsHistory(userId, null, 1L, testDate, page, size);
+
+        //then
         assertEquals(2, responsePage.getContent().size());
         assertEquals(1L, responsePage.getContent().get(0).userId());
         assertEquals(2L, responsePage.getContent().get(1).userId());
