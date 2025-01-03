@@ -19,8 +19,9 @@ public enum ErrorCodes {
     INVALID_TOKEN("유효하지 않거나 만료된 토큰입니다.", 4002L, HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_ACCESS("로그인이 필요한 기능입니다.", 4003L, HttpStatus.UNAUTHORIZED),
     //message
-    MESSAGE_SENDING_FAILED("메시지 발송 실패", 4004L, HttpStatus.BAD_REQUEST),
-
+    MESSAGE_SENDING_FAILED("메시지 발송에 실패하였습니다", 4004L, HttpStatus.BAD_REQUEST),
+    VERIFICATION_CODE_SENDING_FAILED("인증번호 발송에 실패하였습니다", 4005L, HttpStatus.BAD_REQUEST),
+    VERIFICATION_CODE_MISMATCH("인증번호가 일치하지 않습니다", 4006L, HttpStatus.BAD_REQUEST),
     // Email
     EMAIL_SENDING_FAILED("메일 발송에 실패하였습니다.", 5001L, HttpStatus.BAD_REQUEST),
 
