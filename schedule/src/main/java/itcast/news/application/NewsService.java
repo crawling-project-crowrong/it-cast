@@ -1,8 +1,5 @@
 package itcast.news.application;
 
-import static itcast.exception.ErrorCodes.INVALID_NEWS_CONTENT;
-import static itcast.exception.ErrorCodes.NEWS_CRAWLING_ERROR;
-
 import itcast.ai.application.GPTService;
 import itcast.ai.dto.request.GPTSummaryRequest;
 import itcast.ai.dto.request.Message;
@@ -22,6 +19,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+
+import static itcast.exception.ErrorCodes.*;
 
 @Service
 @Slf4j
@@ -50,6 +49,9 @@ public class NewsService {
 
         if (!newsList.isEmpty()) {
             newsRepository.saveAll(newsList);
+            newsList.forEach (news -> {
+                updateNewsSummary(news, news.getContent());
+            });
         }
     }
 
@@ -75,7 +77,6 @@ public class NewsService {
 
             CreateNewsRequest newsRequest = new CreateNewsRequest(titles, content, link, thumbnail, publishedAt);
             News news = newsRequest.toEntity(titles, content, link, thumbnail, publishedAt);
-            updateNewsSummary(news, content);
             return news;
         } catch (IOException e) {
             throw new ItCastApplicationException(CRAWLING_PARSE_ERROR);
