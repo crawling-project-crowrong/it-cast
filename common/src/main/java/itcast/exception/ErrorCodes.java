@@ -34,11 +34,15 @@ public enum ErrorCodes {
     NEWS_CRAWLING_ERROR("뉴스 크롤링에 실패했습니다", 2004L, HttpStatus.BAD_REQUEST),
     BLOG_SELECT_ERROR("블로그 선택에 실패하였습니다.", 2004L, HttpStatus.BAD_REQUEST),
     NEWS_SELECT_ERROR("뉴스 선택에 실패하였습니다.", 2004L, HttpStatus.BAD_REQUEST),
+    GPT_SERVICE_ERROR("GPT요약 중 오류가 발생했습니다 ",2009L,HttpStatus.BAD_REQUEST),
 
     TODAY_NEWS_NOT_FOUND("뉴스 선택에 실패했습니다", 2005L, HttpStatus.NOT_FOUND),
     NOT_FOUND_EMAIL("이메일을 찾을 수 없습니다", 2006L, HttpStatus.NOT_FOUND),
     NOT_FOUND_SEND_DATA("발송 데이터를 찾을 수 없습니다", 2007L, HttpStatus.NOT_FOUND),
     INVALID_INTEREST_TYPE_ERROR("invalid타입이 맞지 않습니다", 2008L, HttpStatus.BAD_REQUEST),
+
+    MAIL_AUTH_CODE_EXPIRED("인증 코드가 만료되었습니다.", 6001L, HttpStatus.BAD_REQUEST),
+    MAIL_AUTH_CODE_MISMATCH("인증 코드가 일치하지 않습니다.", 6002L, HttpStatus.FORBIDDEN),
 
     BAD_REQUEST("BAD_REQUEST", 9404L, HttpStatus.BAD_REQUEST),
     BAD_REQUEST_JSON_PARSE_ERROR("[BAD_REQUEST] JSON_PARSE_ERROR - 올바른 JSON 형식이 아님", 9405L, HttpStatus.BAD_REQUEST),
