@@ -7,7 +7,6 @@ import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import itcast.domain.mailEvent.MailEvents;
 import itcast.domain.user.User;
 import itcast.jwt.repository.UserRepository;
-import itcast.mail.dto.request.MailContent;
 import itcast.mail.dto.request.SendMailRequest;
 import itcast.mail.dto.request.SendValidateMailRequest;
 import itcast.mail.repository.MailEventsRepository;
@@ -58,17 +57,16 @@ public class MailService {
             } catch (MessageRejectedException ex) {
                 log.error("메일 재발송에 실패하였습니다. {}", receiver, ex);
                 final User user = userRepository.findByEmail(receiver);
-
-                for (MailContent mailContent : sendMailRequest.contents()) {
-                    final MailEvents mailEvent = MailEvents.of(
-                            user,
-                            mailContent.title(),
-                            mailContent.summary(),
-                            mailContent.originalLink(),
-                            mailContent.thumbnail()
-                    );
-                    mailEventsRepository.save(mailEvent);
-                }
+                sendMailRequest.contents()
+                        .stream()
+                        .map(mailContent -> MailEvents.of(
+                                user,
+                                mailContent.title(),
+                                mailContent.summary(),
+                                mailContent.originalLink(),
+                                mailContent.thumbnail()
+                        ))
+                        .forEach(mailEventsRepository::save);
             }
         }
     }
