@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import itcast.ResponseTemplate;
+import itcast.jwt.CheckAuth;
 import itcast.message.application.MessageService;
 import itcast.message.dto.request.VerificationRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class MessageController {
 
     private final MessageService messageService;
 
+    @CheckAuth
     @PostMapping("/send")
     public ResponseTemplate<String> sendVerificationCode(@RequestBody VerificationRequest verificationRequest) {
         String phoneNumber = verificationRequest.phoneNumber();
@@ -24,6 +26,7 @@ public class MessageController {
         return new ResponseTemplate<>(HttpStatus.OK, "인증번호 전송이 완료되었습니다.", verificationCode);
     }
 
+    @CheckAuth
     @PostMapping("/verify")
     public ResponseTemplate<String> verifyVerificationCode(@RequestBody VerificationRequest verificationRequest) {
         messageService.verifyVerificationCode(verificationRequest);

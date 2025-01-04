@@ -55,7 +55,7 @@ public class MessageService {
     }
 
     public void verifyVerificationCode(VerificationRequest requestDto) {
-        if (isVerify(requestDto)) {
+        if (!isVerify(requestDto)) {
             throw new ItCastApplicationException(ErrorCodes.VERIFICATION_CODE_MISMATCH);
         }
         redisTemplate.delete(VERIFICATION_CODE_PREFIX + requestDto.phoneNumber());
@@ -64,6 +64,9 @@ public class MessageService {
     private boolean isVerify(VerificationRequest requestDto) {
         String storedCode = (String)redisTemplate.opsForValue()
                 .get(VERIFICATION_CODE_PREFIX + requestDto.phoneNumber());
+        if (storedCode != null) {
+            storedCode = storedCode.replaceAll("\"", "");
+        }
         return storedCode != null && storedCode.equals(requestDto.verificationCode());
     }
 }
