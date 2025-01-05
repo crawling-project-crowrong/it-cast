@@ -29,6 +29,7 @@ public class MailService {
     private final EmailValidatorSender emailValidatorSender;
     private final MailEventsRepository mailEventsRepository;
     private final UserRepository userRepository;
+    private final SlackService slackService;
 
     @Async("taskExecutor")
     public void send(final SendMailRequest sendMailRequest) {
@@ -67,6 +68,7 @@ public class MailService {
                                 mailContent.thumbnail()
                         ))
                         .forEach(mailEventsRepository::save);
+                slackService.postInquiry(receiver);
             }
         }
     }
