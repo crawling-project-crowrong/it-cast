@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <springProfile name="prod">
+    <springProfile name="none">
         <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
         <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>./schedule/logs/info/info.log</file>
