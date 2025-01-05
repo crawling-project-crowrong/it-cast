@@ -22,10 +22,8 @@ import static itcast.exception.ErrorCodes.SLACK_PARSE_ERROR;
 @RequiredArgsConstructor
 public class SlackService {
 
-    @Value(value = "${slack.token}")
-    private String token;
-    @Value(value = "${slack.channel.monitor}")
-    private String channel;
+    private static final String TOKEN = "token";
+    private static final String CHANNEL = "channel";
 
     public void postInquiry(String receiver) {
         try {
@@ -33,9 +31,9 @@ public class SlackService {
             textObjects.add(markdownText("*재 발송 실패 날짜:*\n" + LocalDateTime.now()));
             textObjects.add(markdownText("*재 시도 실패 메일:*\n" +receiver));
 
-            MethodsClient methods = Slack.getInstance().methods(token);
+            MethodsClient methods = Slack.getInstance().methods(TOKEN);
             ChatPostMessageRequest request = ChatPostMessageRequest.builder()
-                    .channel(channel)
+                    .channel(CHANNEL)
                     .blocks(asBlocks(
                             header(header ->
                                     header.text(plainText("메일 재 발송에 실패 했습니다!!!"))),
