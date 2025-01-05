@@ -58,6 +58,12 @@ public class MessageService {
         if (!isVerify(requestDto)) {
             throw new ItCastApplicationException(ErrorCodes.VERIFICATION_CODE_MISMATCH);
         }
+        redisTemplate.opsForValue().set(
+                "VERIFIED_" + requestDto.phoneNumber(),
+                true,
+                5,
+                TimeUnit.MINUTES
+        );
         redisTemplate.delete(VERIFICATION_CODE_PREFIX + requestDto.phoneNumber());
     }
 

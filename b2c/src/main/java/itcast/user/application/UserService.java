@@ -1,5 +1,6 @@
 package itcast.user.application;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +21,15 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional
     public ProfileCreateResponse createProfile(ProfileCreateRequest request, Long id) {
         User existingUser = findUserByIdOrThrow(id);
+        if (!isVerified(request.phoneNumber())) {
+            throw new ItCastApplicationException(ErrorCodes.VERIFICATION_REQUIRED);
+        }
         validateConstraints(request.nickname(), request.email(), request.phoneNumber());
-
         if (ArticleType.NEWS.equals(request.articleType())) {
             request = new ProfileCreateRequest(
                     request.nickname(),
@@ -38,12 +42,16 @@ public class UserService {
         }
         User updatedUser = request.toEntity(existingUser);
         User savedUser = userRepository.save(updatedUser);
+        redisTemplate.delete("VERIFIED_" + request.phoneNumber());
         return ProfileCreateResponse.fromEntity(savedUser);
     }
 
     @Transactional
     public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
         User existingUser = findUserByIdOrThrow(id);
+        if (!isVerified(request.phoneNumber())) {
+            throw new ItCastApplicationException(ErrorCodes.VERIFICATION_REQUIRED);
+        }
         validateConstraints(request.nickname(), request.email(), request.phoneNumber());
         if (ArticleType.NEWS.equals(request.articleType())) {
             request = new ProfileUpdateRequest(
@@ -57,6 +65,7 @@ public class UserService {
         }
         User updatedUser = request.toEntity(existingUser);
         User savedUser = userRepository.save(updatedUser);
+        redisTemplate.delete("VERIFIED_" + request.phoneNumber());
         return ProfileUpdateResponse.fromEntity(savedUser);
     }
 
@@ -69,6 +78,10 @@ public class UserService {
     private User findUserByIdOrThrow(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ItCastApplicationException(ErrorCodes.USER_NOT_FOUND));
+    }
+    private boolean isVerified(String phoneNumber) {
+        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_" + phoneNumber);
+        return isVerified != null && isVerified;
     }
     private void validateConstraints(String nickname, String email, String phoneNumber) {
         if (userRepository.existsByNickname(nickname)) {
