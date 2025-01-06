@@ -2,7 +2,7 @@ package itcast.application;
 
 import itcast.domain.mailEvent.MailEvents;
 import itcast.dto.response.MailResponse;
-import itcast.repository.MailRepository;
+import itcast.mail.repository.MailEventsRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.data.domain.Page;
@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminMailService {
 
-    private final MailRepository mailRepository;
+    private final MailEventsRepository mailEventsRepository;
     private final AdminCheckService adminCheckService;
 
     public Page<MailResponse> retrieveMailEvent(Long adminId, int page, int size) {
         adminCheckService.isAdmin(adminId);
         PageRequest pageable = PageRequest.of(page, size);
-        Page<MailEvents> mailEventsPage = mailRepository.findAll(pageable);
+        Page<MailEvents> mailEventsPage = mailEventsRepository.findAll(pageable);
 
         Map<Pair<Long, LocalDate>, List<MailResponse.MailContent>> groupedData = mailEventsPage.getContent().stream()
                 .collect(Collectors.groupingBy(

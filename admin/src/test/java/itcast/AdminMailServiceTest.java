@@ -5,7 +5,7 @@ import itcast.application.AdminMailService;
 import itcast.domain.mailEvent.MailEvents;
 import itcast.domain.user.User;
 import itcast.dto.response.MailResponse;
-import itcast.repository.MailRepository;
+import itcast.mail.repository.MailEventsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AdminMailServiceTest {
 
     @Mock
-    private MailRepository mailRepository;
+    private MailEventsRepository mailEventsRepository;
 
     @Mock
     private AdminCheckService adminCheckService;
@@ -64,7 +62,7 @@ class AdminMailServiceTest {
         List<MailEvents> mailEventsList = Arrays.asList(event1, event2);
         Page<MailEvents> mailEventsPage = new PageImpl<>(mailEventsList, pageable, mailEventsList.size());
 
-        when(mailRepository.findAll(pageable)).thenReturn(mailEventsPage);
+        when(mailEventsRepository.findAll(pageable)).thenReturn(mailEventsPage);
         doNothing().when(adminCheckService).isAdmin(adminId);
 
         // When
@@ -72,7 +70,7 @@ class AdminMailServiceTest {
 
         // Then
         verify(adminCheckService).isAdmin(adminId);
-        verify(mailRepository).findAll(pageable);
+        verify(mailEventsRepository).findAll(pageable);
 
         // 검증 로직 수정
         assertEquals(2, result.getContent().size());
