@@ -24,7 +24,10 @@ import itcast.message.dto.request.MessageContent;
 import itcast.message.dto.request.RecieverPhoneNumber;
 import itcast.message.dto.request.SendMessageRequest;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Service
 public class MessageService {
 
@@ -35,6 +38,9 @@ public class MessageService {
 
     @Value("${sms.api.secret}")
     private String apiSecret;
+
+    @Value("${sms.sender.phone}")
+    private String fromNumber;
 
     private String apiUrl = "https://api.coolsms.co.kr";
 
@@ -47,7 +53,7 @@ public class MessageService {
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, apiUrl);
     }
 
-    public ResponseTemplate<List<FailedMessage>> sendMessages(SendMessageRequest request) {
+    public void sendMessages(SendMessageRequest request) {
         ArrayList<Message> messageList = new ArrayList<>();
         List<MessageContent> contentList = request.contentList();
         List<RecieverPhoneNumber> phoneNumbers = request.phoneNumbers();
@@ -55,14 +61,18 @@ public class MessageService {
         StringBuilder textBuilder = new StringBuilder();
         for (MessageContent content : contentList) {
             String title = "■ Today's Message";
-            String contentTitle = ": " + content.title();
-            String summary = "▶ <요약 내용> " + content.summary();
-            String originalLink = "▶ <본문 보기> " + content.originalLink();
+            String contentTitle = content.title();
+            String summaryTitle = "▶ <요약 내용>";
+            String summaryContent = content.content();
+            String originalLinkTitle = "▶ <본문 보기>";
+            String originalLinkContent = content.link();
 
             textBuilder.append(title).append("\n")
-                    .append(contentTitle).append("\n")
-                    .append(summary).append("\n")
-                    .append(originalLink).append("\n\n");
+                    .append(contentTitle).append("\n\n")
+                    .append(summaryTitle).append("\n")
+                    .append(summaryContent).append("\n\n")
+                    .append(originalLinkTitle).append("\n")
+                    .append(originalLinkContent).append("\n\n");
         }
         try {
             ClassPathResource resource = new ClassPathResource("static/images/image.jpg");
@@ -70,7 +80,7 @@ public class MessageService {
             String imageId = messageService.uploadFile(file, StorageType.MMS, null);
 
             Message message = new Message();
-            message.setFrom("01033124811");
+            message.setFrom(fromNumber);
             List<String> phoneNumberList = phoneNumbers.stream()
                     .map(RecieverPhoneNumber::phoneNumber)
                     .collect(Collectors.toList());
@@ -81,12 +91,11 @@ public class MessageService {
             messageList.add(message);
 
             this.messageService.send(messageList, false, true);
-            return new ResponseTemplate<>(HttpStatus.OK, "메세지가 발송되었습니다.");
         } catch (NurigoMessageNotReceivedException exception) {
             List<FailedMessage> failedMessages = exception.getFailedMessageList();
-            return new ResponseTemplate<>(HttpStatus.BAD_REQUEST, "메시지 발송 실패", failedMessages);
+            log.error("메시지 발송 실패. 실패한 메시지 목록: {}", failedMessages);
         } catch (Exception exception) {
-            throw new ItCastApplicationException(ErrorCodes.MESSAGE_SENDING_FAILED);
+            log.error("메시지 전송 중 예기치 않은 오류 발생: {}", exception.getMessage(), exception);
         }
     }
 }

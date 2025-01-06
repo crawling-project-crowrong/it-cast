@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByInterest(@Param("interest") Interest interest);
 
     User findByEmail(String email);
+
+    User findByPhoneNumber(String phoneNumber);
 }
