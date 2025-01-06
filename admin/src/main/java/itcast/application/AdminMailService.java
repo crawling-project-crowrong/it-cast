@@ -52,7 +52,7 @@ public class AdminMailService {
                 .sorted(Comparator
                         .comparing(MailResponse::createdAt, Comparator.reverseOrder())
                         .thenComparing(MailResponse::userId))
-                .collect(Collectors.toList());
+                .toList();
 
         return new PageImpl<>(mailResponses, pageable, mailEventsPage.getTotalElements());
     }
