@@ -51,6 +51,9 @@ public class NewsService {
 
         if (!newsList.isEmpty()) {
             newsRepository.saveAll(newsList);
+            newsList.forEach(news -> {
+                updateNewsSummary(news, news.getOriginalContent());
+            });
         }
     }
 
@@ -67,16 +70,12 @@ public class NewsService {
             LocalDateTime publishedAt = convertDateTime(date);
 
             if (thumbnail.isEmpty()) {
-                throw new ItCastApplicationException(INVALID_NEWS_CONTENT);
-            }
-            if (thumbnail.isEmpty()) {
                 log.error("썸네일이 존재하지 않습니다. {}", link);
                 throw new ItCastApplicationException(INVALID_NEWS_CONTENT);
             }
 
             CreateNewsRequest newsRequest = new CreateNewsRequest(titles, content, link, thumbnail, publishedAt);
             News news = newsRequest.toEntity(titles, content, link, thumbnail, publishedAt);
-            updateNewsSummary(news, content);
             return news;
         } catch (IOException e) {
             throw new ItCastApplicationException(CRAWLING_PARSE_ERROR);
