@@ -43,7 +43,6 @@ public class UserService {
         }
         User updatedUser = request.toEntity(existingUser);
         User savedUser = userRepository.save(updatedUser);
-        redisTemplate.delete("VERIFIED_PHONE_NUMBER" + request.phoneNumber());  // 수정된 부분
         return ProfileCreateResponse.fromEntity(savedUser);
     }
 
@@ -51,7 +50,7 @@ public class UserService {
     public ProfileUpdateResponse updateProfile(ProfileUpdateRequest request, Long id) {
         User existingUser = findUserByIdOrThrow(id);
         validateSendingTypeConstraints(request.sendingType(), request.phoneNumber(), request.email());
-        validateVerification(request); // 인증 검증 추가
+        validateVerification(request);
         validateConstraints(request.nickname(), request.email(), request.phoneNumber());
 
         if (ArticleType.NEWS.equals(request.articleType())) {
@@ -66,7 +65,6 @@ public class UserService {
         }
         User updatedUser = request.toEntity(existingUser);
         User savedUser = userRepository.save(updatedUser);
-        redisTemplate.delete("VERIFIED_PHONE_NUMBER" + request.phoneNumber());  // 수정된 부분
         return ProfileUpdateResponse.fromEntity(savedUser);
     }
 
@@ -75,12 +73,12 @@ public class UserService {
         User user = findUserByIdOrThrow(id);
         userRepository.delete(user);
     }
-
     private User findUserByIdOrThrow(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ItCastApplicationException(ErrorCodes.USER_NOT_FOUND));
     }
 
+    //닉네임, 이메일, 번호 중복 확인
     private void validateConstraints(String nickname, String email, String phoneNumber) {
         if (userRepository.existsByNickname(nickname)) {
             throw new ItCastApplicationException(ErrorCodes.NICKNAME_ALREADY_EXISTS);
@@ -93,6 +91,7 @@ public class UserService {
         }
     }
 
+    // SendingType에 따라 필수 항목 확인
     private void validateSendingTypeConstraints(SendingType sendingType, String phoneNumber, String email) {
         if (SendingType.MESSAGE.equals(sendingType) && (phoneNumber == null || phoneNumber.isEmpty())) {
             throw new ItCastApplicationException(ErrorCodes.PHONE_NUMBER_REQUIRED);
@@ -103,14 +102,13 @@ public class UserService {
         }
     }
 
-    public void validateVerification(ProfileCreateRequest request) {
-        validateSendingTypeVerification(request.sendingType(), request.phoneNumber(), request.email());
-    }
-
+    //SendingType에 따라 인증 확인
     public void validateVerification(ProfileUpdateRequest request) {
         validateSendingTypeVerification(request.sendingType(), request.phoneNumber(), request.email());
     }
-
+    public void validateVerification(ProfileCreateRequest request) {
+        validateSendingTypeVerification(request.sendingType(), request.phoneNumber(), request.email());
+    }
     private void validateSendingTypeVerification(SendingType sendingType, String phoneNumber, String email) {
         if (SendingType.MESSAGE.equals(sendingType)) {
             if (!isVerifiedPhoneNumber(phoneNumber)) {
@@ -120,19 +118,14 @@ public class UserService {
             if (!isVerifiedEmail(email)) {
                 throw new ItCastApplicationException(ErrorCodes.EMAIL_VERIFICATION_REQUIRED);
             }
-        } else {
-            throw new ItCastApplicationException(ErrorCodes.INVALID_SENDING_TYPE);
         }
     }
-
     private boolean isVerifiedPhoneNumber(String phoneNumber) {
-        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_PHONE_NUMBER" + phoneNumber);  // 수정된 부분
+        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_PHONE_NUMBER" + phoneNumber);
         return isVerified != null && isVerified;
     }
-
     private boolean isVerifiedEmail(String email) {
-        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_EMAIL" + email);  // 수정된 부분
+        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_EMAIL" + email);
         return isVerified != null && isVerified;
     }
-}
 }

@@ -25,7 +25,7 @@ public enum ErrorCodes {
     MESSAGE_SENDING_FAILED("메시지 발송에 실패하였습니다", 4004L, HttpStatus.BAD_REQUEST),
     VERIFICATION_CODE_SENDING_FAILED("인증번호 발송에 실패하였습니다", 4005L, HttpStatus.BAD_REQUEST),
     VERIFICATION_CODE_MISMATCH("인증번호가 일치하지 않습니다", 4006L, HttpStatus.BAD_REQUEST),
-    PHONE_NUNBER_VERIFICATION_REQUIRED("휴대폰 번호 인증 확인이 필요합니다.", 4007L, HttpStatus.BAD_REQUEST),
+    PHONE_NUMBER_VERIFICATION_REQUIRED("휴대폰 번호 인증 확인이 필요합니다.", 4007L, HttpStatus.BAD_REQUEST),
     EMAIL_VERIFICATION_REQUIRED("이메일 인증 확인이 필요합니다.", 4008L, HttpStatus.BAD_REQUEST),
     // Email
     EMAIL_SENDING_FAILED("메일 발송에 실패하였습니다.", 5001L, HttpStatus.BAD_REQUEST),
