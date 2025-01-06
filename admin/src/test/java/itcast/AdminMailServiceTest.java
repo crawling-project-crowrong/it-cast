@@ -61,9 +61,6 @@ class AdminMailServiceTest {
         MailEvents event1 = MailEvents.of(user1, "제목1", "요약1", "링크1", "썸네일1");
         MailEvents event2 = MailEvents.of(user2, "제목2", "요약2", "링크2", "썸네일2");
 
-        setPrivateField(event1, "id", 1L);
-        setPrivateField(event2, "id", 2L);
-
         List<MailEvents> mailEventsList = Arrays.asList(event1, event2);
         Page<MailEvents> mailEventsPage = new PageImpl<>(mailEventsList, pageable, mailEventsList.size());
 
@@ -88,15 +85,4 @@ class AdminMailServiceTest {
         assertEquals(2L, response2.userId());
         assertEquals(1, response2.contents().size());
     }
-
-    private void setPrivateField(Object object, String fieldName, Object value) {
-        try {
-            java.lang.reflect.Field field = object.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(object, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
