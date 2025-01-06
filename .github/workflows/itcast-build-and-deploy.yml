@@ -56,6 +56,9 @@ jobs:
           spring.datasource.url: ${{ secrets.MYSQL_URL }}
           spring.datasource.username: ${{ secrets.DB_USERNAME }}
           spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          aws.ses.access-key: ${{ secrets.AWS_SES_ACCESS_KEY }}
+          aws.ses.secret-key: ${{ secrets.AWS_SES_SECRET_KEY }}
+          aws.ses.sender-email: ${{ secrets.AWS_SES_SENDER_EMAIL }}
           spring.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
           jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
 
