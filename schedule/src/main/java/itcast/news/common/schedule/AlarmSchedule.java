@@ -30,17 +30,17 @@ public class AlarmSchedule {
 
     @Scheduled(cron = "${scheduler.news.send-alarm}")
     public void sendEmailAlarmSchedule() {
-        log.info("Sending schedule....");
+        log.info("Sending email schedule....");
         sendNewsService.sendEmails();
-        log.info("Sending schedule Finish");
+        log.info("Sending email schedule Finish");
     }
 
     @Scheduled(cron = "${scheduler.news.send-alarm}")
     public void sendMessageAlarmSchedule() {
-        log.info("Sending schedule....");
+        log.info("Sending message schedule....");
         try {
             sendNewsService.sendMessages();
-            log.info("Sending schedule Finish");
+            log.info("Sending message schedule Finish");
         } catch (Exception exception) {
             throw new ItCastApplicationException(ErrorCodes.MESSAGE_SENDING_FAILED);
         }
