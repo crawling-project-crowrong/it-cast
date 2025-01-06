@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <springProfile name="none">
+    <springProfile name="prod">
         <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
         <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>./b2c/logs/info/info.log</file>
