@@ -59,7 +59,7 @@ public class MessageService {
             throw new ItCastApplicationException(ErrorCodes.VERIFICATION_CODE_MISMATCH);
         }
         redisTemplate.opsForValue().set(
-                "VERIFIED_" + requestDto.phoneNumber(),
+                "VERIFIED_PHONE_NUMBER" + requestDto.phoneNumber(),
                 true,
                 5,
                 TimeUnit.MINUTES

@@ -9,6 +9,7 @@ import itcast.ResponseTemplate;
 import itcast.jwt.CheckAuth;
 import itcast.message.application.MessageService;
 import itcast.message.dto.request.VerificationRequest;
+import itcast.message.dto.response.VericationResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,7 +29,7 @@ public class MessageController {
 
     @CheckAuth
     @PostMapping("/verify")
-    public ResponseTemplate<String> verifyVerificationCode(@RequestBody VerificationRequest verificationRequest) {
+    public ResponseTemplate<Void> verifyVerificationCode(@RequestBody VerificationRequest verificationRequest) {
         messageService.verifyVerificationCode(verificationRequest);
         return new ResponseTemplate<>(HttpStatus.OK, "인증이 완료되었습니다.");
     }
