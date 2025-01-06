@@ -29,11 +29,11 @@ public class SlackService {
     @Value("${slack.channel.monitor}")
     private String channel;
 
-    public void postInquiry(SlackRequestDto slackRequestDto) {
+    public void postInquiry(String receiver) {
         try {
             List<TextObject> textObjects = new ArrayList<>();
             textObjects.add(markdownText("*재 발송 실패 날짜:*\n" + LocalDateTime.now()));
-            textObjects.add(markdownText("*재 시도 실패 메일:*\n" + slackRequestDto.receiver()));
+            textObjects.add(markdownText("*재 시도 실패 메일:*\n" + receiver));
 
             MethodsClient methods = Slack.getInstance().methods(token);
             ChatPostMessageRequest request = ChatPostMessageRequest.builder()
