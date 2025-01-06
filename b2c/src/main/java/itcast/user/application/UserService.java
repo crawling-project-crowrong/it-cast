@@ -121,7 +121,8 @@ public class UserService {
         }
     }
     private boolean isVerifiedPhoneNumber(String phoneNumber) {
-        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_PHONE_NUMBER" + phoneNumber);
+        String formattedPhoneNumber = phoneNumber.replaceAll("-", "");
+        Boolean isVerified = (Boolean) redisTemplate.opsForValue().get("VERIFIED_PHONE_NUMBER" + formattedPhoneNumber);
         return isVerified != null && isVerified;
     }
     private boolean isVerifiedEmail(String email) {

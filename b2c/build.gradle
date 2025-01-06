@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     implementation 'net.nurigo:javaSDK:2.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.3'
 }
 
 test {
