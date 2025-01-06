@@ -72,9 +72,9 @@ jobs:
           aws.ses.access-key: ${{ secrets.AWS_SES_ACCESS_KEY }}
           aws.ses.secret-key: ${{ secrets.AWS_SES_SECRET_KEY }}
           aws.ses.sender-email: ${{ secrets.AWS_SES_SENDER_EMAIL }}
-          jwt-secret-key: ${{ secrets.JWT_SECRET_KEY }}
+          jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
           sms.api.key: ${{ secrets.SMS_API_KEY }}
-          sms.spi.secret: ${{ secrets.SMS_API_SECRET }}
+          sms.api.secret: ${{ secrets.SMS_API_SECRET }}
           openai.secret-key: ${{ secrets.OPENAI_SECRET_KEY }}
 
       - name: Install Docker Compose
