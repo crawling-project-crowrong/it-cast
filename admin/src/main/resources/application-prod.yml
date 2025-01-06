@@ -45,22 +45,6 @@ aws:
     sender-email: ${AWS_SES_SENDER_EMAIL}
   region: ap-northeast-2
 
-mail:
-  host: smtp.naver.com
-  port: 465
-  username: ${ADMIN_MAIL}
-  password: ${ADMIN_MAIL_PASSWORD}
-  properties:
-    mail:
-      transport:
-        protocol: smtp
-      smtp:
-        auth: true
-        starttls:
-          enable: false
-        ssl:
-          enable: true
-
 slack:
   token: ${SLACK_TOKEN}
   channel:
