@@ -1,17 +1,16 @@
 name: BuildAndDeploy
 
 on:
-  push:
-    branches:
-      - main
-      - issue/**
-  pull_request:
-    branches:
-      - main
-      - issue/**
+  workflow_run:
+    workflows: ["BuildAndTest"]
+    types:
+      - completed
 
 jobs:
   deploy:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
