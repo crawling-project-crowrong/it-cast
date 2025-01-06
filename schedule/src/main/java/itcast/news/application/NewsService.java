@@ -1,9 +1,9 @@
 package itcast.news.application;
 
-
 import static itcast.exception.ErrorCodes.CRAWLING_PARSE_ERROR;
 import static itcast.exception.ErrorCodes.GPT_SERVICE_ERROR;
 import static itcast.exception.ErrorCodes.INVALID_NEWS_CONTENT;
+
 import itcast.ai.application.GPTService;
 import itcast.ai.dto.request.GPTSummaryRequest;
 import itcast.ai.dto.request.Message;
@@ -51,7 +51,7 @@ public class NewsService {
 
         if (!newsList.isEmpty()) {
             newsRepository.saveAll(newsList);
-            newsList.forEach (news -> {
+            newsList.forEach(news -> {
                 updateNewsSummary(news, news.getOriginalContent());
             });
         }
