@@ -24,8 +24,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import static itcast.exception.ErrorCodes.*;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor

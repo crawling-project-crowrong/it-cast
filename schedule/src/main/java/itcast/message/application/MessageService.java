@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import net.nurigo.sdk.NurigoApp;
@@ -16,10 +15,6 @@ import net.nurigo.sdk.message.model.FailedMessage;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.model.StorageType;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-
-import itcast.ResponseTemplate;
-import itcast.exception.ErrorCodes;
-import itcast.exception.ItCastApplicationException;
 import itcast.message.dto.request.MessageContent;
 import itcast.message.dto.request.RecieverPhoneNumber;
 import itcast.message.dto.request.SendMessageRequest;
