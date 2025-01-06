@@ -54,7 +54,7 @@ public class NewsService {
         if (!newsList.isEmpty()) {
             newsRepository.saveAll(newsList);
             newsList.forEach (news -> {
-                updateNewsSummary(news, news.getContent());
+                updateNewsSummary(news, news.getOriginalContent());
             });
         }
     }
@@ -71,9 +71,6 @@ public class NewsService {
             content = cleanContent(content);
             LocalDateTime publishedAt = convertDateTime(date);
 
-            if (thumbnail.isEmpty()) {
-                throw new ItCastApplicationException(INVALID_NEWS_CONTENT);
-            }
             if (thumbnail.isEmpty()) {
                 log.error("썸네일이 존재하지 않습니다. {}", link);
                 throw new ItCastApplicationException(INVALID_NEWS_CONTENT);

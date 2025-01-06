@@ -143,9 +143,4 @@ public class SendNewsService {
                 .toList();
         newsHistoryRepository.saveAll(newsHistories);
     }
-
-
-
-
-
 }
