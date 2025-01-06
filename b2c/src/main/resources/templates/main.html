@@ -21,19 +21,20 @@
       border-radius: 20px;
       padding: 50px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      width: 80%;
-      max-width: 600px;
+      width: 200%;
+      height: 50%;
+      max-width: 1000px;
     }
 
     /* 로고 */
     .logo img {
-      width: 100px;
+      width: 300px;
       height: auto;
     }
 
     /* 타이틀 */
     .title {
-      font-size: 1.5rem;
+      font-size: 50px;
       font-weight: bold;
       color: #34a58b;
       margin-top: 20px;
@@ -42,7 +43,7 @@
 
     /* 서브 타이틀 */
     .subtitle {
-      font-size: 1rem;
+      font-size: 30px;
       color: #7d7d7d;
       margin: 20px 0;
       line-height: 1.5;
@@ -50,11 +51,12 @@
 
     /* 버튼 스타일 */
     .btn-subscribe {
+      margin-top: 20px;
       display: inline-block;
       padding: 15px 30px;
       background-color: #34a58b;
       color: #ffffff;
-      font-size: 1rem;
+      font-size: 30px;
       font-weight: bold;
       text-decoration: none;
       border-radius: 50px;
@@ -70,17 +72,17 @@
 <div class="subscription-container">
   <div class="logo">
     <img src="https://travel-spring.s3.ap-northeast-2.amazonaws.com/it-cast-logo.png" alt="Logo"
-         style="max-width: 120px; margin-bottom: 10px;">
+         style="max-width: 200px; margin-bottom: 10px;">
   </div>
   <div class="title">
     빠르게 변화하는 IT 정보를 <br /> 하루마다 한 번씩 편하게 확인하세요!
   </div>
   <div class="subtitle">
-    문구 쓰는게 제일 어려워요<br />
-    여기에 뭘 써야 하죠
+    하루에 3개의 IT 컨텐츠 받아보기<br />
+      👇🏻👇🏻👇🏻👇🏻👇🏻
   </div>
   <a
-          th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=bc2c718aa374df7f4b52201962968bbd&redirect_uri=http://localhost:8080/auth/kakao/callback&through_account=true'}"
+          th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=bc2c718aa374df7f4b52201962968bbd&redirect_uri=https://itcast.site/auth/kakao/callback&through_account=true'}"
           class="btn-subscribe"
   >
     무료 구독하기

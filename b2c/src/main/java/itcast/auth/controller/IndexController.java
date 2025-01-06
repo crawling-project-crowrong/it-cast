@@ -8,11 +8,11 @@ public class IndexController {
 
     @GetMapping("/")
     public String subscriptionPage() {
-        return "index";
+        return "main";
     }
 
     @GetMapping("/auth/kakao/index")
     public String kakaoLogin() {
-        return "index";
+        return "main";
     }
 }
