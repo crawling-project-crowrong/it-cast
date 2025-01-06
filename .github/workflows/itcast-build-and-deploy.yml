@@ -42,6 +42,9 @@ jobs:
           spring.datasource.url: ${{ secrets.MYSQL_URL }}
           spring.datasource.username: ${{ secrets.DB_USERNAME }}
           spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          aws.ses.access-key: ${{ secrets.AWS_SES_ACCESS_KEY }}
+          aws.ses.secret-key: ${{ secrets.AWS_SES_SECRET_KEY }}
+          aws.ses.sender-email: ${{ secrets.AWS_SES_SENDER_EMAIL }}
           jwt.secret.key: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Set B2C Yaml
