@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import net.nurigo.sdk.NurigoApp;
@@ -20,7 +22,6 @@ import itcast.message.dto.request.RecieverPhoneNumber;
 import itcast.message.dto.request.SendMessageRequest;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-
 
 @Slf4j
 @Service
@@ -48,6 +49,7 @@ public class MessageService {
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, apiUrl);
     }
 
+    @Async
     public void sendMessages(SendMessageRequest request) {
         ArrayList<Message> messageList = new ArrayList<>();
         List<MessageContent> contentList = request.contentList();
