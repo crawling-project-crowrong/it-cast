@@ -185,6 +185,7 @@ class UserServiceTest {
         when(userRepository.existsByNickname(request.nickname())).thenReturn(false);
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
         when(valueOperations.get("VERIFIED_EMAIL" + request.email())).thenReturn(true);
+        when(userRepository.existsByEmail(request.email())).thenReturn(false);
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // When
